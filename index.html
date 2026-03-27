@@ -55,11 +55,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 /* ═══════════════════════════════════════════
    HEADER — Glassmorphism redesign
    ═══════════════════════════════════════════ */
-header{text-align:center;padding:var(--sp-12) var(--sp-5) var(--sp-6);position:relative;overflow:hidden}
-header::before{content:'';position:absolute;top:-50%;left:-20%;width:140%;height:200%;background:radial-gradient(ellipse at 30% 0%,rgba(124,58,237,.12) 0%,transparent 50%),radial-gradient(ellipse at 70% 0%,rgba(0,212,255,.08) 0%,transparent 50%);pointer-events:none}
-header h1{font-size:var(--fs-3xl);font-weight:900;background:linear-gradient(135deg,#00d4ff 0%,#7c3aed 40%,#ec4899 70%,#f59e0b 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-1.5px;position:relative;line-height:1.2;margin-bottom:var(--sp-3)}
-header p{color:var(--text4);font-size:var(--fs-sm);font-weight:400;position:relative;letter-spacing:.3px}
-.header-actions{display:flex;justify-content:center;gap:var(--sp-3);margin-top:var(--sp-5);flex-wrap:wrap;position:relative}
+/* Header replaced by V4 navbar */
 .header-btn{background:var(--surface);color:var(--text2);border:1px solid var(--card-border);padding:var(--sp-3) var(--sp-5);border-radius:var(--r-full);font-size:var(--fs-sm);font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:var(--sp-2);min-height:var(--touch-min);font-family:'Inter',sans-serif}
 .header-btn:hover{background:var(--card-hover);border-color:var(--card-hover);transform:translateY(-1px);box-shadow:var(--shadow-sm)}
 
@@ -74,16 +70,7 @@ header p{color:var(--text4);font-size:var(--fs-sm);font-weight:400;position:rela
 /* ═══════════════════════════════════════════
    PROGRESS SECTION — Glowing cards
    ═══════════════════════════════════════════ */
-.progress-section{max-width:var(--max-w);margin:0 auto var(--sp-8);padding:0 var(--sp-5)}
-.progress-section h2{font-size:var(--fs-xs);color:var(--text5);text-transform:uppercase;letter-spacing:3px;margin-bottom:var(--sp-5);text-align:center;font-weight:700}
-.progress-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--sp-4)}
-.progress-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-lg);padding:var(--sp-5);text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
-.progress-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r-lg) var(--r-lg) 0 0;opacity:.6;transition:opacity .3s}
-.progress-card:hover::before{opacity:1}
-.progress-card .pct{font-size:var(--fs-2xl);font-weight:900;display:block;letter-spacing:-1px}
-.progress-card .label{font-size:var(--fs-xs);color:var(--text5);margin-top:var(--sp-1);font-weight:500;text-transform:uppercase;letter-spacing:1px}
-.progress-card .bar{height:4px;background:var(--bar-bg);border-radius:2px;margin-top:var(--sp-3);overflow:hidden}
-.progress-card .bar-fill{height:100%;border-radius:2px;transition:width 1.5s cubic-bezier(.4,0,.2,1)}
+/* Progress replaced by V4 pills */
 
 /* ═══════════════════════════════════════════
    MAIN GRID — Cards
@@ -399,14 +386,17 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:none}
    RESPONSIVE — Mobile first
    ═══════════════════════════════════════════ */
 @media(max-width:480px){
-  header{padding:var(--sp-8) var(--sp-4) var(--sp-5)}
-  header p{font-size:var(--fs-xs)}
-  .header-actions{gap:var(--sp-2)}
+  header{flex-direction:column;align-items:center;text-align:center;padding:var(--sp-4) var(--sp-4) var(--sp-3)}
+  header h1{font-size:var(--fs-lg)}
+  .header-actions{justify-content:center;flex-wrap:wrap}
+  .progress-grid{gap:var(--sp-2)}
+  .progress-pill{min-width:120px;padding:var(--sp-1) var(--sp-3) var(--sp-1) var(--sp-1)}
+  .pill-icon{width:26px;height:26px;font-size:.75rem}
+  .pill-name{font-size:var(--fs-xs)}
   .header-btn{min-height:var(--touch-min);font-size:var(--fs-sm);padding:var(--sp-3) var(--sp-4)}
   .search-bar{padding:var(--sp-3) var(--sp-4) var(--sp-5)}
   .search-bar input{min-height:var(--touch-min)}
   .main-grid{grid-template-columns:1fr;gap:var(--sp-4);padding:0 var(--sp-3) var(--sp-12)}
-  .progress-grid{grid-template-columns:repeat(2,1fr);gap:var(--sp-3)}
   .card-header{padding:var(--sp-5) var(--sp-4) var(--sp-3)}
   .topics{padding:var(--sp-3) var(--sp-4) var(--sp-2)}
   .topic-actions{display:flex;overflow-x:auto;gap:var(--sp-2);padding-bottom:var(--sp-2);-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-wrap:nowrap!important}
@@ -440,28 +430,89 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:none}
   .main-grid{grid-template-columns:repeat(3,1fr);max-width:1500px}
 }
 
+/* ═══════════════════════════════════════════
+   V4: NAVBAR HEADER
+   ═══════════════════════════════════════════ */
+header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:var(--sp-4) var(--sp-6);max-width:var(--max-w);margin:0 auto;position:relative;gap:var(--sp-3)}
+header::before{display:none}
+header h1{font-size:var(--fs-xl);margin:0;letter-spacing:-.5px;line-height:1}
+header p{display:none}
+.header-actions{gap:var(--sp-2);margin:0;flex-wrap:nowrap}
+.search-bar{max-width:var(--max-w);margin:0 auto;padding:var(--sp-2) var(--sp-6) var(--sp-5)}
+.search-bar input{max-width:100%}
+
+/* ═══════════════════════════════════════════
+   V4: PROGRESS PILLS (replacing grid)
+   ═══════════════════════════════════════════ */
+.progress-section{max-width:var(--max-w);margin:0 auto var(--sp-4);padding:0 var(--sp-6)}
+.progress-section h2{display:none}
+.progress-grid{display:flex;gap:var(--sp-3);overflow-x:auto;padding-bottom:var(--sp-2);scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.progress-grid::-webkit-scrollbar{display:none}
+.progress-pill{display:flex;align-items:center;gap:var(--sp-2);background:var(--card);border:1px solid var(--card-border);border-radius:var(--r-full);padding:var(--sp-2) var(--sp-4) var(--sp-2) var(--sp-2);cursor:pointer;transition:all .2s;flex-shrink:0;position:relative;min-width:140px}
+.progress-pill:hover{border-color:var(--card-hover);transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+.pill-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.pill-name{font-size:var(--fs-sm);font-weight:700;color:var(--text2);white-space:nowrap}
+.pill-score{font-size:var(--fs-sm);font-weight:800;margin-left:auto;font-variant-numeric:tabular-nums}
+.pill-bar{position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--bar-bg);border-radius:0 0 var(--r-full) var(--r-full);overflow:hidden}
+.pill-bar-fill{height:100%;border-radius:inherit;transition:width 1s ease}
+
+/* ═══════════════════════════════════════════
+   V4: SECTION DIVIDERS
+   ═══════════════════════════════════════════ */
+.section-divider{display:flex;align-items:center;gap:var(--sp-3);max-width:var(--max-w);margin:var(--sp-3) auto var(--sp-5);padding:0 var(--sp-6);color:var(--text6);font-size:var(--fs-xs);font-weight:700;text-transform:uppercase;letter-spacing:2px}
+.section-divider::before,.section-divider::after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* ═══════════════════════════════════════════
+   V4: CARD ACCENT BAR
+   ═══════════════════════════════════════════ */
+.card-accent{height:3px;border-radius:var(--r-xl) var(--r-xl) 0 0}
+.card{position:relative;overflow:hidden}
+
+/* ═══════════════════════════════════════════
+   V4: COLLAPSIBLE TOPICS
+   ═══════════════════════════════════════════ */
+.topic-row{cursor:pointer;user-select:none;display:flex;align-items:flex-start;gap:var(--sp-3);transition:padding .15s}
+.topic-row:hover{padding-left:var(--sp-1)}
+.topic-chevron{color:var(--text6);font-size:var(--fs-sm);transition:transform .25s;margin-left:auto;flex-shrink:0;margin-top:4px}
+.topic-item.expanded .topic-chevron{transform:rotate(180deg)}
+.topic-expand{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1),opacity .25s;opacity:0}
+.topic-item.expanded .topic-expand{max-height:600px;opacity:1}
+.topic-actions{padding-top:var(--sp-3)}
+
+/* V4: Topic last score */
+.topic-last-score{font-size:var(--fs-xs);color:var(--text6);margin-top:2px}
+
+/* ═══════════════════════════════════════════
+   V4: AUTO-GROW TEXTAREA
+   ═══════════════════════════════════════════ */
+.ia-input-row textarea,.notes-area textarea{resize:none!important;overflow:hidden;min-height:var(--touch-min);transition:border .2s}
+.notes-section{display:none;margin-top:var(--sp-2)}
+.notes-section.open,.notes-area{margin-top:var(--sp-2)}
+.notes-area{display:none}
+.notes-area.open{display:block}
+.topic-notes{padding-top:var(--sp-2)}
+
 </style>
 </head>
 <body>
-
-
 <header>
-  <h1>🦷 Mapa de Estudio — Odontologia</h1>
-  <p>🔬 Laboratorio + Atlas Clinico &nbsp;·&nbsp; 💬 Consulta IA &nbsp;·&nbsp; 🧠 Quiz &nbsp;·&nbsp; 🏥 Casos &nbsp;·&nbsp; 🃏 Flashcards</p>
+  <h1>🦷 Mapa de Estudio</h1>
   <div class="header-actions">
-    <button class="header-btn" id="btnProgress">📊 Mi Progreso</button>
+    <button class="header-btn" id="btnProgress">📊 Progreso</button>
     <button class="header-btn" id="btnExam">📝 Examen</button>
-    <button class="header-btn" id="btnCalendar">📅 Plan de Estudio</button>
+    <button class="header-btn" id="btnCalendar">📅 Plan</button>
     <button class="header-btn" id="btnTheme">🌙</button>
   </div>
 </header>
 
-<div class="search-bar"><input type="text" id="searchInput" placeholder="Buscar tema... (ej: NiTi, adhesion, CBCT)" /></div>
+<div class="search-bar"><input type="text" id="searchInput" placeholder="🔍 Buscar tema... (NiTi, adhesion, CBCT)" /></div>
 
 <section class="progress-section">
   <h2>Areas principales</h2>
   <div class="progress-grid" id="progressGrid"></div>
 </section>
+
+<div class="section-divider">📚 Areas de Estudio</div>
 
 <div class="main-grid" id="mainGrid"></div>
 
@@ -475,13 +526,11 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:none}
 <div class="overlay bg-dark" id="quizOverlay"><div class="panel quiz-panel" id="quizPanel" style="--accent:#7c3aed"><button class="panel-close" id="quizClose">✕</button><div class="quiz-header" id="quizHeader"></div><div class="quiz-body" id="quizBody"></div></div></div>
 <div class="lightbox" id="lightbox"><img id="lightboxImg" /><div class="lightbox-caption" id="lightboxCap"></div></div>
 
-<!-- Full modals for new features -->
 <div class="full-modal" id="progressModal"><div class="full-modal-panel"><button class="panel-close" onclick="closeFullModal('progressModal')">✕</button><div id="progressModalContent"></div></div></div>
 <div class="full-modal" id="examModal"><div class="full-modal-panel"><button class="panel-close" onclick="closeFullModal('examModal')">✕</button><div id="examModalContent"></div></div></div>
 <div class="full-modal" id="calendarModal"><div class="full-modal-panel"><button class="panel-close" onclick="closeFullModal('calendarModal')">✕</button><div id="calendarModalContent"></div></div></div>
 <div class="full-modal" id="clinicalModal"><div class="full-modal-panel"><button class="panel-close" onclick="closeFullModal('clinicalModal')">✕</button><div id="clinicalModalContent"></div></div></div>
 <div class="full-modal" id="flashcardModal"><div class="full-modal-panel"><button class="panel-close" onclick="closeFullModal('flashcardModal')">✕</button><div id="flashcardModalContent"></div></div></div>
-
 
 <script>
 
@@ -843,22 +892,18 @@ function renderProgress() {
   var g = document.getElementById('progressGrid');
   g.innerHTML = '';
   DATA.forEach(function(item) {
-    var avgScore = getAreaAvgScore(item.id);
-    var displayPct = avgScore !== null ? avgScore : item.progress;
-    var c = document.createElement('div'); c.className = 'progress-card'; c.style.borderColor = item.color + '33';
-    var lastQuizHtml = '';
-    var history = storeGet(STORE_KEYS.quizHistory, []);
-    var areaResults = history.filter(function(h) { return h.areaId === item.id; });
-    if (areaResults.length > 0) {
-      var last = areaResults[areaResults.length - 1];
-      var d = new Date(last.date);
-      lastQuizHtml = '<div class="last-quiz">Ultimo: ' + d.toLocaleDateString('es') + ' — ' + Math.round((last.score/last.total)*100) + '%</div>';
-    }
-    c.innerHTML = '<span class="pct" style="color:' + item.color + '">' + displayPct + '%</span><div class="label">' + item.title + '</div><div class="bar"><div class="bar-fill" style="background:' + item.color + ';width:0%" data-t="' + displayPct + '"></div></div>' + lastQuizHtml;
-    c.onclick = function() { openAreaModal(item); };
-    g.appendChild(c);
+    var scores = getQuizResults().filter(function(r){return r.area === item.id;});
+    var avgScore = scores.length ? Math.round(scores.reduce(function(s,r){return s+r.score;},0)/scores.length*10) : item.progress;
+    var pill = document.createElement('div');
+    pill.className = 'progress-pill';
+    pill.style.cssText = 'border-color:' + item.color + '33;--accent:' + item.color;
+    pill.innerHTML = '<span class="pill-icon" style="background:' + item.color + '22;color:' + item.color + '">' + item.icon + '</span>' +
+      '<span class="pill-name">' + item.title.split(' ')[0] + '</span>' +
+      '<span class="pill-score" style="color:' + item.color + '">' + avgScore + '%</span>' +
+      '<div class="pill-bar"><div class="pill-bar-fill" style="background:' + item.color + ';width:' + avgScore + '%"></div></div>';
+    pill.onclick = function() { var el = document.querySelector('[data-area-id="' + item.id + '"]'); if(el) el.scrollIntoView({behavior:"smooth",block:"start"}); };
+    g.appendChild(pill);
   });
-  setTimeout(function() { document.querySelectorAll('.bar-fill').forEach(function(el) { el.style.width = el.dataset.t + '%'; }); }, 300);
 }
 
 // ══════════════════════════════════════════════
@@ -874,7 +919,7 @@ function renderGrid(filter) {
   });
   filtered.forEach(function(item) {
     var card = document.createElement('div');
-    card.className = 'card'; card.style.cssText = 'background:' + item.gradient + ';border-color:' + item.color + '22';
+    card.className = 'card'; card.dataset.areaId = item.id; card.style.cssText = 'border-color:' + item.color + '22';
     var topicsHtml = '';
     item.topics.forEach(function(t, ti) {
       var topicKey = item.id + '_' + ti;
@@ -887,8 +932,8 @@ function renderGrid(filter) {
         lastScoreHtml = '<div class="topic-last-score">Ultimo quiz: ' + lastScore.pct + '% (' + dStr + ')</div>';
       }
       topicsHtml += '<div class="topic-item">' +
-        '<div class="topic-row"><div class="topic-dot" style="background:' + item.color + '"></div><div class="topic-text"><div class="topic-name">' + t.name + noteIndicator + '</div><div class="topic-desc">' + t.desc + '</div>' + lastScoreHtml + '</div></div>' +
-        '<div class="topic-actions">' +
+        '<div class="topic-row" data-expandable="1"><div class="topic-dot" style="background:' + item.color + ';box-shadow:0 0 8px ' + item.color + '66"></div><div class="topic-text"><div class="topic-name">' + t.name + noteIndicator + '</div><div class="topic-desc">' + t.desc + '</div>' + lastScoreHtml + '</div><div class="topic-chevron">▾</div></div>' +
+        '<div class="topic-expand"><div class="topic-actions">' +
           '<span class="tag ' + t.tagClass + '">' + t.tag + '</span>' +
           '<button class="action-btn" style="background:' + item.color + '" data-lab="' + item.id + '" data-lti="' + ti + '">🔬 Laboratorio</button>' +
           '<button class="action-btn outline" style="border-color:' + item.color + '44;color:' + item.color + '" data-ask="' + item.id + '" data-ati="' + ti + '">💬 Consulta IA</button>' +
@@ -896,23 +941,24 @@ function renderGrid(filter) {
           '<button class="action-btn" style="background:#2a1a3e;color:#c084fc" data-clinical="' + item.id + '" data-cti="' + ti + '">🏥 Caso</button>' +
           '<button class="action-btn" style="background:#1a2a1a;color:#86efac" data-flash="' + item.id + '" data-fti="' + ti + '">🃏 Flash</button>' +
         '</div>' +
-        '<div class="topic-notes">' +
+        '</div><div class="topic-notes">' +
           '<button class="notes-toggle" data-nkey="' + topicKey + '">📝 Notas</button>' +
           '<div class="notes-area" id="notes-' + topicKey + '"><textarea placeholder="Escribe tus notas aqui..." data-nkey="' + topicKey + '">' + escapeHtml(noteText) + '</textarea></div>' +
         '</div>' +
         '<div class="ia-console" id="con-' + item.id + '-' + ti + '" style="--accent:' + item.color + '">' +
           '<div class="ia-input-row">' +
-            '<textarea placeholder="Pregunta sobre ' + t.name + '..." rows="2"></textarea>' +
+            '<textarea placeholder="Pregunta sobre ' + t.name + '..." rows="1" oninput="this.style.height=\'auto\';this.style.height=this.scrollHeight+\'px\'"></textarea>' +
             '<button class="ia-send-btn" style="background:' + item.color + '" data-send="' + item.id + '" data-sti="' + ti + '">✦ Enviar</button>' +
           '</div>' +
           '<div class="ia-response" id="resp-' + item.id + '-' + ti + '" style="--accent:' + item.color + '"></div>' +
         '</div>' +
-      '</div>';
+      '</div></div>';
     });
     card.innerHTML =
+      '<div class="card-accent" style="background:linear-gradient(90deg,' + item.color + ',' + item.color + '66)"></div>' +
       '<div class="card-header">' +
         '<div class="icon-wrap" style="background:' + item.color + '22;color:' + item.color + '">' + item.icon + '</div>' +
-        '<div><div class="card-title" style="color:' + item.color + '">' + item.title + '</div><div class="card-subtitle">' + item.subtitle + '</div></div>' +
+        '<div><div class="card-title" style="color:' + item.color + '">' + item.title + '</div><div class="card-subtitle">' + item.subtitle + ' · ' + item.topics.length + ' temas</div></div>' +
         '<span class="card-badge" style="background:' + item.color + '22;color:' + item.color + '">' + item.badge + '</span>' +
       '</div>' +
       '<div class="topics">' + topicsHtml + '</div>';
@@ -925,6 +971,7 @@ function renderGrid(filter) {
     card.querySelectorAll('[data-flash]').forEach(function(b) { b.onclick = function(e) { e.stopPropagation(); var a = DATA.find(function(d){return d.id===b.dataset.flash;}); openFlashcards(a.topics[+b.dataset.fti], a); }; });
     card.querySelectorAll('[data-send]').forEach(function(b) { b.onclick = function(e) { e.stopPropagation(); var a = DATA.find(function(d){return d.id===b.dataset.send;}); var t = a.topics[+b.dataset.sti]; var con = document.getElementById('con-' + a.id + '-' + b.dataset.sti); var q = con.querySelector('textarea').value.trim(); if(q) sendConsole(q, t, a, b, document.getElementById('resp-' + a.id + '-' + b.dataset.sti)); }; });
     card.querySelectorAll('.ia-input-row textarea').forEach(function(ta) { ta.onkeydown = function(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ta.closest('.ia-console').querySelector('[data-send]').click();} }; });
+    card.querySelectorAll('[data-expandable]').forEach(function(row) { row.onclick = function(e) { row.closest('.topic-item').classList.toggle('expanded'); }; });
     card.querySelectorAll('.notes-toggle').forEach(function(btn) { btn.onclick = function(e) { e.stopPropagation(); var area = document.getElementById('notes-' + btn.dataset.nkey); area.classList.toggle('open'); }; });
     card.querySelectorAll('.notes-area textarea').forEach(function(ta) { ta.onblur = function() { saveNote(ta.dataset.nkey, ta.value); }; });
     g.appendChild(card);
@@ -1549,8 +1596,12 @@ function openAreaModal(item) {
 // TIMELINE
 // ══════════════════════════════════════════════
 function renderTimeline() {
+  var section = document.querySelector('.timeline-section');
   var tl = document.getElementById('timeline');
-  TIMELINE.forEach(function(item, i) {
+  tl.style.display = 'none';
+  section.querySelector('h2').innerHTML = '📍 Ruta de Aprendizaje <span style="font-size:var(--fs-xs);color:var(--text5);cursor:pointer;font-weight:500" id="timelineToggle">(click para expandir)</span>';
+  var TIMELINE_DATA = TIMELINE;
+  TIMELINE_DATA.forEach(function(item, i) {
     var el = document.createElement('div'); el.className = 'timeline-item';
     el.innerHTML = '<div class="tl-label" style="color:' + item.color + '">' + item.label + '</div><div class="tl-title">' + item.title + '</div><div class="tl-desc">' + item.desc + '</div>';
     tl.appendChild(el);
@@ -1590,6 +1641,8 @@ document.onkeydown = function(e) {
 };
 
 renderProgress(); renderGrid(); renderTimeline();
+var tlToggle = document.getElementById('timelineToggle');
+if(tlToggle) tlToggle.onclick = function() { var t=document.getElementById('timeline'); t.style.display = t.style.display==='none'?'block':'none'; };
 
 </script>
 </body>
