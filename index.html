@@ -892,8 +892,8 @@ function renderProgress() {
   var g = document.getElementById('progressGrid');
   g.innerHTML = '';
   DATA.forEach(function(item) {
-    var scores = getQuizResults().filter(function(r){return r.area === item.id;});
-    var avgScore = scores.length ? Math.round(scores.reduce(function(s,r){return s+r.score;},0)/scores.length*10) : item.progress;
+    var avgScore = getAreaAvgScore(item.id);
+    if (avgScore === 0) avgScore = item.progress;
     var pill = document.createElement('div');
     pill.className = 'progress-pill';
     pill.style.cssText = 'border-color:' + item.color + '33;--accent:' + item.color;
