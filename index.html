@@ -8,8 +8,13 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
 :root{
+  --fs-xs:.68rem;--fs-sm:.78rem;--fs-base:.88rem;--fs-md:1rem;--fs-lg:1.15rem;--fs-xl:1.35rem;--fs-2xl:1.8rem;--fs-3xl:clamp(2rem,5vw,3rem);
+  --sp-1:4px;--sp-2:8px;--sp-3:12px;--sp-4:16px;--sp-5:20px;--sp-6:24px;--sp-8:32px;--sp-12:48px;
+  --r-sm:6px;--r-md:10px;--r-lg:16px;--r-xl:22px;--r-full:50px;
+  --z-base:1;--z-sticky:10;--z-dropdown:100;--z-modal:1000;--z-overlay:2000;--z-top:3000;--z-system:5000;
+  --touch-min:44px;
   --bg:#0a0a0f;--bg2:#111218;--bg3:#0e0e1a;--bg4:#0c0c17;--bg5:#0b0b16;
-  --card:#111218;--card-border:#1e1e2e;--card-hover:#333;
+  --surface:#151520;--card:#111218;--card-border:#1e1e2e;--card-hover:#333340;
   --text:#fff;--text2:#e0e0e0;--text3:#ccc;--text4:#888;--text5:#666;--text6:#555;--text7:#444;
   --input-bg:#0e0e18;--input-border:#2a2a3e;
   --bar-bg:#222;--line:#1a1a2e;--line2:#2a2a3e;
@@ -340,6 +345,51 @@ html.light .full-modal{background:rgba(200,200,210,.92)}
   .calendar-grid{grid-template-columns:repeat(3,1fr)}
   .full-modal-panel{padding:20px}
 }
+
+/* Mobile: Bottom sheets + touch targets + scroll */
+@media(max-width:480px){
+  .action-btn{min-height:var(--touch-min);padding:10px 14px;font-size:var(--fs-sm)}
+  .topic-actions{display:flex;overflow-x:auto;gap:var(--sp-2);padding-bottom:var(--sp-2);-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-wrap:nowrap!important}
+  .topic-actions::-webkit-scrollbar{display:none}
+  .topic-actions .tag,.topic-actions .action-btn{flex-shrink:0;white-space:nowrap}
+  .main-grid{grid-template-columns:1fr;gap:var(--sp-4);padding:0 var(--sp-3) var(--sp-12)}
+  .progress-grid{grid-template-columns:repeat(2,1fr);gap:var(--sp-3)}
+  .header-actions{flex-wrap:wrap;justify-content:center;gap:var(--sp-2)}
+  .header-btn{min-height:var(--touch-min);font-size:var(--fs-sm);padding:10px 14px}
+  .overlay .panel{max-width:100vw!important;width:100vw!important;max-height:92vh;border-radius:var(--r-xl) var(--r-xl) 0 0!important;align-self:flex-end;margin:0;animation:sheetUp .35s cubic-bezier(.32,.72,.24,1.02)!important}
+  .overlay{align-items:flex-end!important;padding:0!important}
+  .full-modal .full-modal-panel{max-width:100vw!important;width:100vw!important;border-radius:var(--r-xl) var(--r-xl) 0 0!important;margin:0;align-self:flex-end}
+  .full-modal{padding:0!important;align-items:flex-end!important}
+  .modal-overlay .modal{max-width:100vw;width:100vw;max-height:85vh;border-radius:var(--r-xl) var(--r-xl) 0 0;position:fixed;bottom:0;left:0;animation:sheetUp .35s cubic-bezier(.32,.72,.24,1.02)}
+  .modal-overlay{align-items:flex-end;padding:0}
+  .quiz-opt{min-height:52px;padding:var(--sp-4) var(--sp-5)}
+  .quiz-nav-btn,.ia-send-btn{min-height:var(--touch-min)}
+  .search-bar input{min-height:var(--touch-min)}
+  .atlas-grid{grid-template-columns:1fr}
+}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@media(min-width:481px) and (max-width:768px){
+  .main-grid{grid-template-columns:1fr;max-width:600px;margin-left:auto;margin-right:auto}
+  .progress-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(min-width:769px) and (max-width:1024px){.main-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1401px){.main-grid{grid-template-columns:repeat(3,1fr);max-width:1500px}}
+/* Skeleton Loader */
+.skeleton{padding:var(--sp-6)}
+.skeleton-line{height:14px;background:linear-gradient(90deg,var(--line) 25%,var(--line2) 50%,var(--line) 75%);background-size:200% 100%;border-radius:var(--r-sm);margin-bottom:var(--sp-3);animation:shimmer 1.5s infinite}
+.skeleton-line:nth-child(1){width:85%}.skeleton-line:nth-child(2){width:92%}.skeleton-line:nth-child(3){width:78%}.skeleton-line:nth-child(4){width:60%;margin-bottom:var(--sp-5)}.skeleton-line:nth-child(5){width:88%}.skeleton-line:nth-child(6){width:95%}.skeleton-line:nth-child(7){width:72%}.skeleton-line:nth-child(8){width:80%}
+.skeleton-line.short{width:45%}.skeleton-line.header{height:20px;width:55%;margin-bottom:var(--sp-4)}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+/* Button press + focus + reduced motion + hover */
+.action-btn:active,.header-btn:active,.quiz-nav-btn:active,.quiz-opt:active,.ia-send-btn:active{transform:scale(.97)!important;transition:transform 80ms ease}
+:focus-visible{outline:2px solid var(--accent,#7c3aed);outline-offset:2px;border-radius:var(--r-sm)}
+button:focus:not(:focus-visible),a:focus:not(:focus-visible){outline:none}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+@media(hover:hover){.card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.5)}.atlas-card:hover{transform:translateY(-3px)}.progress-card:hover{transform:translateY(-4px)}}
+@media(hover:none){.card:hover,.atlas-card:hover,.progress-card:hover{transform:none!important;box-shadow:none!important}}
+.drag-handle{width:36px;height:4px;background:var(--text7);border-radius:2px;margin:var(--sp-2) auto var(--sp-1);display:none}
+@media(max-width:480px){.drag-handle{display:block}}
+
 </style>
 </head>
 <body>
@@ -393,7 +443,8 @@ const API = {
   key: localStorage.getItem('anthropic_key') || '',
   model: 'claude-haiku-4-5'
 };
-if (!API.key) { var k = prompt('🔑 Ingresa tu Anthropic API key para las funciones de IA:\n(Obtenla en console.anthropic.com)'); if (k && k.startsWith('sk-ant')) { API.key = k; localStorage.setItem('anthropic_key', k); } }
+if (!API.key) { var k = prompt('Ingresa tu Anthropic API key:'); if (k) { API.key = k; localStorage.setItem('anthropic_key', k); } }
+
 
 async function askAI(messages, onChunk) {
   var system = '';
@@ -851,7 +902,7 @@ async function openLab(topic, area) {
   var color = area.color;
   var panel = document.getElementById('labPanel'); panel.style.setProperty('--accent', color);
   document.getElementById('labHeader').innerHTML = '<div class="lab-badge" style="background:' + color + '22;color:' + color + '">🔬 Laboratorio Clinico + Atlas</div><div class="lab-title">' + topic.name + '</div><div class="lab-meta">📰 ' + topic.article.journalShort + ' · ' + topic.article.year + ' · ' + topic.article.authors + '</div>';
-  document.getElementById('labBody').innerHTML = '<div class="lab-loader"><div class="lab-spinner" style="border-top-color:' + color + '"></div>Generando metodologia + atlas clinico con IA...</div>';
+  document.getElementById('labBody').innerHTML = '<div class="skeleton"><div class="skeleton-line header"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line header"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>';
   document.getElementById('labOverlay').classList.add('active');
 
   var pmcPromise = fetchPMCImages(topic.name);
@@ -932,7 +983,7 @@ async function openQuiz(topic, area) {
   var color = area.color;
   var panel = document.getElementById('quizPanel'); panel.style.setProperty('--accent', color);
   document.getElementById('quizHeader').innerHTML = '<div class="quiz-badge" style="background:' + color + '22;color:' + color + '">🧠 Quiz</div><div class="lab-title">' + topic.name + '</div><div class="lab-meta">' + area.title + ' · 10 preguntas</div><div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizProgressFill" style="background:' + color + ';width:0%"></div></div><div class="quiz-progress-text" id="quizProgressText">0 / 10</div>';
-  document.getElementById('quizBody').innerHTML = '<div class="quiz-loader"><div class="lab-spinner" style="border-top-color:' + color + '"></div>Generando 10 preguntas con IA...</div>';
+  document.getElementById('quizBody').innerHTML = '<div class="skeleton"><div class="skeleton-line header"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line header"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>';
   document.getElementById('quizOverlay').classList.add('active');
   var prompt = 'Genera exactamente 10 preguntas de opcion multiple sobre "' + topic.name + '" en odontologia. Nivel avanzado/residente. Terminologia tecnica en *ingles*.\nResponde UNICAMENTE en JSON valido:\n[{"q":"Pregunta","options":["A) ...","B) ...","C) ...","D) ..."],"correct":0,"explanation":"Explicacion detallada con *terminos en ingles*."}]\nDificultad progresiva. Cubrir: conceptos, evidencia, protocolo y casos clinicos.';
   try {
