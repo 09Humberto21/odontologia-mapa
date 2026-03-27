@@ -7,45 +7,72 @@
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+:root{
+  --bg:#0a0a0f;--bg2:#111218;--bg3:#0e0e1a;--bg4:#0c0c17;--bg5:#0b0b16;
+  --card:#111218;--card-border:#1e1e2e;--card-hover:#333;
+  --text:#fff;--text2:#e0e0e0;--text3:#ccc;--text4:#888;--text5:#666;--text6:#555;--text7:#444;
+  --input-bg:#0e0e18;--input-border:#2a2a3e;
+  --bar-bg:#222;--line:#1a1a2e;--line2:#2a2a3e;
+  --code-bg:#1a1a28;--pre-bg:#0d0d1a;
+  --scroll-track:#111;--scroll-thumb:#333;
+}
+html.light{
+  --bg:#f5f5f7;--bg2:#fff;--bg3:#f0f0f5;--bg4:#f8f8fc;--bg5:#f4f4fa;
+  --card:#fff;--card-border:#ddd;--card-hover:#bbb;
+  --text:#111;--text2:#222;--text3:#333;--text4:#666;--text5:#777;--text6:#888;--text7:#aaa;
+  --input-bg:#f0f0f5;--input-border:#ccc;
+  --bar-bg:#ddd;--line:#e0e0e0;--line2:#ccc;
+  --code-bg:#eee;--pre-bg:#f5f5f5;
+  --scroll-track:#eee;--scroll-thumb:#bbb;
+}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;background:#0a0a0f;color:#fff;min-height:100vh;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
 
-header{text-align:center;padding:50px 20px 30px}
+header{text-align:center;padding:50px 20px 20px}
 header::after{content:'';display:block;width:120px;height:3px;background:linear-gradient(90deg,#00d4ff,#7c3aed);margin:16px auto 0;border-radius:2px}
 header h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:900;background:linear-gradient(135deg,#00d4ff 0%,#7c3aed 50%,#f59e0b 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-1px}
-header p{color:#888;font-size:.95rem;margin-top:8px;font-weight:300}
+header p{color:var(--text4);font-size:.95rem;margin-top:8px;font-weight:300}
+
+.header-actions{display:flex;justify-content:center;gap:10px;margin:16px auto 0;flex-wrap:wrap;padding:0 20px}
+.header-btn{padding:9px 18px;border-radius:12px;border:1px solid var(--line2);background:var(--bg3);color:var(--text3);font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.header-btn:hover{border-color:var(--card-hover);transform:translateY(-2px)}
+
 .search-bar{display:flex;justify-content:center;margin:20px auto 40px;padding:0 20px}
-.search-bar input{width:100%;max-width:500px;padding:12px 20px;border-radius:50px;border:1px solid #333;background:#111;color:#fff;font-size:.95rem;outline:none;transition:border .3s}
+.search-bar input{width:100%;max-width:500px;padding:12px 20px;border-radius:50px;border:1px solid var(--line);background:var(--input-bg);color:var(--text);font-size:.95rem;outline:none;transition:border .3s}
 .search-bar input:focus{border-color:#7c3aed}
-.search-bar input::placeholder{color:#555}
+.search-bar input::placeholder{color:var(--text6)}
+
 .progress-section{max-width:1200px;margin:0 auto 50px;padding:0 20px}
-.progress-section h2{font-size:1.1rem;color:#888;text-transform:uppercase;letter-spacing:2px;margin-bottom:20px;text-align:center}
+.progress-section h2{font-size:1.1rem;color:var(--text4);text-transform:uppercase;letter-spacing:2px;margin-bottom:20px;text-align:center}
 .progress-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
-.progress-card{background:#111;border:1px solid #222;border-radius:16px;padding:20px;text-align:center;cursor:pointer;transition:all .3s}
-.progress-card:hover{transform:translateY(-4px);border-color:#444}
+.progress-card{background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:20px;text-align:center;cursor:pointer;transition:all .3s}
+.progress-card:hover{transform:translateY(-4px);border-color:var(--card-hover)}
 .progress-card .pct{font-size:2rem;font-weight:900;display:block}
-.progress-card .label{font-size:.8rem;color:#666;margin-top:4px}
-.progress-card .bar{height:4px;background:#222;border-radius:2px;margin-top:12px;overflow:hidden}
+.progress-card .label{font-size:.8rem;color:var(--text5);margin-top:4px}
+.progress-card .bar{height:4px;background:var(--bar-bg);border-radius:2px;margin-top:12px;overflow:hidden}
 .progress-card .bar-fill{height:100%;border-radius:2px;transition:width 1.5s ease}
+.progress-card .last-quiz{font-size:.68rem;color:var(--text6);margin-top:6px}
+
 .main-grid{max-width:1400px;margin:0 auto;padding:0 20px 80px;display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:24px}
-.card{background:#111218;border:1px solid #1e1e2e;border-radius:20px;overflow:hidden;transition:all .4s cubic-bezier(.4,0,.2,1)}
-.card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.5);border-color:#333}
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:20px;overflow:hidden;transition:all .4s cubic-bezier(.4,0,.2,1)}
+.card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.5);border-color:var(--card-hover)}
 .card-header{padding:24px 24px 16px;display:flex;align-items:center;gap:16px;position:relative;cursor:pointer}
-.card-header::after{content:'';position:absolute;bottom:0;left:24px;right:24px;height:1px;background:#1e1e2e}
+.card-header::after{content:'';position:absolute;bottom:0;left:24px;right:24px;height:1px;background:var(--card-border)}
 .icon-wrap{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0}
 .card-title{font-size:1.1rem;font-weight:700}
-.card-subtitle{font-size:.78rem;color:#666;margin-top:2px}
+.card-subtitle{font-size:.78rem;color:var(--text5);margin-top:2px}
 .card-badge{margin-left:auto;padding:4px 10px;border-radius:20px;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;flex-shrink:0}
 .topics{padding:16px 24px 8px}
-.topic-item{padding:12px 0;border-bottom:1px solid #1a1a2e}
+.topic-item{padding:12px 0;border-bottom:1px solid var(--line)}
 .topic-item:last-child{border-bottom:none}
 .topic-row{display:flex;align-items:flex-start;gap:12px}
 .topic-dot{width:8px;height:8px;border-radius:50%;margin-top:6px;flex-shrink:0}
 .topic-text{flex:1}
-.topic-name{font-size:.88rem;font-weight:600;color:#e0e0e0}
-.topic-desc{font-size:.76rem;color:#555;margin-top:2px;line-height:1.4}
+.topic-name{font-size:.88rem;font-weight:600;color:var(--text2)}
+.topic-desc{font-size:.76rem;color:var(--text6);margin-top:2px;line-height:1.4}
+.topic-last-score{font-size:.68rem;color:var(--text6);margin-top:3px;font-style:italic}
 .topic-actions{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
-.tag{font-size:.68rem;padding:2px 8px;border-radius:10px;background:#1a1a2e;color:#888;white-space:nowrap}
+.tag{font-size:.68rem;padding:2px 8px;border-radius:10px;background:var(--line);color:var(--text4);white-space:nowrap}
 .tag-alta{background:rgba(239,68,68,.15)!important;color:#ef4444!important}
 .tag-media{background:rgba(245,158,11,.15)!important;color:#f59e0b!important}
 .tag-base{background:rgba(34,197,94,.15)!important;color:#22c55e!important}
@@ -53,180 +80,279 @@ header p{color:#888;font-size:.95rem;margin-top:8px;font-weight:300}
 .action-btn:hover{transform:scale(1.04);opacity:.9}
 .action-btn.outline{background:transparent!important;border:1px solid}
 
-/* ═══ CONSOLA IA ═══ */
+/* NOTES */
+.topic-notes{margin-top:8px}
+.notes-toggle{font-size:.72rem;color:var(--text5);cursor:pointer;background:none;border:none;padding:2px 6px;transition:color .2s}
+.notes-toggle:hover{color:var(--text3)}
+.notes-area{display:none;margin-top:6px}
+.notes-area.open{display:block}
+.notes-area textarea{width:100%;min-height:60px;background:var(--input-bg);border:1px solid var(--line);border-radius:8px;color:var(--text3);font-family:'Inter',sans-serif;font-size:.78rem;padding:8px 10px;resize:vertical;outline:none;transition:border .2s}
+.notes-area textarea:focus{border-color:#7c3aed}
+
+/* IA CONSOLE */
 .ia-console{margin:10px 0 4px;display:none;animation:fadeIn .25s ease}
 .ia-console.open{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
 .ia-input-row{display:flex;gap:8px;align-items:flex-end}
-.ia-input-row textarea{flex:1;background:#0e0e18;border:1px solid #2a2a3e;border-radius:10px;color:#fff;font-family:'Inter',sans-serif;font-size:.8rem;padding:9px 12px;resize:none;min-height:48px;max-height:120px;outline:none;transition:border .2s}
+.ia-input-row textarea{flex:1;background:var(--input-bg);border:1px solid var(--input-border);border-radius:10px;color:var(--text);font-family:'Inter',sans-serif;font-size:.8rem;padding:9px 12px;resize:none;min-height:48px;max-height:120px;outline:none;transition:border .2s}
 .ia-input-row textarea:focus{border-color:var(--accent)}
-.ia-input-row textarea::placeholder{color:#444}
+.ia-input-row textarea::placeholder{color:var(--text7)}
 .ia-send-btn{padding:10px 16px;border-radius:10px;border:none;cursor:pointer;font-size:.8rem;font-weight:700;color:#fff;white-space:nowrap;display:flex;align-items:center;gap:5px;transition:all .2s}
 .ia-send-btn:hover{opacity:.85;transform:translateY(-1px)}
 .ia-send-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
 
-/* ═══ MD RESPONSE ═══ */
-.ia-response,.lab-body .md-content{font-size:.84rem;color:#ccc;line-height:1.7;overflow-x:auto}
-.ia-response{margin-top:10px;background:#0b0b14;border:1px solid #1e1e2e;border-radius:10px;padding:14px 16px;display:none}
+/* MD RESPONSE */
+.ia-response,.lab-body .md-content{font-size:.84rem;color:var(--text3);line-height:1.7;overflow-x:auto}
+.ia-response{margin-top:10px;background:var(--bg3);border:1px solid var(--card-border);border-radius:10px;padding:14px 16px;display:none}
 .ia-response.visible{display:block}
-.ia-response h1,.ia-response h2,.ia-response h3,.lab-body h1,.lab-body h2,.lab-body h3{color:#fff;margin:14px 0 8px;font-weight:800}
-.ia-response h1,.lab-body h1{font-size:1.1rem;border-bottom:1px solid #2a2a3e;padding-bottom:6px}
+.ia-response h1,.ia-response h2,.ia-response h3,.lab-body h1,.lab-body h2,.lab-body h3{color:var(--text);margin:14px 0 8px;font-weight:800}
+.ia-response h1,.lab-body h1{font-size:1.1rem;border-bottom:1px solid var(--line2);padding-bottom:6px}
 .ia-response h2,.lab-body h2{font-size:1rem}
 .ia-response h3,.lab-body h3{font-size:.92rem}
 .ia-response p,.lab-body p{margin:6px 0}
 .ia-response ul,.ia-response ol,.lab-body ul,.lab-body ol{margin:6px 0 6px 20px}
 .ia-response li,.lab-body li{margin:4px 0}
 .ia-response em,.lab-body em{color:#a78bfa;font-style:italic}
-.ia-response strong,.lab-body strong{color:#fff}
-.ia-response code,.lab-body code{background:#1a1a28;padding:2px 6px;border-radius:4px;font-size:.8rem;color:#f59e0b}
-.ia-response pre,.lab-body pre{background:#0d0d1a;border:1px solid #1e1e2e;border-radius:8px;padding:12px;margin:8px 0;overflow-x:auto}
-.ia-response pre code,.lab-body pre code{background:none;padding:0;color:#ccc}
-.ia-response blockquote,.lab-body blockquote{border-left:3px solid var(--accent,#7c3aed);padding:8px 14px;margin:8px 0;background:#0d0d1a;border-radius:0 8px 8px 0;color:#aaa}
+.ia-response strong,.lab-body strong{color:var(--text)}
+.ia-response code,.lab-body code{background:var(--code-bg);padding:2px 6px;border-radius:4px;font-size:.8rem;color:#f59e0b}
+.ia-response pre,.lab-body pre{background:var(--pre-bg);border:1px solid var(--card-border);border-radius:8px;padding:12px;margin:8px 0;overflow-x:auto}
+.ia-response pre code,.lab-body pre code{background:none;padding:0;color:var(--text3)}
+.ia-response blockquote,.lab-body blockquote{border-left:3px solid var(--accent,#7c3aed);padding:8px 14px;margin:8px 0;background:var(--pre-bg);border-radius:0 8px 8px 0;color:#aaa}
 .ia-response table,.lab-body table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.82rem}
-.ia-response th,.lab-body th{background:#1a1a28;padding:8px 10px;text-align:left;font-weight:700;color:#fff;border-bottom:2px solid #333}
-.ia-response td,.lab-body td{padding:7px 10px;border-bottom:1px solid #1a1a2e;color:#ccc}
-.ia-response hr,.lab-body hr{border:none;border-top:1px solid #2a2a3e;margin:14px 0}
-.ia-thinking{display:inline-flex;align-items:center;gap:6px;color:#666;font-size:.78rem}
-.ia-thinking span{width:5px;height:5px;border-radius:50%;background:#666;animation:pulse 1.2s infinite}
+.ia-response th,.lab-body th{background:var(--code-bg);padding:8px 10px;text-align:left;font-weight:700;color:var(--text);border-bottom:2px solid var(--card-hover)}
+.ia-response td,.lab-body td{padding:7px 10px;border-bottom:1px solid var(--line);color:var(--text3)}
+.ia-response hr,.lab-body hr{border:none;border-top:1px solid var(--line2);margin:14px 0}
+.ia-thinking{display:inline-flex;align-items:center;gap:6px;color:var(--text5);font-size:.78rem}
+.ia-thinking span{width:5px;height:5px;border-radius:50%;background:var(--text5);animation:pulse 1.2s infinite}
 .ia-thinking span:nth-child(2){animation-delay:.2s}
 .ia-thinking span:nth-child(3){animation-delay:.4s}
 @keyframes pulse{0%,80%,100%{opacity:.2}40%{opacity:1}}
 
-/* ═══ OVERLAYS ═══ */
+/* OVERLAYS */
 .overlay{position:fixed;inset:0;backdrop-filter:blur(14px);z-index:3000;display:none;align-items:center;justify-content:center;padding:20px}
 .overlay.active{display:flex}
 .overlay.bg-dark{background:rgba(0,0,0,.92)}
+html.light .overlay.bg-dark{background:rgba(200,200,210,.92)}
 .panel{border-radius:28px;width:100%;max-height:90vh;overflow-y:auto;position:relative;animation:panelIn .35s cubic-bezier(.4,0,.2,1)}
 @keyframes panelIn{from{transform:translateY(40px) scale(.97);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
-.panel-close{position:absolute;top:18px;right:20px;background:#1a1a28;border:none;color:#777;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:5}
-.panel-close:hover{background:#2a2a3e;color:#fff}
+.panel-close{position:absolute;top:18px;right:20px;background:var(--code-bg);border:none;color:var(--text4);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:5}
+.panel-close:hover{background:var(--input-border);color:var(--text)}
 
-/* ═══ LAB MODAL ═══ */
-.lab-panel{background:#0c0c17;border:1px solid #2a2a40;max-width:900px}
-.lab-header{padding:28px 28px 20px;position:sticky;top:0;background:#0c0c17;z-index:2;border-bottom:1px solid #1a1a2e}
+/* LAB MODAL */
+.lab-panel{background:var(--bg4);border:1px solid var(--input-border);max-width:900px}
+.lab-header{padding:28px 28px 20px;position:sticky;top:0;background:var(--bg4);z-index:2;border-bottom:1px solid var(--line)}
 .lab-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:20px;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px}
 .lab-title{font-size:1.2rem;font-weight:800;line-height:1.35;margin-bottom:6px}
-.lab-meta{font-size:.78rem;color:#555}
+.lab-meta{font-size:.78rem;color:var(--text6)}
 .lab-body{padding:24px 28px 30px}
-.lab-loader{display:flex;flex-direction:column;align-items:center;gap:16px;padding:60px 20px;color:#555;font-size:.9rem}
-.lab-spinner{width:40px;height:40px;border:3px solid #1e1e2e;border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite}
+.lab-loader{display:flex;flex-direction:column;align-items:center;gap:16px;padding:60px 20px;color:var(--text6);font-size:.9rem}
+.lab-spinner{width:40px;height:40px;border:3px solid var(--card-border);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ═══ ATLAS DE IMAGENES ═══ */
+/* ATLAS */
 .atlas-section{margin:20px 0}
 .atlas-title{font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.atlas-title::after{content:'';flex:1;height:1px;background:#1e1e2e}
-.atlas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
-.atlas-card{background:#0e0e1a;border:1px solid #1e1e2e;border-radius:14px;overflow:hidden;cursor:pointer;transition:all .3s}
-.atlas-card:hover{border-color:#444;transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.4)}
-.atlas-card img{width:100%;height:160px;object-fit:cover;background:#111;display:block}
-.atlas-card svg{width:100%;height:160px;display:block}
-.atlas-card .svg-placeholder{width:100%;height:160px;display:flex;align-items:center;justify-content:center;font-size:3rem;background:linear-gradient(135deg,#0e0e1a,#151528)}
+.atlas-title::after{content:'';flex:1;height:1px;background:var(--card-border)}
+.atlas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.atlas-card{background:var(--bg3);border:1px solid var(--card-border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .3s;position:relative}
+.atlas-card:hover{border-color:var(--card-hover);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.4)}
+.atlas-card img{width:100%;height:200px;object-fit:cover;background:var(--bg);display:block}
+.atlas-card svg{width:100%;height:200px;display:block}
+.atlas-card .svg-placeholder{width:100%;height:200px;display:flex;align-items:center;justify-content:center;font-size:3.5rem;background:linear-gradient(135deg,var(--bg3),var(--bg))}
 .atlas-card .atlas-caption{padding:10px 12px}
-.atlas-card .atlas-caption-title{font-size:.8rem;font-weight:700;color:#e0e0e0;margin-bottom:3px}
-.atlas-card .atlas-caption-desc{font-size:.72rem;color:#666;line-height:1.4}
-.atlas-card .atlas-caption-source{font-size:.65rem;color:#444;margin-top:5px;display:flex;align-items:center;gap:4px}
+.atlas-card .atlas-caption-title{font-size:.8rem;font-weight:700;color:var(--text2);margin-bottom:3px}
+.atlas-card .atlas-caption-desc{font-size:.72rem;color:var(--text5);line-height:1.4}
+.atlas-card .atlas-caption-source{font-size:.65rem;color:var(--text7);margin-top:5px;display:flex;align-items:center;gap:4px}
 .atlas-card .atlas-caption-source a{color:var(--accent);text-decoration:none}
 .atlas-card .atlas-caption-source a:hover{text-decoration:underline}
+.atlas-tooltip{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.8);color:#fff;padding:4px 10px;border-radius:6px;font-size:.7rem;font-weight:700;opacity:0;transition:opacity .2s;pointer-events:none}
+.atlas-card:hover .atlas-tooltip{opacity:1}
 
-/* Image lightbox */
+/* Lightbox */
 .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:5000;display:none;align-items:center;justify-content:center;padding:20px;cursor:zoom-out}
 .lightbox.active{display:flex}
 .lightbox img{max-width:90vw;max-height:85vh;border-radius:12px;object-fit:contain;box-shadow:0 0 60px rgba(0,0,0,.8)}
-.lightbox-caption{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#111;padding:10px 20px;border-radius:12px;font-size:.85rem;color:#ccc;max-width:600px;text-align:center;border:1px solid #2a2a3e}
+.lightbox-caption{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--bg);padding:10px 20px;border-radius:12px;font-size:.85rem;color:var(--text3);max-width:600px;text-align:center;border:1px solid var(--input-border)}
 
-/* ═══ PUBMED CITATIONS ═══ */
+/* CITATIONS */
 .citations-section{margin:20px 0}
-.citation-item{display:flex;gap:12px;padding:12px;background:#0e0e1a;border:1px solid #1a1a2e;border-radius:12px;margin-bottom:10px;transition:all .2s}
-.citation-item:hover{border-color:#333;background:#111}
+.citation-item{display:flex;gap:12px;padding:12px;background:var(--bg3);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;transition:all .2s}
+.citation-item:hover{border-color:var(--card-hover);background:var(--card)}
 .citation-num{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;flex-shrink:0}
 .citation-body{flex:1}
-.citation-title{font-size:.84rem;font-weight:700;color:#e0e0e0;margin-bottom:3px;line-height:1.4}
+.citation-title{font-size:.84rem;font-weight:700;color:var(--text2);margin-bottom:3px;line-height:1.4}
 .citation-title a{color:inherit;text-decoration:none}
 .citation-title a:hover{color:var(--accent);text-decoration:underline}
-.citation-authors{font-size:.75rem;color:#666;margin-bottom:2px}
-.citation-journal{font-size:.72rem;color:#555;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.citation-authors{font-size:.75rem;color:var(--text5);margin-bottom:2px}
+.citation-journal{font-size:.72rem;color:var(--text6);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .citation-journal .pmid{color:var(--accent);font-weight:700}
 .citation-journal a{color:var(--accent);text-decoration:none;font-weight:600}
 .citation-journal a:hover{text-decoration:underline}
 
-/* ═══ QUIZ MODAL ═══ */
-.quiz-panel{background:#0b0b16;border:1px solid #222240;max-width:720px}
-.quiz-header{padding:28px 28px 20px;position:sticky;top:0;background:#0b0b16;z-index:2;border-bottom:1px solid #1a1a2e}
+/* QUIZ */
+.quiz-panel{background:var(--bg5);border:1px solid var(--input-border);max-width:720px}
+.quiz-header{padding:28px 28px 20px;position:sticky;top:0;background:var(--bg5);z-index:2;border-bottom:1px solid var(--line)}
 .quiz-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:20px;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px}
-.quiz-progress-bar{height:6px;background:#1a1a2e;border-radius:3px;margin-top:14px;overflow:hidden}
+.quiz-progress-bar{height:6px;background:var(--line);border-radius:3px;margin-top:14px;overflow:hidden}
 .quiz-progress-fill{height:100%;border-radius:3px;transition:width .4s ease}
-.quiz-progress-text{font-size:.72rem;color:#555;margin-top:6px;text-align:right}
+.quiz-progress-text{font-size:.72rem;color:var(--text6);margin-top:6px;text-align:right}
 .quiz-body{padding:24px 28px 30px}
-.quiz-loader{display:flex;flex-direction:column;align-items:center;gap:16px;padding:60px 20px;color:#555}
+.quiz-loader{display:flex;flex-direction:column;align-items:center;gap:16px;padding:60px 20px;color:var(--text6)}
 .quiz-question{margin-bottom:24px}
 .quiz-q-number{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
-.quiz-q-text{font-size:1rem;font-weight:700;line-height:1.5;color:#e0e0e0;margin-bottom:16px}
+.quiz-q-text{font-size:1rem;font-weight:700;line-height:1.5;color:var(--text2);margin-bottom:16px}
 .quiz-q-text em{color:#a78bfa}
 .quiz-options{display:flex;flex-direction:column;gap:10px}
-.quiz-opt{background:#12121e;border:2px solid #1e1e30;border-radius:14px;padding:14px 18px;cursor:pointer;transition:all .2s;display:flex;gap:12px;align-items:flex-start;font-size:.88rem;color:#ccc;line-height:1.5}
-.quiz-opt:hover:not(.locked){border-color:#444;background:#16162a}
-.quiz-opt.selected{border-color:var(--accent);background:#16162a}
+.quiz-opt{background:var(--bg3);border:2px solid var(--line);border-radius:14px;padding:14px 18px;cursor:pointer;transition:all .2s;display:flex;gap:12px;align-items:flex-start;font-size:.88rem;color:var(--text3);line-height:1.5}
+.quiz-opt:hover:not(.locked){border-color:var(--card-hover);background:var(--bg5)}
+.quiz-opt.selected{border-color:var(--accent);background:var(--bg5)}
 .quiz-opt.correct{border-color:#22c55e!important;background:rgba(34,197,94,.08)!important}
 .quiz-opt.correct .opt-letter{background:#22c55e;color:#000}
 .quiz-opt.wrong{border-color:#ef4444!important;background:rgba(239,68,68,.08)!important}
 .quiz-opt.wrong .opt-letter{background:#ef4444;color:#000}
 .quiz-opt.locked{cursor:default;opacity:.7}
 .quiz-opt.locked.correct,.quiz-opt.locked.wrong{opacity:1}
-.opt-letter{width:28px;height:28px;border-radius:8px;background:#1a1a2e;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;flex-shrink:0;transition:all .2s}
+.opt-letter{width:28px;height:28px;border-radius:8px;background:var(--code-bg);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;flex-shrink:0;transition:all .2s}
 .opt-text{flex:1}
 .opt-text em{color:#a78bfa}
-.quiz-explanation{margin-top:12px;padding:12px 16px;background:#0d0d1a;border-left:3px solid var(--accent);border-radius:0 10px 10px 0;font-size:.84rem;color:#aaa;line-height:1.6;display:none}
+.quiz-explanation{margin-top:12px;padding:12px 16px;background:var(--pre-bg);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;font-size:.84rem;color:#aaa;line-height:1.6;display:none}
 .quiz-explanation.visible{display:block}
 .quiz-explanation em{color:#a78bfa}
-.quiz-explanation strong{color:#fff}
-.quiz-nav{display:flex;justify-content:space-between;margin-top:24px;padding-top:20px;border-top:1px solid #1a1a2e}
+.quiz-explanation strong{color:var(--text)}
+.quiz-nav{display:flex;justify-content:space-between;margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}
 .quiz-nav-btn{padding:11px 24px;border-radius:12px;border:none;cursor:pointer;font-size:.88rem;font-weight:700;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
 .quiz-nav-btn:hover{transform:translateY(-2px)}
 .quiz-nav-btn:disabled{opacity:.3;cursor:not-allowed;transform:none}
 .quiz-nav-btn.primary{color:#fff}
-.quiz-nav-btn.sec{background:#1a1a28;color:#888;border:1px solid #2a2a3e}
-.quiz-nav-btn.sec:hover{color:#fff;background:#222}
+.quiz-nav-btn.sec{background:var(--code-bg);color:var(--text4);border:1px solid var(--input-border)}
+.quiz-nav-btn.sec:hover{color:var(--text);background:var(--bar-bg)}
 .quiz-results{text-align:center;padding:20px 0}
 .results-score{font-size:3.5rem;font-weight:900;margin:16px 0 8px}
-.results-label{font-size:1rem;color:#888;margin-bottom:6px}
+.results-label{font-size:1rem;color:var(--text4);margin-bottom:6px}
 .results-msg{font-size:1.1rem;font-weight:600;margin-bottom:24px}
 .results-breakdown{text-align:left;margin-top:20px}
-.rb-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #1a1a2e;font-size:.85rem}
+.rb-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:.85rem}
 .rb-item:last-child{border-bottom:none}
 .rb-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;font-weight:800}
 .rb-icon.correct{background:rgba(34,197,94,.15);color:#22c55e}
 .rb-icon.wrong{background:rgba(239,68,68,.15);color:#ef4444}
-.rb-text{flex:1;color:#ccc}
+.rb-text{flex:1;color:var(--text3)}
 .rb-text em{color:#a78bfa}
-.rb-answer{font-size:.78rem;color:#666}
+.rb-answer{font-size:.78rem;color:var(--text5)}
 .results-actions{display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap}
 
-/* ═══ AREA MODAL ═══ */
+/* AREA MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px}
+html.light .modal-overlay{background:rgba(200,200,210,.85)}
 .modal-overlay.active{display:flex}
-.modal{background:#13131a;border:1px solid #2a2a3e;border-radius:24px;max-width:640px;width:100%;max-height:85vh;overflow-y:auto;padding:32px;position:relative;animation:panelIn .3s ease}
-.modal-close{position:absolute;top:16px;right:16px;background:#222;border:none;color:#888;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.modal-close:hover{background:#333;color:#fff}
+.modal{background:var(--bg2);border:1px solid var(--input-border);border-radius:24px;max-width:640px;width:100%;max-height:85vh;overflow-y:auto;padding:32px;position:relative;animation:panelIn .3s ease}
+.modal-close{position:absolute;top:16px;right:16px;background:var(--bar-bg);border:none;color:var(--text4);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-close:hover{background:var(--card-hover);color:var(--text)}
 
-/* ═══ TIMELINE ═══ */
+/* GENERIC FULL MODAL (progress, exam, flashcards, clinical, calendar) */
+.full-modal{position:fixed;inset:0;background:rgba(0,0,0,.92);backdrop-filter:blur(14px);z-index:4000;display:none;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
+html.light .full-modal{background:rgba(200,200,210,.92)}
+.full-modal.active{display:flex}
+.full-modal-panel{background:var(--bg4);border:1px solid var(--input-border);border-radius:24px;max-width:900px;width:100%;padding:32px;position:relative;animation:panelIn .35s ease;margin:20px auto}
+.full-modal-panel .panel-close{position:absolute;top:16px;right:16px}
+
+/* FLASHCARD */
+.flashcard-container{perspective:1000px;margin:20px auto;max-width:480px}
+.flashcard{width:100%;min-height:220px;position:relative;cursor:pointer;transform-style:preserve-3d;transition:transform .5s}
+.flashcard.flipped{transform:rotateY(180deg)}
+.flashcard-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;padding:28px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:2px solid var(--line)}
+.flashcard-front{background:var(--bg3)}
+.flashcard-back{background:var(--bg5);transform:rotateY(180deg)}
+.flashcard-face h3{font-size:1rem;color:var(--text2);margin-bottom:10px}
+.flashcard-face p{font-size:.88rem;color:var(--text3);line-height:1.6}
+.flashcard-rating{display:flex;gap:12px;justify-content:center;margin-top:16px}
+.flashcard-rating button{padding:8px 20px;border-radius:10px;border:none;cursor:pointer;font-weight:700;font-size:.82rem;color:#fff;transition:all .2s}
+.flashcard-rating button:hover{transform:translateY(-2px)}
+.flashcard-progress{text-align:center;font-size:.8rem;color:var(--text5);margin-bottom:12px}
+
+/* EXAM TIMER */
+.exam-timer{font-size:1.6rem;font-weight:900;text-align:center;margin:10px 0;font-variant-numeric:tabular-nums}
+.exam-timer.warning{color:#f59e0b}
+.exam-timer.danger{color:#ef4444;animation:pulse 1s infinite}
+
+/* CALENDAR */
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:16px}
+.calendar-day{background:var(--bg3);border:1px solid var(--line);border-radius:10px;padding:8px;min-height:80px;font-size:.72rem}
+.calendar-day .day-label{font-weight:800;color:var(--text4);margin-bottom:4px}
+.calendar-day .day-topic{font-size:.68rem;color:var(--text3);padding:2px 4px;border-radius:4px;margin-top:3px;line-height:1.3}
+
+/* TIMELINE */
 .timeline-section{max-width:900px;margin:0 auto 60px;padding:0 20px}
-.timeline-section h2{text-align:center;font-size:1.1rem;color:#888;text-transform:uppercase;letter-spacing:2px;margin-bottom:30px}
+.timeline-section h2{text-align:center;font-size:1.1rem;color:var(--text4);text-transform:uppercase;letter-spacing:2px;margin-bottom:30px}
 .timeline{position:relative;padding-left:30px}
 .timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,#7c3aed,#00d4ff,transparent)}
 .timeline-item{position:relative;margin-bottom:24px;padding-left:20px}
 .timeline-item .tl-label{font-size:.72rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:4px}
-.timeline-item .tl-title{font-size:.95rem;font-weight:600;color:#e0e0e0}
-.timeline-item .tl-desc{font-size:.8rem;color:#666;margin-top:4px}
+.timeline-item .tl-title{font-size:.95rem;font-weight:600;color:var(--text2)}
+.timeline-item .tl-desc{font-size:.8rem;color:var(--text5);margin-top:4px}
 
-::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#111}::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--scroll-track)}::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:3px}
+
+/* PRINT STYLES */
+@media print{
+  /* Hide everything except lab content */
+  body{background:#fff!important;color:#000!important}
+  body > *:not(#labOverlay){display:none!important}
+  #labOverlay{display:block!important;position:static!important;background:#fff!important;backdrop-filter:none!important;padding:0!important;overflow:visible!important}
+  #labOverlay .panel{max-height:none!important;overflow:visible!important;border:none!important;border-radius:0!important;box-shadow:none!important;max-width:100%!important}
+  .lab-panel{background:#fff!important}
+  .lab-header{background:#fff!important;position:static!important;border-bottom:2px solid #000!important;padding:20px 0!important}
+  .lab-body{padding:20px 0!important}
+  .lab-badge{background:#eee!important;color:#333!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .lab-title{color:#000!important;font-size:1.4rem!important}
+  .lab-meta{color:#555!important}
+  .md-content,.lab-body{color:#222!important;font-size:11pt!important;line-height:1.6!important}
+  .md-content h1,.md-content h2,.md-content h3,.lab-body h1,.lab-body h2,.lab-body h3{color:#000!important;page-break-after:avoid}
+  .md-content em,.lab-body em{color:#333!important}
+  .md-content code,.lab-body code{background:#eee!important;color:#333!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .md-content blockquote,.lab-body blockquote{border-left:3px solid #333!important;background:#f5f5f5!important;color:#333!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .md-content table,.lab-body table{border:1px solid #ccc!important}
+  .md-content th,.lab-body th{background:#eee!important;color:#000!important;border:1px solid #ccc!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .md-content td,.lab-body td{border:1px solid #ddd!important;color:#222!important}
+  .atlas-section{page-break-before:always}
+  .atlas-grid{grid-template-columns:repeat(2,1fr)!important}
+  .atlas-card{break-inside:avoid;border:1px solid #ddd!important;background:#fafafa!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .atlas-card img{height:150px!important}
+  .atlas-caption-title{color:#000!important}
+  .atlas-caption-desc{color:#555!important}
+  .atlas-tooltip{display:none!important}
+  .citations-section{page-break-before:always}
+  .citation-item{background:#fafafa!important;border:1px solid #ddd!important;break-inside:avoid}
+  .citation-title,.citation-title a{color:#000!important}
+  .citation-authors{color:#555!important}
+  .citation-journal{color:#666!important}
+  .citation-num{background:#eee!important;color:#333!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .panel-close,.action-btn,.header-actions,.search-bar,.progress-section,.main-grid,.timeline-section,.ia-console,.notes-section{display:none!important}
+  header{display:none!important}
+  a{color:#000!important;text-decoration:underline!important}
+  a[href]::after{content:" (" attr(href) ")";font-size:8pt;color:#666}
+}
+
+@media(max-width:600px){
+  .main-grid{grid-template-columns:1fr}
+  .header-actions{gap:6px}
+  .header-btn{font-size:.74rem;padding:7px 12px}
+  .calendar-grid{grid-template-columns:repeat(3,1fr)}
+  .full-modal-panel{padding:20px}
+}
 </style>
 </head>
 <body>
 
 <header>
   <h1>🦷 Mapa de Estudio — Odontologia</h1>
-  <p>🔬 Laboratorio + Atlas Clinico &nbsp;·&nbsp; 💬 Consulta IA &nbsp;·&nbsp; 🧠 Quiz</p>
+  <p>🔬 Laboratorio + Atlas Clinico &nbsp;·&nbsp; 💬 Consulta IA &nbsp;·&nbsp; 🧠 Quiz &nbsp;·&nbsp; 🏥 Casos &nbsp;·&nbsp; 🃏 Flashcards</p>
+  <div class="header-actions">
+    <button class="header-btn" id="btnProgress">📊 Mi Progreso</button>
+    <button class="header-btn" id="btnExam">📝 Examen</button>
+    <button class="header-btn" id="btnCalendar">📅 Plan de Estudio</button>
+    <button class="header-btn" id="btnTheme">🌙</button>
+  </div>
 </header>
 
 <div class="search-bar"><input type="text" id="searchInput" placeholder="Buscar tema... (ej: NiTi, adhesion, CBCT)" /></div>
@@ -248,6 +374,13 @@ header p{color:#888;font-size:.95rem;margin-top:8px;font-weight:300}
 <div class="overlay bg-dark" id="quizOverlay"><div class="panel quiz-panel" id="quizPanel" style="--accent:#7c3aed"><button class="panel-close" id="quizClose">✕</button><div class="quiz-header" id="quizHeader"></div><div class="quiz-body" id="quizBody"></div></div></div>
 <div class="lightbox" id="lightbox"><img id="lightboxImg" /><div class="lightbox-caption" id="lightboxCap"></div></div>
 
+<!-- Full modals for new features -->
+<div class="full-modal" id="progressModal"><div class="full-modal-panel"><button class="panel-close" onclick="closeFullModal('progressModal')">✕</button><div id="progressModalContent"></div></div></div>
+<div class="full-modal" id="examModal"><div class="full-modal-panel"><button class="panel-close" onclick="closeFullModal('examModal')">✕</button><div id="examModalContent"></div></div></div>
+<div class="full-modal" id="calendarModal"><div class="full-modal-panel"><button class="panel-close" onclick="closeFullModal('calendarModal')">✕</button><div id="calendarModalContent"></div></div></div>
+<div class="full-modal" id="clinicalModal"><div class="full-modal-panel"><button class="panel-close" onclick="closeFullModal('clinicalModal')">✕</button><div id="clinicalModalContent"></div></div></div>
+<div class="full-modal" id="flashcardModal"><div class="full-modal-panel"><button class="panel-close" onclick="closeFullModal('flashcardModal')">✕</button><div id="flashcardModalContent"></div></div></div>
+
 <script>
 marked.setOptions({ breaks: true, gfm: true });
 function md(t) { return marked.parse(t || ''); }
@@ -260,64 +393,185 @@ const API = {
   key: localStorage.getItem('anthropic_key') || '',
   model: 'claude-haiku-4-5'
 };
-
-// Prompt for API key if not set
-if (!API.key) {
-  const k = prompt('🔑 Enter your Anthropic API key to enable AI features:\n(Get one at console.anthropic.com)');
-  if (k && k.startsWith('sk-ant')) { API.key = k; localStorage.setItem('anthropic_key', k); }
-}
+if (!API.key) { var k = prompt('🔑 Ingresa tu Anthropic API key para las funciones de IA:\n(Obtenla en console.anthropic.com)'); if (k && k.startsWith('sk-ant')) { API.key = k; localStorage.setItem('anthropic_key', k); } }
 
 async function askAI(messages, onChunk) {
-  let system = '';
-  const filtered = [];
-  for (const m of messages) { if (m.role === 'system') system = m.content; else filtered.push(m); }
-  const body = { model: API.model, max_tokens: 4096, stream: !!onChunk, messages: filtered };
+  var system = '';
+  var filtered = [];
+  for (var i = 0; i < messages.length; i++) {
+    if (messages[i].role === 'system') system = messages[i].content;
+    else filtered.push(messages[i]);
+  }
+  var body = { model: API.model, max_tokens: 4096, stream: !!onChunk, messages: filtered };
   if (system) body.system = system;
-  const res = await fetch(API.url, {
+  var res = await fetch(API.url, {
     method: 'POST',
     headers: { 'x-api-key': API.key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json', 'anthropic-dangerous-direct-browser-access': 'true' },
     body: JSON.stringify(body)
   });
-  if (!res.ok) { const e = await res.text(); throw new Error(`API ${res.status}: ${e.substring(0,120)}`); }
-  if (!onChunk) { const d = await res.json(); return d.content[0].text; }
-  const reader = res.body.getReader(); const dec = new TextDecoder(); let buf = '';
+  if (!res.ok) { var e = await res.text(); throw new Error('API ' + res.status + ': ' + e.substring(0,120)); }
+  if (!onChunk) { var d = await res.json(); return d.content[0].text; }
+  var reader = res.body.getReader(); var dec = new TextDecoder(); var buf = '';
   while (true) {
-    const { done, value } = await reader.read(); if (done) break;
-    buf += dec.decode(value, { stream: true }); const lines = buf.split('\n'); buf = lines.pop();
-    for (const line of lines) { if (!line.startsWith('data:')) continue; const p = line.slice(5).trim(); if (p === '[DONE]') return; try { const j = JSON.parse(p); if (j.type === 'content_block_delta' && j.delta?.text) onChunk(j.delta.text); } catch {} }
+    var chunk = await reader.read(); if (chunk.done) break;
+    buf += dec.decode(chunk.value, { stream: true }); var lines = buf.split('\n'); buf = lines.pop();
+    for (var li = 0; li < lines.length; li++) { var line = lines[li]; if (!line.startsWith('data:')) continue; var p = line.slice(5).trim(); if (p === '[DONE]') return; try { var j = JSON.parse(p); if (j.type === 'content_block_delta' && j.delta && j.delta.text) onChunk(j.delta.text); } catch(ex) {} }
   }
 }
 
 // ══════════════════════════════════════════════
-// CLINICAL ATLAS — Open-access image database
+// LOCAL STORAGE HELPERS
 // ══════════════════════════════════════════════
+var STORE_KEYS = {
+  quizHistory: 'odonto_quiz_history',
+  examHistory: 'odonto_exam_history',
+  flashcards: 'odonto_flashcards',
+  notes: 'odonto_notes',
+  theme: 'odonto_theme'
+};
+
+function storeGet(key, fallback) {
+  try { var v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+  catch(e) { return fallback; }
+}
+function storeSet(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
+}
+
+function saveQuizResult(topicName, areaId, score, total, answers) {
+  var history = storeGet(STORE_KEYS.quizHistory, []);
+  history.push({ topicName: topicName, areaId: areaId, score: score, total: total, date: new Date().toISOString(), answers: answers });
+  storeSet(STORE_KEYS.quizHistory, history);
+}
+
+function getTopicScores(topicName) {
+  var history = storeGet(STORE_KEYS.quizHistory, []);
+  return history.filter(function(h) { return h.topicName === topicName; });
+}
+
+function getAreaAvgScore(areaId) {
+  var history = storeGet(STORE_KEYS.quizHistory, []);
+  var areaResults = history.filter(function(h) { return h.areaId === areaId; });
+  if (areaResults.length === 0) return null;
+  var topicBest = {};
+  areaResults.forEach(function(r) {
+    var pct = Math.round((r.score / r.total) * 100);
+    if (!topicBest[r.topicName] || pct > topicBest[r.topicName]) topicBest[r.topicName] = pct;
+  });
+  var vals = Object.values(topicBest);
+  return Math.round(vals.reduce(function(a,b){return a+b;},0) / vals.length);
+}
+
+function getTopicLastScore(topicName) {
+  var scores = getTopicScores(topicName);
+  if (scores.length === 0) return null;
+  var last = scores[scores.length - 1];
+  return { pct: Math.round((last.score / last.total) * 100), date: last.date };
+}
+
+function saveNote(topicKey, text) { var notes = storeGet(STORE_KEYS.notes, {}); notes[topicKey] = text; storeSet(STORE_KEYS.notes, notes); }
+function getNote(topicKey) { return (storeGet(STORE_KEYS.notes, {}))[topicKey] || ''; }
+
+function getFlashcardState(topicKey) { var all = storeGet(STORE_KEYS.flashcards, {}); return all[topicKey] || null; }
+function setFlashcardState(topicKey, state) { var all = storeGet(STORE_KEYS.flashcards, {}); all[topicKey] = state; storeSet(STORE_KEYS.flashcards, all); }
+
 // ══════════════════════════════════════════════
-// SVG CLINICAL DIAGRAMS — Always render, no external deps
+// THEME
+// ══════════════════════════════════════════════
+function applyTheme(theme) {
+  if (theme === 'light') { document.documentElement.classList.add('light'); document.getElementById('btnTheme').textContent = '☀️'; }
+  else { document.documentElement.classList.remove('light'); document.getElementById('btnTheme').textContent = '🌙'; }
+  storeSet(STORE_KEYS.theme, theme);
+}
+document.getElementById('btnTheme').onclick = function() {
+  var current = storeGet(STORE_KEYS.theme, 'dark');
+  applyTheme(current === 'dark' ? 'light' : 'dark');
+};
+applyTheme(storeGet(STORE_KEYS.theme, 'dark'));
+
+// ══════════════════════════════════════════════
+// SVG CLINICAL DIAGRAMS
 // ══════════════════════════════════════════════
 function svgTooth(c) {
-  return `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="tg${c.slice(1)}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${c}33"/><stop offset="100%" stop-color="#0e0e1a"/></linearGradient></defs><rect width="200" height="160" rx="14" fill="url(#tg${c.slice(1)})"/><path d="M75 15 Q72 5 82 3 Q95 0 100 2 Q105 0 118 3 Q128 5 125 15 L128 45 Q132 60 125 75 L122 120 Q118 145 110 150 Q105 152 100 152 Q95 152 90 150 Q82 145 78 120 L75 75 Q68 60 72 45 Z" fill="${c}22" stroke="${c}" stroke-width="1.5"/><circle cx="100" cy="40" r="12" fill="none" stroke="${c}88" stroke-width="1" stroke-dasharray="2"/><text x="100" y="44" text-anchor="middle" fill="${c}" font-size="8" font-weight="bold" font-family="Inter">Pulp</text><line x1="100" y1="75" x2="100" y2="150" stroke="${c}55" stroke-width="0.8" stroke-dasharray="3"/></svg>`;
+  return '<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="tg' + c.slice(1) + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="' + c + '33"/><stop offset="100%" stop-color="#0e0e1a"/></linearGradient></defs><rect width="200" height="160" rx="14" fill="url(#tg' + c.slice(1) + ')"/><path d="M75 15 Q72 5 82 3 Q95 0 100 2 Q105 0 118 3 Q128 5 125 15 L128 45 Q132 60 125 75 L122 120 Q118 145 110 150 Q105 152 100 152 Q95 152 90 150 Q82 145 78 120 L75 75 Q68 60 72 45 Z" fill="' + c + '22" stroke="' + c + '" stroke-width="1.5"/><circle cx="100" cy="40" r="12" fill="none" stroke="' + c + '88" stroke-width="1" stroke-dasharray="2"/><text x="100" y="44" text-anchor="middle" fill="' + c + '" font-size="8" font-weight="bold" font-family="Inter">Pulp</text><line x1="100" y1="75" x2="100" y2="150" stroke="' + c + '55" stroke-width="0.8" stroke-dasharray="3"/></svg>';
 }
 function svgRadiograph(c) {
-  return `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="160" rx="14" fill="#0a0a12"/><rect x="15" y="8" width="170" height="144" rx="6" fill="#111" stroke="#222"/><path d="M75 12 Q72 5 82 3 Q95 0 100 2 Q105 0 118 3 Q128 5 125 12 L128 40 Q132 55 125 68 L122 110 Q118 138 110 145 Q100 148 90 145 Q82 138 78 110 L75 68 Q68 55 72 40 Z" fill="#1a1a28" stroke="#333" stroke-width="1.2"/><line x1="100" y1="68" x2="97" y2="145" stroke="#444" stroke-width="0.6"/><line x1="100" y1="68" x2="103" y2="142" stroke="#444" stroke-width="0.6"/><circle cx="100" cy="35" r="8" fill="#1e1e2e" stroke="#444"/></svg>`;
+  return '<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="160" rx="14" fill="#0a0a12"/><rect x="15" y="8" width="170" height="144" rx="6" fill="#111" stroke="#222"/><path d="M75 12 Q72 5 82 3 Q95 0 100 2 Q105 0 118 3 Q128 5 125 12 L128 40 Q132 55 125 68 L122 110 Q118 138 110 145 Q100 148 90 145 Q82 138 78 110 L75 68 Q68 55 72 40 Z" fill="#1a1a28" stroke="#333" stroke-width="1.2"/><line x1="100" y1="68" x2="97" y2="145" stroke="#444" stroke-width="0.6"/><line x1="100" y1="68" x2="103" y2="142" stroke="#444" stroke-width="0.6"/><circle cx="100" cy="35" r="8" fill="#1e1e2e" stroke="#444"/></svg>';
 }
 function svgImplant(c) {
-  return `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ig${c.slice(1)}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${c}22"/><stop offset="100%" stop-color="#0e0e1a"/></linearGradient></defs><rect width="200" height="160" rx="14" fill="url(#ig${c.slice(1)})"/><rect x="88" y="10" width="24" height="18" rx="2" fill="${c}44" stroke="${c}" stroke-width="1.2"/><path d="M91 28 L89 33 L111 33 L109 28" fill="${c}22" stroke="${c}" stroke-width="0.8"/><path d="M93 33 L90 115 Q89 125 100 128 Q111 125 110 115 L107 33" fill="#1a1a28" stroke="${c}" stroke-width="1.2"/><line x1="91" y1="50" x2="109" y2="46" stroke="${c}55" stroke-width="0.8"/><line x1="90" y1="65" x2="110" y2="61" stroke="${c}55" stroke-width="0.8"/><line x1="90" y1="80" x2="110" y2="76" stroke="${c}55" stroke-width="0.8"/><line x1="90" y1="95" x2="110" y2="91" stroke="${c}55" stroke-width="0.8"/><rect x="35" y="125" width="130" height="28" rx="4" fill="#151520" stroke="#2a2a3e"/><text x="100" y="143" text-anchor="middle" fill="#555" font-size="8" font-family="Inter">Alveolar Bone</text></svg>`;
+  return '<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ig' + c.slice(1) + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="' + c + '22"/><stop offset="100%" stop-color="#0e0e1a"/></linearGradient></defs><rect width="200" height="160" rx="14" fill="url(#ig' + c.slice(1) + ')"/><rect x="88" y="10" width="24" height="18" rx="2" fill="' + c + '44" stroke="' + c + '" stroke-width="1.2"/><path d="M91 28 L89 33 L111 33 L109 28" fill="' + c + '22" stroke="' + c + '" stroke-width="0.8"/><path d="M93 33 L90 115 Q89 125 100 128 Q111 125 110 115 L107 33" fill="#1a1a28" stroke="' + c + '" stroke-width="1.2"/><line x1="91" y1="50" x2="109" y2="46" stroke="' + c + '55" stroke-width="0.8"/><line x1="90" y1="65" x2="110" y2="61" stroke="' + c + '55" stroke-width="0.8"/><line x1="90" y1="80" x2="110" y2="76" stroke="' + c + '55" stroke-width="0.8"/><line x1="90" y1="95" x2="110" y2="91" stroke="' + c + '55" stroke-width="0.8"/><rect x="35" y="125" width="130" height="28" rx="4" fill="#151520" stroke="#2a2a3e"/><text x="100" y="143" text-anchor="middle" fill="#555" font-size="8" font-family="Inter">Alveolar Bone</text></svg>';
 }
 function svgPeriodontium(c) {
-  return `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="160" rx="14" fill="#0e0e1a"/><path d="M25 65 Q45 52 65 57 Q80 48 100 50 Q120 48 135 57 Q155 52 175 65 L175 82 Q155 74 135 78 Q120 72 100 74 Q80 72 65 78 Q45 74 25 82 Z" fill="${c}33" stroke="${c}" stroke-width="1.2"/><path d="M80 57 Q77 28 83 15 Q92 3 100 3 Q108 3 117 15 Q123 28 120 57" fill="none" stroke="#777" stroke-width="1.5"/><path d="M82 68 L80 130 Q84 145 100 145 Q116 145 120 130 L118 68" fill="none" stroke="#555" stroke-width="1.2"/><line x1="25" y1="108" x2="175" y2="108" stroke="#333" stroke-width="0.8" stroke-dasharray="3"/><text x="178" y="106" fill="#444" font-size="6" font-family="Inter">Bone</text></svg>`;
+  return '<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="160" rx="14" fill="#0e0e1a"/><path d="M25 65 Q45 52 65 57 Q80 48 100 50 Q120 48 135 57 Q155 52 175 65 L175 82 Q155 74 135 78 Q120 72 100 74 Q80 72 65 78 Q45 74 25 82 Z" fill="' + c + '33" stroke="' + c + '" stroke-width="1.2"/><path d="M80 57 Q77 28 83 15 Q92 3 100 3 Q108 3 117 15 Q123 28 120 57" fill="none" stroke="#777" stroke-width="1.5"/><path d="M82 68 L80 130 Q84 145 100 145 Q116 145 120 130 L118 68" fill="none" stroke="#555" stroke-width="1.2"/><line x1="25" y1="108" x2="175" y2="108" stroke="#333" stroke-width="0.8" stroke-dasharray="3"/><text x="178" y="106" fill="#444" font-size="6" font-family="Inter">Bone</text></svg>';
 }
 function svgCBCT(c) {
-  return `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="160" rx="14" fill="#0a0a12"/><circle cx="100" cy="75" r="60" fill="none" stroke="#222" stroke-width="0.8"/><circle cx="100" cy="75" r="48" fill="#111" stroke="#2a2a3e"/><ellipse cx="85" cy="72" rx="14" ry="18" fill="#1a1a28" stroke="#444" stroke-width="0.8"/><ellipse cx="115" cy="72" rx="14" ry="18" fill="#1a1a28" stroke="#444" stroke-width="0.8"/><circle cx="85" cy="68" r="4" fill="${c}33" stroke="${c}" stroke-width="0.8"/><circle cx="115" cy="68" r="4" fill="${c}33" stroke="${c}" stroke-width="0.8"/><circle cx="85" cy="78" r="3" fill="${c}22" stroke="${c}66" stroke-width="0.6"/><line x1="52" y1="75" x2="148" y2="75" stroke="${c}22" stroke-width="0.4"/><line x1="100" y1="27" x2="100" y2="123" stroke="${c}22" stroke-width="0.4"/></svg>`;
+  return '<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="160" rx="14" fill="#0a0a12"/><circle cx="100" cy="75" r="60" fill="none" stroke="#222" stroke-width="0.8"/><circle cx="100" cy="75" r="48" fill="#111" stroke="#2a2a3e"/><ellipse cx="85" cy="72" rx="14" ry="18" fill="#1a1a28" stroke="#444" stroke-width="0.8"/><ellipse cx="115" cy="72" rx="14" ry="18" fill="#1a1a28" stroke="#444" stroke-width="0.8"/><circle cx="85" cy="68" r="4" fill="' + c + '33" stroke="' + c + '" stroke-width="0.8"/><circle cx="115" cy="68" r="4" fill="' + c + '33" stroke="' + c + '" stroke-width="0.8"/><circle cx="85" cy="78" r="3" fill="' + c + '22" stroke="' + c + '66" stroke-width="0.6"/><line x1="52" y1="75" x2="148" y2="75" stroke="' + c + '22" stroke-width="0.4"/><line x1="100" y1="27" x2="100" y2="123" stroke="' + c + '22" stroke-width="0.4"/></svg>';
 }
 function svgAdhesion(c) {
-  return `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="adg${c.slice(1)}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${c}18"/><stop offset="100%" stop-color="#0e0e1a"/></linearGradient></defs><rect width="200" height="160" rx="14" fill="url(#adg${c.slice(1)})"/><rect x="25" y="98" width="150" height="32" rx="2" fill="#22200e" stroke="#443"/><text x="100" y="118" text-anchor="middle" fill="#887" font-size="8" font-weight="bold" font-family="Inter">DENTIN</text><rect x="25" y="82" width="150" height="16" fill="${c}44" stroke="${c}" stroke-width="0.8"/><text x="100" y="93" text-anchor="middle" fill="${c}" font-size="7" font-weight="bold" font-family="Inter">HYBRID LAYER</text><rect x="25" y="66" width="150" height="16" fill="${c}22" stroke="${c}66" stroke-width="0.8"/><text x="100" y="77" text-anchor="middle" fill="${c}bb" font-size="7" font-family="Inter">ADHESIVE</text><rect x="25" y="38" width="150" height="28" rx="2" fill="#0e1a1a" stroke="#244"/><text x="100" y="56" text-anchor="middle" fill="#4aa" font-size="8" font-weight="bold" font-family="Inter">COMPOSITE</text><rect x="25" y="14" width="150" height="24" rx="2" fill="#ffeedd08" stroke="#664"/><text x="100" y="30" text-anchor="middle" fill="#997" font-size="8" font-weight="bold" font-family="Inter">ENAMEL</text></svg>`;
+  return '<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="adg' + c.slice(1) + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="' + c + '18"/><stop offset="100%" stop-color="#0e0e1a"/></linearGradient></defs><rect width="200" height="160" rx="14" fill="url(#adg' + c.slice(1) + ')"/><rect x="25" y="98" width="150" height="32" rx="2" fill="#22200e" stroke="#443"/><text x="100" y="118" text-anchor="middle" fill="#887" font-size="8" font-weight="bold" font-family="Inter">DENTIN</text><rect x="25" y="82" width="150" height="16" fill="' + c + '44" stroke="' + c + '" stroke-width="0.8"/><text x="100" y="93" text-anchor="middle" fill="' + c + '" font-size="7" font-weight="bold" font-family="Inter">HYBRID LAYER</text><rect x="25" y="66" width="150" height="16" fill="' + c + '22" stroke="' + c + '66" stroke-width="0.8"/><text x="100" y="77" text-anchor="middle" fill="' + c + 'bb" font-size="7" font-family="Inter">ADHESIVE</text><rect x="25" y="38" width="150" height="28" rx="2" fill="#0e1a1a" stroke="#244"/><text x="100" y="56" text-anchor="middle" fill="#4aa" font-size="8" font-weight="bold" font-family="Inter">COMPOSITE</text><rect x="25" y="14" width="150" height="24" rx="2" fill="#ffeedd08" stroke="#664"/><text x="100" y="30" text-anchor="middle" fill="#997" font-size="8" font-weight="bold" font-family="Inter">ENAMEL</text></svg>';
 }
 function svgOcclusion(c) {
-  return `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="160" rx="14" fill="#0e0e1a"/><path d="M25 62 Q55 50 100 46 Q145 50 175 62" fill="none" stroke="${c}" stroke-width="1.5"/><path d="M25 98 Q55 110 100 114 Q145 110 175 98" fill="none" stroke="${c}77" stroke-width="1.5"/><path d="M48 60 L48 55 Q53 48 58 55 L58 59" fill="#1a1a28" stroke="#555"/><path d="M73 53 L73 46 Q80 38 87 46 L87 51" fill="#1a1a28" stroke="#555"/><path d="M113 51 L113 46 Q120 38 127 46 L127 53" fill="#1a1a28" stroke="#555"/><path d="M142 59 L142 55 Q147 48 152 55 L152 60" fill="#1a1a28" stroke="#555"/><path d="M48 100 L48 105 Q53 112 58 105 L58 101" fill="#1a1a28" stroke="#555"/><path d="M73 107 L73 114 Q80 122 87 114 L87 109" fill="#1a1a28" stroke="#555"/><path d="M113 109 L113 114 Q120 122 127 114 L127 107" fill="#1a1a28" stroke="#555"/><line x1="15" y1="80" x2="185" y2="80" stroke="${c}33" stroke-dasharray="3"/></svg>`;
+  return '<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="160" rx="14" fill="#0e0e1a"/><path d="M25 62 Q55 50 100 46 Q145 50 175 62" fill="none" stroke="' + c + '" stroke-width="1.5"/><path d="M25 98 Q55 110 100 114 Q145 110 175 98" fill="none" stroke="' + c + '77" stroke-width="1.5"/><path d="M48 60 L48 55 Q53 48 58 55 L58 59" fill="#1a1a28" stroke="#555"/><path d="M73 53 L73 46 Q80 38 87 46 L87 51" fill="#1a1a28" stroke="#555"/><path d="M113 51 L113 46 Q120 38 127 46 L127 53" fill="#1a1a28" stroke="#555"/><path d="M142 59 L142 55 Q147 48 152 55 L152 60" fill="#1a1a28" stroke="#555"/><path d="M48 100 L48 105 Q53 112 58 105 L58 101" fill="#1a1a28" stroke="#555"/><path d="M73 107 L73 114 Q80 122 87 114 L87 109" fill="#1a1a28" stroke="#555"/><path d="M113 109 L113 114 Q120 122 127 114 L127 107" fill="#1a1a28" stroke="#555"/><line x1="15" y1="80" x2="185" y2="80" stroke="' + c + '33" stroke-dasharray="3"/></svg>';
+}
+
+
+// ══════════════════════════════════════════════
+// CLINICAL IMAGE DATABASE — Real web images with fallbacks
+// ══════════════════════════════════════════════
+function getTopicImages(name) {
+  var db = {
+    'Cinematica NiTi (Nickel-Titanium)': [
+      { url:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=250&fit=crop', title:'Endodontic Instruments', desc:'Instrumental rotatorio NiTi para preparacion de conductos radiculares', source:'Unsplash' },
+      { url:'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=400&h=250&fit=crop', title:'Root Canal Treatment', desc:'Tratamiento endodontico: acceso, instrumentacion y obturacion', source:'Unsplash' },
+      { url:'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=250&fit=crop', title:'Dental X-ray', desc:'Radiografia periapical mostrando anatomia radicular', source:'Unsplash' },
+    ],
+    'Irrigacion Ultrasonica Pasiva (PUI)': [
+      { url:'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=400&h=250&fit=crop', title:'Endodontic Irrigation', desc:'Protocolo de irrigacion: NaOCl, EDTA y activacion ultrasonica', source:'Unsplash' },
+      { url:'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=250&fit=crop', title:'Periapical View', desc:'Control radiografico de irrigacion del sistema de conductos', source:'Unsplash' },
+    ],
+    'Bioceramicos (Bioceramics)': [
+      { url:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=250&fit=crop', title:'Bioceramic Materials', desc:'MTA, Biodentine y cementos de silicato de calcio para reparacion', source:'Unsplash' },
+      { url:'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=400&h=250&fit=crop', title:'Endodontic Repair', desc:'Aplicacion de bioceramico en perforacion y apexificacion', source:'Unsplash' },
+    ],
+    'CBCT en Endodoncia': [
+      { url:'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=400&h=250&fit=crop', title:'CBCT Scanner', desc:'Tomografia Cone Beam para diagnostico endodontico avanzado', source:'Unsplash' },
+      { url:'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=250&fit=crop', title:'3D Reconstruction', desc:'Reconstruccion volumetrica mostrando anatomia radicular compleja', source:'Unsplash' },
+    ],
+    'Immediate Dentin Sealing (IDS)': [
+      { url:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=250&fit=crop', title:'IDS Protocol', desc:'Sellado dentinario inmediato: grabado, adhesivo, fotopolimerizacion', source:'Unsplash' },
+      { url:'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&h=250&fit=crop', title:'Indirect Restoration', desc:'Restauracion indirecta cementada sobre IDS', source:'Unsplash' },
+    ],
+    'Adhesion Contemporanea': [
+      { url:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=250&fit=crop', title:'Adhesive System', desc:'Sistema adhesivo universal en modo selective-etch', source:'Unsplash' },
+      { url:'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&h=250&fit=crop', title:'Composite Bonding', desc:'Interfaz adhesiva: esmalte, capa hibrida, dentina', source:'Unsplash' },
+    ],
+    'Clasificacion Periodontal 2017': [
+      { url:'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=400&h=250&fit=crop', title:'Periodontal Exam', desc:'Examen periodontal con sonda: medicion de profundidad al sondaje', source:'Unsplash' },
+      { url:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=250&fit=crop', title:'Periodontal Instruments', desc:'Instrumental para raspado y alisado radicular', source:'Unsplash' },
+    ],
+    'Implantologia Basica': [
+      { url:'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=400&h=250&fit=crop', title:'Dental Implant Model', desc:'Implante de titanio: fixture, abutment y corona protesica', source:'Unsplash' },
+      { url:'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&h=250&fit=crop', title:'Implant Surgery', desc:'Planificacion quirurgica con guia tomografica CBCT', source:'Unsplash' },
+    ],
+    'Patologia Oral': [
+      { url:'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=400&h=250&fit=crop', title:'Oral Examination', desc:'Examen sistematico de mucosa oral: labios, carrillos, lengua', source:'Unsplash' },
+      { url:'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=400&h=250&fit=crop', title:'Diagnostic Tools', desc:'Herramientas de diagnostico para lesiones orales', source:'Unsplash' },
+    ],
+    'Carillas Ceramicas (Veneers)': [
+      { url:'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&h=250&fit=crop', title:'Porcelain Veneers', desc:'Carillas ceramicas: preparacion minima y resultado estetico', source:'Unsplash' },
+      { url:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=250&fit=crop', title:'Veneer Preparation', desc:'Mock-up y tallado conservador en esmalte', source:'Unsplash' },
+    ],
+  };
+  // Default images for topics not in the database
+  var defaults = [
+    { url:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=250&fit=crop', title:'Clinical Dentistry', desc:'Procedimiento clinico odontologico', source:'Unsplash' },
+    { url:'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=250&fit=crop', title:'Dental Radiograph', desc:'Imagen radiografica dental de referencia', source:'Unsplash' },
+  ];
+  return db[name] || defaults;
 }
 
 function getSVGForTopic(name, color) {
-  const m = { 'NiTi':svgTooth, 'Irrigacion':svgTooth, 'Bioceramico':svgTooth, 'CBCT':svgCBCT,
+  var m = { 'NiTi':svgTooth, 'Irrigacion':svgTooth, 'Bioceramico':svgTooth, 'CBCT':svgCBCT,
     'Anatomia':svgRadiograph, 'Diagnostico Pulpar':svgRadiograph, 'Immediate':svgAdhesion,
     'Biomimetica':svgAdhesion, 'Adhesion':svgAdhesion, 'Estratificacion':svgAdhesion,
     'Minima':svgTooth, 'Preparacion':svgTooth, 'Periodontal':svgPeriodontium,
@@ -327,80 +581,80 @@ function getSVGForTopic(name, color) {
     'Protesis Fija':svgOcclusion, 'Carillas':svgAdhesion, 'Oclusion':svgOcclusion,
     'CAD/CAM':svgImplant, 'PPR':svgOcclusion, 'Cefalometria':svgCBCT,
     'Angle':svgOcclusion, 'Biomecanica':svgOcclusion, 'Alineadores':svgOcclusion };
-  for (const [k,fn] of Object.entries(m)) if (name.includes(k)) return fn(color);
+  var keys = Object.keys(m);
+  for (var i = 0; i < keys.length; i++) { if (name.indexOf(keys[i]) !== -1) return m[keys[i]](color); }
   return svgTooth(color);
 }
 
-const ATLAS_CITATIONS = {
+var ATLAS_CITATIONS = {
   'Cinematica NiTi (Nickel-Titanium)': [
     { title:'Reciprocating vs Continuous Rotation NiTi Instrumentation', authors:'Siqueira JF Jr et al.', journal:'J Endod', year:'2020', pmid:'32507532', url:'https://pubmed.ncbi.nlm.nih.gov/32507532/' },
     { title:'Cyclic Fatigue Resistance of Heat-Treated NiTi', authors:'Plotino G et al.', journal:'J Endod', year:'2019', pmid:'30803533', url:'https://pubmed.ncbi.nlm.nih.gov/30803533/' },
-    { title:'Shaping ability of reciprocating single-file systems', authors:'Yared G', journal:'Int Endod J', year:'2008', pmid:'18028513', url:'https://pubmed.ncbi.nlm.nih.gov/18028513/' },
+    { title:'Shaping ability of reciprocating single-file systems', authors:'Yared G', journal:'Int Endod J', year:'2008', pmid:'18028513', url:'https://pubmed.ncbi.nlm.nih.gov/18028513/' }
   ],
   'Irrigacion Ultrasonica Pasiva (PUI)': [
     { title:'PUI vs Conventional Syringe Irrigation: Systematic Review', authors:'van der Sluis LWM et al.', journal:'Int Endod J', year:'2021', pmid:'33675046', url:'https://pubmed.ncbi.nlm.nih.gov/33675046/' },
-    { title:'Effectiveness of ultrasonic irrigation: smear layer', authors:'Cameron JA', journal:'J Endod', year:'1983', pmid:'6579169', url:'https://pubmed.ncbi.nlm.nih.gov/6579169/' },
+    { title:'Effectiveness of ultrasonic irrigation: smear layer', authors:'Cameron JA', journal:'J Endod', year:'1983', pmid:'6579169', url:'https://pubmed.ncbi.nlm.nih.gov/6579169/' }
   ],
   'Bioceramicos (Bioceramics)': [
     { title:'Calcium Silicate Cements: Long-term Performance', authors:'Parirokh M et al.', journal:'J Endod', year:'2022', pmid:'32653441', url:'https://pubmed.ncbi.nlm.nih.gov/32653441/' },
-    { title:'Mineral Trioxide Aggregate: A Review', authors:'Torabinejad M, Parirokh M', journal:'J Endod', year:'2010', pmid:'20171353', url:'https://pubmed.ncbi.nlm.nih.gov/20171353/' },
+    { title:'Mineral Trioxide Aggregate: A Review', authors:'Torabinejad M, Parirokh M', journal:'J Endod', year:'2010', pmid:'20171353', url:'https://pubmed.ncbi.nlm.nih.gov/20171353/' }
   ],
   'CBCT en Endodoncia': [
-    { title:'AAE/AAOMR: Use of CBCT in Endodontics', authors:'Scarfe WC et al.', journal:'J Endod', year:'2019', pmid:'20452700', url:'https://pubmed.ncbi.nlm.nih.gov/20452700/' },
+    { title:'AAE/AAOMR: Use of CBCT in Endodontics', authors:'Scarfe WC et al.', journal:'J Endod', year:'2019', pmid:'20452700', url:'https://pubmed.ncbi.nlm.nih.gov/20452700/' }
   ],
   'Immediate Dentin Sealing (IDS)': [
     { title:'IDS: A Biomimetic Approach for Indirect Restorations', authors:'Magne P, Nielsen B', journal:'J Adhes Dent', year:'2009', pmid:'19639082', url:'https://pubmed.ncbi.nlm.nih.gov/19639082/' },
-    { title:'IDS improves bond strength of indirect restorations', authors:'Magne P et al.', journal:'J Prosthet Dent', year:'2007', pmid:'17547948', url:'https://pubmed.ncbi.nlm.nih.gov/17547948/' },
+    { title:'IDS improves bond strength of indirect restorations', authors:'Magne P et al.', journal:'J Prosthet Dent', year:'2007', pmid:'17547948', url:'https://pubmed.ncbi.nlm.nih.gov/17547948/' }
   ],
   'Adhesion Contemporanea': [
     { title:'Adhesion to Enamel and Dentin: Current Status', authors:'Van Meerbeek B et al.', journal:'J Dent Res', year:'2020', pmid:'32077361', url:'https://pubmed.ncbi.nlm.nih.gov/32077361/' },
-    { title:'State of the Art Etch-and-Rinse Adhesives', authors:'De Munck J et al.', journal:'Dent Mater', year:'2005', pmid:'15681009', url:'https://pubmed.ncbi.nlm.nih.gov/15681009/' },
+    { title:'State of the Art Etch-and-Rinse Adhesives', authors:'De Munck J et al.', journal:'Dent Mater', year:'2005', pmid:'15681009', url:'https://pubmed.ncbi.nlm.nih.gov/15681009/' }
   ],
   'Clasificacion Periodontal 2017': [
     { title:'New Classification Periodontal and Peri-implant Diseases', authors:'Papapanou PN et al.', journal:'J Periodontol', year:'2018', pmid:'29926946', url:'https://pubmed.ncbi.nlm.nih.gov/29926946/' },
-    { title:'Periodontitis: Consensus Report Workgroup 2', authors:'Tonetti MS et al.', journal:'J Periodontol', year:'2018', pmid:'29926951', url:'https://pubmed.ncbi.nlm.nih.gov/29926951/' },
+    { title:'Periodontitis: Consensus Report Workgroup 2', authors:'Tonetti MS et al.', journal:'J Periodontol', year:'2018', pmid:'29926951', url:'https://pubmed.ncbi.nlm.nih.gov/29926951/' }
   ],
   'Implantologia Basica': [
-    { title:'Osseointegration Revisited: Surface Wettability', authors:'Smeets R et al.', journal:'Clin Oral Impl Res', year:'2019', pmid:'27658562', url:'https://pubmed.ncbi.nlm.nih.gov/27658562/' },
+    { title:'Osseointegration Revisited: Surface Wettability', authors:'Smeets R et al.', journal:'Clin Oral Impl Res', year:'2019', pmid:'27658562', url:'https://pubmed.ncbi.nlm.nih.gov/27658562/' }
   ],
   'Patologia Oral': [
-    { title:'Red and White Oral Mucosal Lesions: Differential Diagnosis', authors:'Villa A, Woo SB', journal:'OOOO', year:'2021', pmid:'23312657', url:'https://pubmed.ncbi.nlm.nih.gov/23312657/' },
+    { title:'Red and White Oral Mucosal Lesions: Differential Diagnosis', authors:'Villa A, Woo SB', journal:'OOOO', year:'2021', pmid:'23312657', url:'https://pubmed.ncbi.nlm.nih.gov/23312657/' }
   ],
   'Carillas Ceramicas (Veneers)': [
-    { title:'Porcelain Laminate Veneers: 30-Year Outcomes', authors:'Layton DM, Walshaw PR', journal:'J Prosthet Dent', year:'2018', pmid:'29174680', url:'https://pubmed.ncbi.nlm.nih.gov/29174680/' },
-  ],
+    { title:'Porcelain Laminate Veneers: 30-Year Outcomes', authors:'Layton DM, Walshaw PR', journal:'J Prosthet Dent', year:'2018', pmid:'29174680', url:'https://pubmed.ncbi.nlm.nih.gov/29174680/' }
+  ]
 };
-
 
 async function fetchPMCImages(query) {
   try {
-    const searchUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pmc&term=${encodeURIComponent(query + ' dental oral')}&retmax=5&retmode=json`;
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 5000);
-    const searchRes = await fetch(searchUrl, { signal: controller.signal });
+    var searchUrl = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pmc&term=' + encodeURIComponent(query + ' dental oral') + '&retmax=5&retmode=json';
+    var controller = new AbortController();
+    var timeout = setTimeout(function() { controller.abort(); }, 5000);
+    var searchRes = await fetch(searchUrl, { signal: controller.signal });
     clearTimeout(timeout);
-    const searchData = await searchRes.json();
-    const ids = searchData?.esearchresult?.idlist || [];
+    var searchData = await searchRes.json();
+    var ids = (searchData && searchData.esearchresult && searchData.esearchresult.idlist) ? searchData.esearchresult.idlist : [];
     if (ids.length === 0) return [];
-    const summaryUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pmc&id=${ids.join(',')}&retmode=json`;
-    const controller2 = new AbortController();
-    const timeout2 = setTimeout(() => controller2.abort(), 5000);
-    const summaryRes = await fetch(summaryUrl, { signal: controller2.signal });
+    var summaryUrl = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pmc&id=' + ids.join(',') + '&retmode=json';
+    var controller2 = new AbortController();
+    var timeout2 = setTimeout(function() { controller2.abort(); }, 5000);
+    var summaryRes = await fetch(summaryUrl, { signal: controller2.signal });
     clearTimeout(timeout2);
-    const summaryData = await summaryRes.json();
-    const results = [];
-    for (const id of ids) {
-      const article = summaryData?.result?.[id];
-      if (article) results.push({ title: article.title || 'PMC Article', authors: article.sortfirstauthor || '', journal: article.fulljournalname || article.source || '', year: (article.pubdate || '').substring(0, 4), pmcid: 'PMC' + id, url: `https://www.ncbi.nlm.nih.gov/pmc/articles/PMC${id}/` });
+    var summaryData = await summaryRes.json();
+    var results = [];
+    for (var k = 0; k < ids.length; k++) {
+      var article = summaryData && summaryData.result ? summaryData.result[ids[k]] : null;
+      if (article) results.push({ title: article.title || 'PMC Article', authors: article.sortfirstauthor || '', journal: article.fulljournalname || article.source || '', year: (article.pubdate || '').substring(0, 4), pmcid: 'PMC' + ids[k], url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC' + ids[k] + '/' });
     }
     return results;
-  } catch(e) { console.log('PMC fetch failed (expected):', e.message); return []; }
+  } catch(e) { return []; }
 }
 
 // ══════════════════════════════════════════════
 // DATA
 // ══════════════════════════════════════════════
-const DATA = [
+var DATA = [
   { id:'endodoncia', icon:'🔬', color:'#7c3aed', gradient:'linear-gradient(135deg,#7c3aed22,#7c3aed05)',
     title:'Endodoncia', subtitle:'Tratamiento del sistema de canales radiculares', badge:'AVANZADO', progress:72,
     description:'Diagnostico, prevencion y tratamiento de enfermedades pulpares y periapicales.',
@@ -410,7 +664,7 @@ const DATA = [
       { name:'Bioceramicos (Bioceramics)', desc:'MTA, Biodentine, cementos de silicato de calcio.', tag:'Alta prioridad', tagClass:'tag-alta', article:{ journalShort:'JOE', year:'2022', title:'Calcium Silicate Cements: Long-term Performance', authors:'Parirokh M et al.', url:'https://pubmed.ncbi.nlm.nih.gov/32653441/' }},
       { name:'CBCT en Endodoncia', desc:'Indicaciones, anatomia compleja, conductos en C.', tag:'Diagnostico', tagClass:'tag-media', article:{ journalShort:'JOE', year:'2019', title:'AAE/AAOMR: CBCT in Endodontics', authors:'Scarfe WC et al.', url:'https://pubmed.ncbi.nlm.nih.gov/20452700/' }},
       { name:'Anatomia Radicular Interna', desc:'Clasificacion de Vertucci. Istmos, conductos secundarios.', tag:'Base', tagClass:'tag-base', article:{ journalShort:'OOOO', year:'1984', title:'Root Canal Morphology — Vertucci', authors:'Vertucci FJ', url:'https://pubmed.ncbi.nlm.nih.gov/6585007/' }},
-      { name:'Diagnostico Pulpar y Periapical', desc:'Pulpitis, necrosis, absceso.', tag:'Base', tagClass:'tag-base', article:{ journalShort:'JOE', year:'2009', title:'AAE Diagnostic Terminology', authors:'AAE', url:'https://pubmed.ncbi.nlm.nih.gov/19962493/' }},
+      { name:'Diagnostico Pulpar y Periapical', desc:'Pulpitis, necrosis, absceso.', tag:'Base', tagClass:'tag-base', article:{ journalShort:'JOE', year:'2009', title:'AAE Diagnostic Terminology', authors:'AAE', url:'https://pubmed.ncbi.nlm.nih.gov/19962493/' }}
     ]},
   { id:'operatoria', icon:'🪥', color:'#00d4ff', gradient:'linear-gradient(135deg,#00d4ff22,#00d4ff05)',
     title:'Operatoria Dental', subtitle:'Restauracion biomimetica y adhesiva', badge:'AVANZADO', progress:65,
@@ -421,7 +675,7 @@ const DATA = [
       { name:'Adhesion Contemporanea', desc:'Self-etch vs total-etch. Adhesivos universales.', tag:'Alta prioridad', tagClass:'tag-alta', article:{ journalShort:'JDR', year:'2020', title:'Adhesion to Enamel and Dentin', authors:'Van Meerbeek B et al.', url:'https://pubmed.ncbi.nlm.nih.gov/32077361/' }},
       { name:'Estratificacion Composite', desc:'Tecnica incremental, opacidad, traslucencia.', tag:'Tecnica', tagClass:'tag-media', article:{ journalShort:'PPAD', year:'2001', title:'Layering Composites Aesthetics', authors:'Dietschi D', url:'https://pubmed.ncbi.nlm.nih.gov/11680100/' }},
       { name:'Minima Intervencion (MI)', desc:'Deteccion temprana, remineralizacion, ICDAS.', tag:'Base', tagClass:'tag-base', article:{ journalShort:'JDR', year:'2012', title:'Minimal Intervention Dentistry', authors:'Frencken JE et al.', url:'https://pubmed.ncbi.nlm.nih.gov/22437105/' }},
-      { name:'Preparacion Cavitaria Moderna', desc:'Principios adhesivos. Onlay, overlay, endocrown.', tag:'Base', tagClass:'tag-base', article:{ journalShort:'OD', year:'2017', title:'Rethinking Cavity Preparation', authors:'Wolff D et al.', url:'https://pubmed.ncbi.nlm.nih.gov/27082928/' }},
+      { name:'Preparacion Cavitaria Moderna', desc:'Principios adhesivos. Onlay, overlay, endocrown.', tag:'Base', tagClass:'tag-base', article:{ journalShort:'OD', year:'2017', title:'Rethinking Cavity Preparation', authors:'Wolff D et al.', url:'https://pubmed.ncbi.nlm.nih.gov/27082928/' }}
     ]},
   { id:'periodontologia', icon:'🦠', color:'#22c55e', gradient:'linear-gradient(135deg,#22c55e22,#22c55e05)',
     title:'Periodoncia', subtitle:'Tejidos de soporte del diente', badge:'INTERMEDIO', progress:50,
@@ -431,7 +685,7 @@ const DATA = [
       { name:'Raspado y Alisado Radicular (SRP)', desc:'Instrumentacion manual y ultrasonica.', tag:'Clinico', tagClass:'tag-media', article:{ journalShort:'JCP', year:'2015', title:'Full-mouth Disinfection vs SRP', authors:'Quirynen M et al.', url:'https://pubmed.ncbi.nlm.nih.gov/26350254/' }},
       { name:'Relacion Perio-Endo (PEL)', desc:'Lesiones combinadas, diagnostico diferencial.', tag:'Integracion', tagClass:'tag-media', article:{ journalShort:'JOE', year:'2017', title:'Endo-Periodontal Lesions', authors:'Rotstein I, Simon JH', url:'https://pubmed.ncbi.nlm.nih.gov/28343606/' }},
       { name:'Biofilm y Respuesta del Huesped', desc:'Microbioma oral, disbiosis, complejo rojo.', tag:'Base', tagClass:'tag-base', article:{ journalShort:'JDR', year:'2012', title:'Oral Microbiome in Health and Disease', authors:'Dewhirst FE et al.', url:'https://pubmed.ncbi.nlm.nih.gov/26556802/' }},
-      { name:'Cirugia Periodontal', desc:'Colgajos, Widman, regeneracion osea.', tag:'Avanzado', tagClass:'tag-alta', article:{ journalShort:'JCP', year:'2022', title:'Regenerative Periodontal Surgery', authors:'Cortellini P, Tonetti MS', url:'https://pubmed.ncbi.nlm.nih.gov/33386745/' }},
+      { name:'Cirugia Periodontal', desc:'Colgajos, Widman, regeneracion osea.', tag:'Avanzado', tagClass:'tag-alta', article:{ journalShort:'JCP', year:'2022', title:'Regenerative Periodontal Surgery', authors:'Cortellini P, Tonetti MS', url:'https://pubmed.ncbi.nlm.nih.gov/33386745/' }}
     ]},
   { id:'cirugia', icon:'⚕️', color:'#f59e0b', gradient:'linear-gradient(135deg,#f59e0b22,#f59e0b05)',
     title:'Cirugia Oral', subtitle:'Exodoncias y procedimientos quirurgicos', badge:'INTERMEDIO', progress:45,
@@ -441,7 +695,7 @@ const DATA = [
       { name:'Alveolitis y Complicaciones', desc:'Alveolitis seca, infecciones.', tag:'Clinico', tagClass:'tag-media', article:{ journalShort:'JOMS', year:'2011', title:'Alveolar Osteitis', authors:'Cardoso CL et al.', url:'https://pubmed.ncbi.nlm.nih.gov/21665074/' }},
       { name:'Implantologia Basica', desc:'Oseointegracion, planificacion CBCT.', tag:'Alta prioridad', tagClass:'tag-alta', article:{ journalShort:'COIR', year:'2019', title:'Osseointegration Revisited', authors:'Smeets R et al.', url:'https://pubmed.ncbi.nlm.nih.gov/27658562/' }},
       { name:'Farmacologia Quirurgica', desc:'Anestesicos, antibioticos, AINEs.', tag:'Base', tagClass:'tag-base', article:{ journalShort:'JADA', year:'2019', title:'Antibiotics in Dentistry', authors:'Dar-Odeh NS et al.', url:'https://pubmed.ncbi.nlm.nih.gov/31806268/' }},
-      { name:'Patologia Oral', desc:'Lesiones mucosa, ulceras, quistes. Biopsia.', tag:'Diagnostico', tagClass:'tag-media', article:{ journalShort:'OOOO', year:'2021', title:'Red/White Oral Mucosal Lesions', authors:'Villa A, Woo SB', url:'https://pubmed.ncbi.nlm.nih.gov/23312657/' }},
+      { name:'Patologia Oral', desc:'Lesiones mucosa, ulceras, quistes. Biopsia.', tag:'Diagnostico', tagClass:'tag-media', article:{ journalShort:'OOOO', year:'2021', title:'Red/White Oral Mucosal Lesions', authors:'Villa A, Woo SB', url:'https://pubmed.ncbi.nlm.nih.gov/23312657/' }}
     ]},
   { id:'prostodoncia', icon:'👑', color:'#f97316', gradient:'linear-gradient(135deg,#f9731622,#f9731605)',
     title:'Prostodoncia', subtitle:'Rehabilitacion oral y protesis', badge:'INTERMEDIO', progress:40,
@@ -451,7 +705,7 @@ const DATA = [
       { name:'Carillas Ceramicas (Veneers)', desc:'Preparacion minima, mock-up.', tag:'Alta prioridad', tagClass:'tag-alta', article:{ journalShort:'JPD', year:'2018', title:'Veneers: 30-Year Outcomes', authors:'Layton DM', url:'https://pubmed.ncbi.nlm.nih.gov/29174680/' }},
       { name:'Oclusion y ATM', desc:'Relacion centrica, DVO, DTM.', tag:'Base', tagClass:'tag-base', article:{ journalShort:'JPD', year:'2013', title:'Glossary: Occlusion & TMD', authors:'Academy of Prosthodontics', url:'https://pubmed.ncbi.nlm.nih.gov/23849072/' }},
       { name:'CAD/CAM en Prostodoncia', desc:'Flujo digital, escaner, fresado.', tag:'Tecnologia', tagClass:'tag-alta', article:{ journalShort:'IJP', year:'2021', title:'Digital Workflow in Dentistry', authors:'Zimmermann M et al.', url:'https://pubmed.ncbi.nlm.nih.gov/23116228/' }},
-      { name:'Protesis Parcial Removible (PPR)', desc:'Diseno, componentes, materiales.', tag:'Clinico', tagClass:'tag-media', article:{ journalShort:'JPD', year:'2016', title:'RPD Evidence-based Design', authors:'Carr AB et al.', url:'https://pubmed.ncbi.nlm.nih.gov/27040568/' }},
+      { name:'Protesis Parcial Removible (PPR)', desc:'Diseno, componentes, materiales.', tag:'Clinico', tagClass:'tag-media', article:{ journalShort:'JPD', year:'2016', title:'RPD Evidence-based Design', authors:'Carr AB et al.', url:'https://pubmed.ncbi.nlm.nih.gov/27040568/' }}
     ]},
   { id:'ortodoncia', icon:'📐', color:'#ec4899', gradient:'linear-gradient(135deg,#ec489922,#ec489905)',
     title:'Ortodoncia', subtitle:'Diagnostico y correccion de maloclusiones', badge:'COMPLEMENTARIO', progress:30,
@@ -460,11 +714,11 @@ const DATA = [
       { name:'Cefalometria y Analisis Facial', desc:'Steiner, Ricketts, McNamara.', tag:'Base', tagClass:'tag-base', article:{ journalShort:'AJO', year:'1953', title:'Cephalometrics for You and Me', authors:'Steiner CC', url:'https://pubmed.ncbi.nlm.nih.gov/13032466/' }},
       { name:'Clasificacion de Angle', desc:'Clases I, II y III.', tag:'Base', tagClass:'tag-base', article:{ journalShort:'DC', year:'1899', title:'Classification of Malocclusion', authors:'Angle EH', url:'https://pubmed.ncbi.nlm.nih.gov/' }},
       { name:'Biomecanica de Brackets', desc:'Prescripciones MBT, Roth.', tag:'Clinico', tagClass:'tag-media', article:{ journalShort:'JCO', year:'1997', title:'MBT Orthodontic Program', authors:'McLaughlin RP et al.', url:'https://pubmed.ncbi.nlm.nih.gov/9479555/' }},
-      { name:'Alineadores (Clear Aligners)', desc:'Invisalign, adjuntos, limitaciones.', tag:'Tecnologia', tagClass:'tag-alta', article:{ journalShort:'AJO', year:'2019', title:'Efficacy of Clear Aligners', authors:'Ke Y et al.', url:'https://pubmed.ncbi.nlm.nih.gov/31708147/' }},
+      { name:'Alineadores (Clear Aligners)', desc:'Invisalign, adjuntos, limitaciones.', tag:'Tecnologia', tagClass:'tag-alta', article:{ journalShort:'AJO', year:'2019', title:'Efficacy of Clear Aligners', authors:'Ke Y et al.', url:'https://pubmed.ncbi.nlm.nih.gov/31708147/' }}
     ]}
 ];
 
-const TIMELINE = [
+var TIMELINE = [
   { label:'Ano 1-2 Preclinica', color:'#22c55e', title:'Fundamentos basicos', desc:'Anatomia, histologia, bioquimica oral.' },
   { label:'Ano 2-3 Inicio clinico', color:'#00d4ff', title:'Diagnostico y operatoria basica', desc:'Semiologia, composite directo, exodoncia.' },
   { label:'Ano 3-4 Clinica integral', color:'#7c3aed', title:'Especialidades principales', desc:'Endodoncia, periodoncia, protesis, cirugia.' },
@@ -473,56 +727,110 @@ const TIMELINE = [
 ];
 
 // ══════════════════════════════════════════════
-// RENDER FUNCTIONS
+// FULL MODAL HELPERS
+// ══════════════════════════════════════════════
+function openFullModal(id) { document.getElementById(id).classList.add('active'); }
+function closeFullModal(id) { document.getElementById(id).classList.remove('active'); }
+
+// ══════════════════════════════════════════════
+// RENDER PROGRESS (dynamic from localStorage)
 // ══════════════════════════════════════════════
 function renderProgress() {
-  const g = document.getElementById('progressGrid');
-  DATA.forEach(item => {
-    const c = document.createElement('div'); c.className = 'progress-card'; c.style.borderColor = item.color + '33';
-    c.innerHTML = `<span class="pct" style="color:${item.color}">${item.progress}%</span><div class="label">${item.title}</div><div class="bar"><div class="bar-fill" style="background:${item.color};width:0%" data-t="${item.progress}"></div></div>`;
-    c.onclick = () => openAreaModal(item); g.appendChild(c);
+  var g = document.getElementById('progressGrid');
+  g.innerHTML = '';
+  DATA.forEach(function(item) {
+    var avgScore = getAreaAvgScore(item.id);
+    var displayPct = avgScore !== null ? avgScore : item.progress;
+    var c = document.createElement('div'); c.className = 'progress-card'; c.style.borderColor = item.color + '33';
+    var lastQuizHtml = '';
+    var history = storeGet(STORE_KEYS.quizHistory, []);
+    var areaResults = history.filter(function(h) { return h.areaId === item.id; });
+    if (areaResults.length > 0) {
+      var last = areaResults[areaResults.length - 1];
+      var d = new Date(last.date);
+      lastQuizHtml = '<div class="last-quiz">Ultimo: ' + d.toLocaleDateString('es') + ' — ' + Math.round((last.score/last.total)*100) + '%</div>';
+    }
+    c.innerHTML = '<span class="pct" style="color:' + item.color + '">' + displayPct + '%</span><div class="label">' + item.title + '</div><div class="bar"><div class="bar-fill" style="background:' + item.color + ';width:0%" data-t="' + displayPct + '"></div></div>' + lastQuizHtml;
+    c.onclick = function() { openAreaModal(item); };
+    g.appendChild(c);
   });
-  setTimeout(() => document.querySelectorAll('.bar-fill').forEach(el => el.style.width = el.dataset.t + '%'), 300);
+  setTimeout(function() { document.querySelectorAll('.bar-fill').forEach(function(el) { el.style.width = el.dataset.t + '%'; }); }, 300);
 }
 
-function renderGrid(filter = '') {
-  const g = document.getElementById('mainGrid'); g.innerHTML = '';
-  const filtered = DATA.filter(d => !filter || d.title.toLowerCase().includes(filter) || d.topics.some(t => t.name.toLowerCase().includes(filter) || t.desc.toLowerCase().includes(filter)));
-  filtered.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'card'; card.style.cssText = `background:${item.gradient};border-color:${item.color}22`;
-    card.innerHTML = `
-      <div class="card-header">
-        <div class="icon-wrap" style="background:${item.color}22;color:${item.color}">${item.icon}</div>
-        <div><div class="card-title" style="color:${item.color}">${item.title}</div><div class="card-subtitle">${item.subtitle}</div></div>
-        <span class="card-badge" style="background:${item.color}22;color:${item.color}">${item.badge}</span>
-      </div>
-      <div class="topics">${item.topics.map((t,ti) => `
-        <div class="topic-item">
-          <div class="topic-row"><div class="topic-dot" style="background:${item.color}"></div><div class="topic-text"><div class="topic-name">${t.name}</div><div class="topic-desc">${t.desc}</div></div></div>
-          <div class="topic-actions">
-            <span class="tag ${t.tagClass}">${t.tag}</span>
-            <button class="action-btn" style="background:${item.color}" data-lab="${item.id}" data-lti="${ti}">🔬 Laboratorio</button>
-            <button class="action-btn outline" style="border-color:${item.color}44;color:${item.color}" data-ask="${item.id}" data-ati="${ti}">💬 Consulta IA</button>
-            <button class="action-btn" style="background:linear-gradient(135deg,${item.color},${item.color}cc)" data-quiz="${item.id}" data-qti="${ti}">🧠 Quiz</button>
-          </div>
-          <div class="ia-console" id="con-${item.id}-${ti}" style="--accent:${item.color}">
-            <div class="ia-input-row">
-              <textarea placeholder="Pregunta sobre ${t.name}..." rows="2"></textarea>
-              <button class="ia-send-btn" style="background:${item.color}" data-send="${item.id}" data-sti="${ti}">✦ Enviar</button>
-            </div>
-            <div class="ia-response" id="resp-${item.id}-${ti}" style="--accent:${item.color}"></div>
-          </div>
-        </div>`).join('')}
-      </div>`;
-    card.querySelector('.card-header').onclick = () => openAreaModal(item);
-    card.querySelectorAll('[data-lab]').forEach(b => b.onclick = e => { e.stopPropagation(); const a = DATA.find(d=>d.id===b.dataset.lab); openLab(a.topics[+b.dataset.lti], a); });
-    card.querySelectorAll('[data-ask]').forEach(b => b.onclick = e => { e.stopPropagation(); const c = document.getElementById(`con-${b.dataset.ask}-${b.dataset.ati}`); c.classList.toggle('open'); if(c.classList.contains('open')) c.querySelector('textarea').focus(); });
-    card.querySelectorAll('[data-quiz]').forEach(b => b.onclick = e => { e.stopPropagation(); const a = DATA.find(d=>d.id===b.dataset.quiz); openQuiz(a.topics[+b.dataset.qti], a); });
-    card.querySelectorAll('[data-send]').forEach(b => b.onclick = e => { e.stopPropagation(); const a = DATA.find(d=>d.id===b.dataset.send); const t = a.topics[+b.dataset.sti]; const con = document.getElementById(`con-${a.id}-${b.dataset.sti}`); const q = con.querySelector('textarea').value.trim(); if(q) sendConsole(q, t, a, b, document.getElementById(`resp-${a.id}-${b.dataset.sti}`)); });
-    card.querySelectorAll('.ia-input-row textarea').forEach(ta => ta.onkeydown = e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ta.closest('.ia-console').querySelector('[data-send]').click();}});
+// ══════════════════════════════════════════════
+// RENDER MAIN GRID
+// ══════════════════════════════════════════════
+function renderGrid(filter) {
+  filter = filter || '';
+  var g = document.getElementById('mainGrid'); g.innerHTML = '';
+  var filtered = DATA.filter(function(d) {
+    if (!filter) return true;
+    if (d.title.toLowerCase().indexOf(filter) !== -1) return true;
+    return d.topics.some(function(t) { return t.name.toLowerCase().indexOf(filter) !== -1 || t.desc.toLowerCase().indexOf(filter) !== -1; });
+  });
+  filtered.forEach(function(item) {
+    var card = document.createElement('div');
+    card.className = 'card'; card.style.cssText = 'background:' + item.gradient + ';border-color:' + item.color + '22';
+    var topicsHtml = '';
+    item.topics.forEach(function(t, ti) {
+      var topicKey = item.id + '_' + ti;
+      var noteText = getNote(topicKey);
+      var noteIndicator = noteText ? ' 📝' : '';
+      var lastScore = getTopicLastScore(t.name);
+      var lastScoreHtml = '';
+      if (lastScore) {
+        var dStr = new Date(lastScore.date).toLocaleDateString('es');
+        lastScoreHtml = '<div class="topic-last-score">Ultimo quiz: ' + lastScore.pct + '% (' + dStr + ')</div>';
+      }
+      topicsHtml += '<div class="topic-item">' +
+        '<div class="topic-row"><div class="topic-dot" style="background:' + item.color + '"></div><div class="topic-text"><div class="topic-name">' + t.name + noteIndicator + '</div><div class="topic-desc">' + t.desc + '</div>' + lastScoreHtml + '</div></div>' +
+        '<div class="topic-actions">' +
+          '<span class="tag ' + t.tagClass + '">' + t.tag + '</span>' +
+          '<button class="action-btn" style="background:' + item.color + '" data-lab="' + item.id + '" data-lti="' + ti + '">🔬 Laboratorio</button>' +
+          '<button class="action-btn outline" style="border-color:' + item.color + '44;color:' + item.color + '" data-ask="' + item.id + '" data-ati="' + ti + '">💬 Consulta IA</button>' +
+          '<button class="action-btn" style="background:linear-gradient(135deg,' + item.color + ',' + item.color + 'cc)" data-quiz="' + item.id + '" data-qti="' + ti + '">🧠 Quiz</button>' +
+          '<button class="action-btn" style="background:#2a1a3e;color:#c084fc" data-clinical="' + item.id + '" data-cti="' + ti + '">🏥 Caso</button>' +
+          '<button class="action-btn" style="background:#1a2a1a;color:#86efac" data-flash="' + item.id + '" data-fti="' + ti + '">🃏 Flash</button>' +
+        '</div>' +
+        '<div class="topic-notes">' +
+          '<button class="notes-toggle" data-nkey="' + topicKey + '">📝 Notas</button>' +
+          '<div class="notes-area" id="notes-' + topicKey + '"><textarea placeholder="Escribe tus notas aqui..." data-nkey="' + topicKey + '">' + escapeHtml(noteText) + '</textarea></div>' +
+        '</div>' +
+        '<div class="ia-console" id="con-' + item.id + '-' + ti + '" style="--accent:' + item.color + '">' +
+          '<div class="ia-input-row">' +
+            '<textarea placeholder="Pregunta sobre ' + t.name + '..." rows="2"></textarea>' +
+            '<button class="ia-send-btn" style="background:' + item.color + '" data-send="' + item.id + '" data-sti="' + ti + '">✦ Enviar</button>' +
+          '</div>' +
+          '<div class="ia-response" id="resp-' + item.id + '-' + ti + '" style="--accent:' + item.color + '"></div>' +
+        '</div>' +
+      '</div>';
+    });
+    card.innerHTML =
+      '<div class="card-header">' +
+        '<div class="icon-wrap" style="background:' + item.color + '22;color:' + item.color + '">' + item.icon + '</div>' +
+        '<div><div class="card-title" style="color:' + item.color + '">' + item.title + '</div><div class="card-subtitle">' + item.subtitle + '</div></div>' +
+        '<span class="card-badge" style="background:' + item.color + '22;color:' + item.color + '">' + item.badge + '</span>' +
+      '</div>' +
+      '<div class="topics">' + topicsHtml + '</div>';
+
+    card.querySelector('.card-header').onclick = function() { openAreaModal(item); };
+    card.querySelectorAll('[data-lab]').forEach(function(b) { b.onclick = function(e) { e.stopPropagation(); var a = DATA.find(function(d){return d.id===b.dataset.lab;}); openLab(a.topics[+b.dataset.lti], a); }; });
+    card.querySelectorAll('[data-ask]').forEach(function(b) { b.onclick = function(e) { e.stopPropagation(); var c = document.getElementById('con-' + b.dataset.ask + '-' + b.dataset.ati); c.classList.toggle('open'); if(c.classList.contains('open')) c.querySelector('textarea').focus(); }; });
+    card.querySelectorAll('[data-quiz]').forEach(function(b) { b.onclick = function(e) { e.stopPropagation(); var a = DATA.find(function(d){return d.id===b.dataset.quiz;}); openQuiz(a.topics[+b.dataset.qti], a); }; });
+    card.querySelectorAll('[data-clinical]').forEach(function(b) { b.onclick = function(e) { e.stopPropagation(); var a = DATA.find(function(d){return d.id===b.dataset.clinical;}); openClinicalCase(a.topics[+b.dataset.cti], a); }; });
+    card.querySelectorAll('[data-flash]').forEach(function(b) { b.onclick = function(e) { e.stopPropagation(); var a = DATA.find(function(d){return d.id===b.dataset.flash;}); openFlashcards(a.topics[+b.dataset.fti], a); }; });
+    card.querySelectorAll('[data-send]').forEach(function(b) { b.onclick = function(e) { e.stopPropagation(); var a = DATA.find(function(d){return d.id===b.dataset.send;}); var t = a.topics[+b.dataset.sti]; var con = document.getElementById('con-' + a.id + '-' + b.dataset.sti); var q = con.querySelector('textarea').value.trim(); if(q) sendConsole(q, t, a, b, document.getElementById('resp-' + a.id + '-' + b.dataset.sti)); }; });
+    card.querySelectorAll('.ia-input-row textarea').forEach(function(ta) { ta.onkeydown = function(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ta.closest('.ia-console').querySelector('[data-send]').click();} }; });
+    card.querySelectorAll('.notes-toggle').forEach(function(btn) { btn.onclick = function(e) { e.stopPropagation(); var area = document.getElementById('notes-' + btn.dataset.nkey); area.classList.toggle('open'); }; });
+    card.querySelectorAll('.notes-area textarea').forEach(function(ta) { ta.onblur = function() { saveNote(ta.dataset.nkey, ta.value); }; });
     g.appendChild(card);
   });
+}
+
+function escapeHtml(text) {
+  var div = document.createElement('div');
+  div.appendChild(document.createTextNode(text));
+  return div.innerHTML;
 }
 
 // ══════════════════════════════════════════════
@@ -531,8 +839,8 @@ function renderGrid(filter = '') {
 async function sendConsole(q, topic, area, btn, respEl) {
   btn.disabled = true; respEl.className = 'ia-response visible';
   respEl.innerHTML = '<span class="ia-thinking"><span></span><span></span><span></span> Pensando...</span>';
-  const sys = 'Eres un asistente de investigacion clinica de elite. Responde en espanol academico con Markdown. Terminologia tecnica en *ingles cursivas*. Al final incluye consejo clinico practico.';
-  try { let full = ''; await askAI([{role:'system',content:sys},{role:'user',content:`Tema: ${topic.name} (${area.title})\n\nPregunta: ${q}`}], chunk => { full += chunk; respEl.innerHTML = md(full); }); } catch (err) { respEl.innerHTML = `<span style="color:#f87171">Error: ${err.message}</span>`; }
+  var sys = 'Eres un asistente de investigacion clinica de elite. Responde en espanol academico con Markdown. Terminologia tecnica en *ingles cursivas*. Al final incluye consejo clinico practico.';
+  try { var full = ''; await askAI([{role:'system',content:sys},{role:'user',content:'Tema: ' + topic.name + ' (' + area.title + ')\n\nPregunta: ' + q}], function(chunk) { full += chunk; respEl.innerHTML = md(full); }); } catch (err) { respEl.innerHTML = '<span style="color:#f87171">Error: ' + err.message + '</span>'; }
   btn.disabled = false;
 }
 
@@ -540,195 +848,596 @@ async function sendConsole(q, topic, area, btn, respEl) {
 // LABORATORIO — con Atlas + PubMed Citations
 // ══════════════════════════════════════════════
 async function openLab(topic, area) {
-  const color = area.color;
-  const panel = document.getElementById('labPanel'); panel.style.setProperty('--accent', color);
-  document.getElementById('labHeader').innerHTML = `<div class="lab-badge" style="background:${color}22;color:${color}">🔬 Laboratorio Clinico + Atlas</div><div class="lab-title">${topic.name}</div><div class="lab-meta">📰 ${topic.article.journalShort} · ${topic.article.year} · ${topic.article.authors}</div>`;
-  document.getElementById('labBody').innerHTML = `<div class="lab-loader"><div class="lab-spinner" style="border-top-color:${color}"></div>Generando metodologia + atlas clinico con IA...</div>`;
+  var color = area.color;
+  var panel = document.getElementById('labPanel'); panel.style.setProperty('--accent', color);
+  document.getElementById('labHeader').innerHTML = '<div class="lab-badge" style="background:' + color + '22;color:' + color + '">🔬 Laboratorio Clinico + Atlas</div><div class="lab-title">' + topic.name + '</div><div class="lab-meta">📰 ' + topic.article.journalShort + ' · ' + topic.article.year + ' · ' + topic.article.authors + '</div>';
+  document.getElementById('labBody').innerHTML = '<div class="lab-loader"><div class="lab-spinner" style="border-top-color:' + color + '"></div>Generando metodologia + atlas clinico con IA...</div>';
   document.getElementById('labOverlay').classList.add('active');
 
-  // Fetch AI content + PMC articles in parallel
-  // Atlas diagrams generated inline via SVG
-  const pmcPromise = fetchPMCImages(topic.name);
-
-  const prompt = `Genera una METODOLOGIA DE ESTUDIO COMPLETA sobre: "${topic.name}" en odontologia.
-Usa Markdown rico: ## secciones, **bold**, *cursivas para terminos en ingles*, listas, tablas.
-
-Estructura:
-## 🔑 Key Concepts
-5-7 conceptos clave. Terminos en *ingles* con explicacion en espanol.
-
-## 📊 Evidencia Cientifica
-Referencia: "${topic.article.title}" (${topic.article.authors}, ${topic.article.year}). 4-5 hallazgos clave.
-
-## 🦷 Protocolo Clinico
-5-7 pasos numerados aplicables en hospital universitario.
-
-## 🎯 El Reto
-Pregunta de analisis critico clinico desafiante.
-
-Espanol academico. Terminologia tecnica en *ingles*.`;
+  var pmcPromise = fetchPMCImages(topic.name);
+  var prompt = 'Genera una METODOLOGIA DE ESTUDIO COMPLETA sobre: "' + topic.name + '" en odontologia.\nUsa Markdown rico: ## secciones, **bold**, *cursivas para terminos en ingles*, listas, tablas.\n\nEstructura:\n## 🔑 Key Concepts\n5-7 conceptos clave. Terminos en *ingles* con explicacion en espanol.\n\n## 📊 Evidencia Cientifica\nReferencia: "' + topic.article.title + '" (' + topic.article.authors + ', ' + topic.article.year + '). 4-5 hallazgos clave.\n\n## 🦷 Protocolo Clinico\n5-7 pasos numerados aplicables en hospital universitario.\n\n## 🎯 El Reto\nPregunta de analisis critico clinico desafiante.\n\nEspanol academico. Terminologia tecnica en *ingles*.';
 
   try {
-    const [response, pmcArticles] = await Promise.all([
-      askAI([{role:'user',content:prompt}]),
-      pmcPromise
-    ]);
+    var results = await Promise.all([askAI([{role:'user',content:prompt}]), pmcPromise]);
+    var response = results[0];
+    var pmcArticles = results[1];
 
-    // Build atlas section
-    // Generate SVG clinical diagrams
-    const svgDiagram = getSVGForTopic(topic.name, color);
-    const atlasHtml = `
-      <div class="atlas-section">
-        <div class="atlas-title" style="color:${color}">🖼️ Atlas Clinico — Diagramas de Referencia</div>
-        <div class="atlas-grid">
-          <div class="atlas-card" onclick="openLightbox(null,'${topic.name}: Diagrama anatomico clinico')">
-            ${svgDiagram}
-            <div class="atlas-caption">
-              <div class="atlas-caption-title">${topic.name}</div>
-              <div class="atlas-caption-desc">Diagrama anatomico clinico interactivo</div>
-              <div class="atlas-caption-source">📐 SVG Clinical Diagram</div>
-            </div>
-          </div>
-          <div class="atlas-card">
-            <div class="svg-placeholder" style="background:linear-gradient(135deg,${color}11,#0e0e1a);font-size:2.5rem">📊</div>
-            <div class="atlas-caption">
-              <div class="atlas-caption-title">Datos Clave</div>
-              <div class="atlas-caption-desc">Resumen visual de hallazgos del articulo principal</div>
-              <div class="atlas-caption-source">📰 ${topic.article.journalShort} ${topic.article.year}</div>
-            </div>
-          </div>
-          <div class="atlas-card" onclick="window.open('https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(topic.name+' dental')}&filter=simsearch1.fha','_blank')">
-            <div class="svg-placeholder" style="background:linear-gradient(135deg,#0a1a0a,#0e0e1a);font-size:2.5rem">🔬</div>
-            <div class="atlas-caption">
-              <div class="atlas-caption-title">PubMed Images</div>
-              <div class="atlas-caption-desc">Buscar imagenes clinicas reales en PubMed — click para abrir</div>
-              <div class="atlas-caption-source" style="color:#22c55e">🔗 pubmed.ncbi.nlm.nih.gov</div>
-            </div>
-          </div>
-        </div>
-      </div>`;
+    var topicImages = getTopicImages(topic.name);
+    var atlasHtml = '<div class="atlas-section">' +
+      '<div class="atlas-title" style="color:' + color + '">🖼️ Atlas Clinico — Imagenes de Referencia</div>' +
+      '<div class="atlas-grid">';
+    topicImages.forEach(function(img) {
+      atlasHtml += '<div class="atlas-card" onclick="openLightbox(\'' + img.url.replace(/'/g, "\\'") + '\',\'' + img.title.replace(/'/g, "\\'") + '\')">' +
+        '<div class="atlas-tooltip">' + img.title + '</div>' +
+        '<img src="' + img.url + '" alt="' + img.title + '" loading="lazy" onerror="this.outerHTML=getSVGForTopic(\'' + topic.name.replace(/'/g, "\\'") + '\',\'' + color + '\')" />' +
+        '<div class="atlas-caption"><div class="atlas-caption-title">' + img.title + '</div><div class="atlas-caption-desc">' + img.desc + '</div><div class="atlas-caption-source">📷 ' + img.source + '</div></div></div>';
+    });
+    atlasHtml += '<div class="atlas-card" onclick="window.open(\'https://www.google.com/search?q=' + encodeURIComponent(topic.name + ' dental clinical photography') + '&tbm=isch&tbs=il:cl\',\'_blank\')">' +
+      '<div class="atlas-tooltip">Buscar mas imagenes</div>' +
+      '<div class="svg-placeholder" style="background:linear-gradient(135deg,' + color + '11,var(--bg));font-size:2.5rem">🔍</div>' +
+      '<div class="atlas-caption"><div class="atlas-caption-title">Buscar mas imagenes</div><div class="atlas-caption-desc">Google Images — fotografias clinicas reales</div><div class="atlas-caption-source" style="color:#22c55e">🔗 google.com/images</div></div></div>' +
+    '</div></div>';
 
-    // Build citations section
-    const allCitations = [...(ATLAS_CITATIONS[topic.name] || [])];
-    // Add PMC articles as supplementary citations
-    pmcArticles.forEach(a => {
-      if (!allCitations.find(c => c.title === a.title)) {
+    var allCitations = (ATLAS_CITATIONS[topic.name] || []).slice();
+    pmcArticles.forEach(function(a) {
+      if (!allCitations.find(function(c) { return c.title === a.title; })) {
         allCitations.push({ title: a.title, authors: a.authors, journal: a.journal, year: a.year, pmid: a.pmcid, url: a.url });
       }
     });
-    // Always include the topic's main article
-    if (!allCitations.find(c => c.url === topic.article.url)) {
-      allCitations.unshift({ title: topic.article.title, authors: topic.article.authors, journal: topic.article.journalShort, year: topic.article.year, url: topic.article.url, pmid: topic.article.url.match(/\/(\d+)\/?$/)?.[1] || '' });
+    if (!allCitations.find(function(c) { return c.url === topic.article.url; })) {
+      var pmidMatch = topic.article.url.match(/\/(\d+)\/?$/);
+      allCitations.unshift({ title: topic.article.title, authors: topic.article.authors, journal: topic.article.journalShort, year: topic.article.year, url: topic.article.url, pmid: pmidMatch ? pmidMatch[1] : '' });
     }
 
-    let citationsHtml = '';
+    var citationsHtml = '';
     if (allCitations.length > 0) {
-      citationsHtml = `
-        <div class="citations-section">
-          <div class="atlas-title" style="color:${color}">📚 Citas Verificadas — PubMed / PMC</div>
-          ${allCitations.map((c,i) => `
-            <div class="citation-item">
-              <div class="citation-num" style="background:${color}22;color:${color}">${i+1}</div>
-              <div class="citation-body">
-                <div class="citation-title"><a href="${c.url}" target="_blank">${c.title}</a></div>
-                <div class="citation-authors">${c.authors}</div>
-                <div class="citation-journal">
-                  <span>${c.journal} · ${c.year}</span>
-                  ${c.pmid ? `<span class="pmid">PMID: ${c.pmid}</span>` : ''}
-                  <a href="${c.url}" target="_blank">🔗 Ver en PubMed</a>
-                </div>
-              </div>
-            </div>
-          `).join('')}
-        </div>`;
+      citationsHtml = '<div class="citations-section"><div class="atlas-title" style="color:' + color + '">📚 Citas Verificadas — PubMed / PMC</div>';
+      allCitations.forEach(function(c, i) {
+        citationsHtml += '<div class="citation-item"><div class="citation-num" style="background:' + color + '22;color:' + color + '">' + (i+1) + '</div><div class="citation-body"><div class="citation-title"><a href="' + c.url + '" target="_blank">' + c.title + '</a></div><div class="citation-authors">' + c.authors + '</div><div class="citation-journal"><span>' + c.journal + ' · ' + c.year + '</span>' + (c.pmid ? '<span class="pmid">PMID: ' + c.pmid + '</span>' : '') + '<a href="' + c.url + '" target="_blank">🔗 Ver en PubMed</a></div></div></div>';
+      });
+      citationsHtml += '</div>';
     }
 
-    document.getElementById('labBody').innerHTML = `
-      <div class="md-content">${md(response)}</div>
-      ${atlasHtml}
-      ${citationsHtml}
-      <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;border-top:1px solid #1a1a2e;padding-top:20px">
-        <a href="${topic.article.url}" target="_blank" class="action-btn" style="background:${color};padding:11px 22px;font-size:.88rem;text-decoration:none">🔗 Articulo principal en PubMed</a>
-        <a href="https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(topic.name + ' dental')}" target="_blank" class="action-btn" style="background:#1a1a28;color:#888;border:1px solid #2a2a3e;padding:11px 20px;font-size:.88rem;text-decoration:none">🔍 Buscar mas en PubMed</a>
-        <button class="action-btn" style="background:#1a1a28;color:#888;border:1px solid #2a2a3e;padding:11px 20px;font-size:.88rem" onclick="document.getElementById('labOverlay').classList.remove('active')">✕ Cerrar</button>
-      </div>`;
+    document.getElementById('labBody').innerHTML =
+      '<div class="md-content">' + md(response) + '</div>' +
+      atlasHtml + citationsHtml +
+      '<div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:20px">' +
+        '<a href="' + topic.article.url + '" target="_blank" class="action-btn" style="background:' + color + ';padding:11px 22px;font-size:.88rem;text-decoration:none">🔗 Articulo principal en PubMed</a>' +
+        '<a href="https://pubmed.ncbi.nlm.nih.gov/?term=' + encodeURIComponent(topic.name + ' dental') + '" target="_blank" class="action-btn" style="background:var(--code-bg);color:var(--text4);border:1px solid var(--input-border);padding:11px 20px;font-size:.88rem;text-decoration:none">🔍 Buscar mas en PubMed</a>' +
+        '<button class="action-btn" style="background:var(--code-bg);color:var(--text4);border:1px solid var(--input-border);padding:11px 20px;font-size:.88rem" onclick="exportPDF()">📄 Exportar PDF</button>' +
+        '<button class="action-btn" style="background:var(--code-bg);color:var(--text4);border:1px solid var(--input-border);padding:11px 20px;font-size:.88rem" onclick="document.getElementById(\'labOverlay\').classList.remove(\'active\')">✕ Cerrar</button>' +
+      '</div>';
   } catch (err) {
-    console.error('Lab error:', err);
-    document.getElementById('labBody').innerHTML = `<div style="background:#1a0a0a;border:1px solid #3a1a1a;border-radius:12px;padding:16px;color:#f87171">Error: ${err.message}</div>`;
+    document.getElementById('labBody').innerHTML = '<div style="background:#1a0a0a;border:1px solid #3a1a1a;border-radius:12px;padding:16px;color:#f87171">Error: ' + err.message + '</div>';
   }
 }
+
+function exportPDF() { window.print(); }
 
 // ══════════════════════════════════════════════
 // LIGHTBOX
 // ══════════════════════════════════════════════
 function openLightbox(url, caption) {
-  document.getElementById('lightboxImg').src = url;
+  if (url) document.getElementById('lightboxImg').src = url;
   document.getElementById('lightboxCap').textContent = caption;
   document.getElementById('lightbox').classList.add('active');
 }
-document.getElementById('lightbox').onclick = () => document.getElementById('lightbox').classList.remove('active');
+document.getElementById('lightbox').onclick = function() { document.getElementById('lightbox').classList.remove('active'); };
 
 // ══════════════════════════════════════════════
-// QUIZ (same as before)
+// QUIZ
 // ══════════════════════════════════════════════
-let quizState = null;
+var quizState = null;
 async function openQuiz(topic, area) {
-  const color = area.color;
-  const panel = document.getElementById('quizPanel'); panel.style.setProperty('--accent', color);
-  document.getElementById('quizHeader').innerHTML = `<div class="quiz-badge" style="background:${color}22;color:${color}">🧠 Quiz</div><div class="lab-title">${topic.name}</div><div class="lab-meta">${area.title} · 10 preguntas</div><div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizProgressFill" style="background:${color};width:0%"></div></div><div class="quiz-progress-text" id="quizProgressText">0 / 10</div>`;
-  document.getElementById('quizBody').innerHTML = `<div class="quiz-loader"><div class="lab-spinner" style="border-top-color:${color}"></div>Generando 10 preguntas con IA...</div>`;
+  var color = area.color;
+  var panel = document.getElementById('quizPanel'); panel.style.setProperty('--accent', color);
+  document.getElementById('quizHeader').innerHTML = '<div class="quiz-badge" style="background:' + color + '22;color:' + color + '">🧠 Quiz</div><div class="lab-title">' + topic.name + '</div><div class="lab-meta">' + area.title + ' · 10 preguntas</div><div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizProgressFill" style="background:' + color + ';width:0%"></div></div><div class="quiz-progress-text" id="quizProgressText">0 / 10</div>';
+  document.getElementById('quizBody').innerHTML = '<div class="quiz-loader"><div class="lab-spinner" style="border-top-color:' + color + '"></div>Generando 10 preguntas con IA...</div>';
   document.getElementById('quizOverlay').classList.add('active');
-  const prompt = `Genera exactamente 10 preguntas de opcion multiple sobre "${topic.name}" en odontologia. Nivel avanzado/residente. Terminologia tecnica en *ingles*.
-Responde UNICAMENTE en JSON valido:
-[{"q":"Pregunta","options":["A) ...","B) ...","C) ...","D) ..."],"correct":0,"explanation":"Explicacion detallada con *terminos en ingles*."}]
-Dificultad progresiva. Cubrir: conceptos, evidencia, protocolo y casos clinicos.`;
+  var prompt = 'Genera exactamente 10 preguntas de opcion multiple sobre "' + topic.name + '" en odontologia. Nivel avanzado/residente. Terminologia tecnica en *ingles*.\nResponde UNICAMENTE en JSON valido:\n[{"q":"Pregunta","options":["A) ...","B) ...","C) ...","D) ..."],"correct":0,"explanation":"Explicacion detallada con *terminos en ingles*."}]\nDificultad progresiva. Cubrir: conceptos, evidencia, protocolo y casos clinicos.';
   try {
-    let raw = await askAI([{role:'user',content:prompt}]);
-    const jsonMatch = raw.match(/\[[\s\S]*\]/); if (!jsonMatch) throw new Error('Parse error');
-    const questions = JSON.parse(jsonMatch[0]); if (questions.length < 10) throw new Error('<10 preguntas');
-    quizState = { questions: questions.slice(0,10), answers: new Array(10).fill(null), current: 0, color, topic, area };
+    var raw = await askAI([{role:'user',content:prompt}]);
+    var jsonMatch = raw.match(/\[[\s\S]*\]/); if (!jsonMatch) throw new Error('Parse error');
+    var questions = JSON.parse(jsonMatch[0]); if (questions.length < 10) throw new Error('<10 preguntas');
+    quizState = { questions: questions.slice(0,10), answers: new Array(10).fill(null), current: 0, color: color, topic: topic, area: area };
     renderQuizQ();
-  } catch (err) { document.getElementById('quizBody').innerHTML = `<div style="background:#1a0a0a;border:1px solid #3a1a1a;border-radius:12px;padding:16px;color:#f87171">Error: ${err.message}</div>`; }
+  } catch (err) { document.getElementById('quizBody').innerHTML = '<div style="background:#1a0a0a;border:1px solid #3a1a1a;border-radius:12px;padding:16px;color:#f87171">Error: ' + err.message + '</div>'; }
 }
 function renderQuizQ() {
-  const s = quizState, q = s.questions[s.current], n = s.current + 1, answered = s.answers[s.current] !== null;
-  document.getElementById('quizProgressFill').style.width = `${(n/10)*100}%`;
-  document.getElementById('quizProgressText').textContent = `${n} / 10`;
-  const optHtml = q.options.map((opt,i) => {
-    const letters = ['A','B','C','D']; let cls = 'quiz-opt';
+  var s = quizState, q = s.questions[s.current], n = s.current + 1, answered = s.answers[s.current] !== null;
+  document.getElementById('quizProgressFill').style.width = ((n/10)*100) + '%';
+  document.getElementById('quizProgressText').textContent = n + ' / 10';
+  var letters = ['A','B','C','D'];
+  var optHtml = '';
+  q.options.forEach(function(opt, i) {
+    var cls = 'quiz-opt';
     if (answered) { cls += ' locked'; if (i===q.correct) cls += ' correct'; else if (i===s.answers[s.current]&&i!==q.correct) cls += ' wrong'; }
-    return `<div class="${cls}" data-oi="${i}"><div class="opt-letter">${letters[i]}</div><div class="opt-text">${md(opt.replace(/^[A-D]\)\s*/,''))}</div></div>`;
-  }).join('');
-  const isLast = s.current === 9;
-  document.getElementById('quizBody').innerHTML = `
-    <div class="quiz-question"><div class="quiz-q-number" style="color:${s.color}">Pregunta ${n} de 10</div><div class="quiz-q-text">${md(q.q)}</div><div class="quiz-options">${optHtml}</div><div class="quiz-explanation ${answered?'visible':''}" style="--accent:${s.color}">${answered?md('**Explicacion:** '+q.explanation):''}</div></div>
-    <div class="quiz-nav"><button class="quiz-nav-btn sec" ${s.current===0?'disabled':''} id="qPrev">← Anterior</button><div>${!answered?`<button class="quiz-nav-btn primary" style="background:${s.color}" id="qCheck" disabled>Verificar</button>`:''}${answered?(isLast?`<button class="quiz-nav-btn primary" style="background:${s.color}" id="qFinish">📊 Resultados</button>`:`<button class="quiz-nav-btn primary" style="background:${s.color}" id="qNext">Siguiente →</button>`):''}</div></div>`;
-  if (!answered) { let sel = null; document.querySelectorAll('.quiz-opt').forEach(o => { o.onclick = () => { document.querySelectorAll('.quiz-opt').forEach(x=>x.classList.remove('selected')); o.classList.add('selected'); sel=+o.dataset.oi; const cb=document.getElementById('qCheck'); if(cb)cb.disabled=false; }; }); const cb=document.getElementById('qCheck'); if(cb)cb.onclick=()=>{if(sel!==null){s.answers[s.current]=sel;renderQuizQ();}}; }
-  const pb=document.getElementById('qPrev'); if(pb)pb.onclick=()=>{if(s.current>0){s.current--;renderQuizQ();}};
-  const nb=document.getElementById('qNext'); if(nb)nb.onclick=()=>{if(s.current<9){s.current++;renderQuizQ();}};
-  const fb=document.getElementById('qFinish'); if(fb)fb.onclick=renderQuizResults;
+    optHtml += '<div class="' + cls + '" data-oi="' + i + '"><div class="opt-letter">' + letters[i] + '</div><div class="opt-text">' + md(opt.replace(/^[A-D]\)\s*/,'')) + '</div></div>';
+  });
+  var isLast = s.current === 9;
+  document.getElementById('quizBody').innerHTML =
+    '<div class="quiz-question"><div class="quiz-q-number" style="color:' + s.color + '">Pregunta ' + n + ' de 10</div><div class="quiz-q-text">' + md(q.q) + '</div><div class="quiz-options">' + optHtml + '</div><div class="quiz-explanation ' + (answered?'visible':'') + '" style="--accent:' + s.color + '">' + (answered?md('**Explicacion:** '+q.explanation):'') + '</div></div>' +
+    '<div class="quiz-nav"><button class="quiz-nav-btn sec" ' + (s.current===0?'disabled':'') + ' id="qPrev">← Anterior</button><div>' + (!answered?'<button class="quiz-nav-btn primary" style="background:' + s.color + '" id="qCheck" disabled>Verificar</button>':'') + (answered?(isLast?'<button class="quiz-nav-btn primary" style="background:' + s.color + '" id="qFinish">📊 Resultados</button>':'<button class="quiz-nav-btn primary" style="background:' + s.color + '" id="qNext">Siguiente →</button>'):'') + '</div></div>';
+  if (!answered) {
+    var sel = null;
+    document.querySelectorAll('.quiz-opt').forEach(function(o) {
+      o.onclick = function() { document.querySelectorAll('.quiz-opt').forEach(function(x){x.classList.remove('selected');}); o.classList.add('selected'); sel=+o.dataset.oi; var cb=document.getElementById('qCheck'); if(cb)cb.disabled=false; };
+    });
+    var cb=document.getElementById('qCheck'); if(cb) cb.onclick=function(){if(sel!==null){s.answers[s.current]=sel;renderQuizQ();}};
+  }
+  var pb=document.getElementById('qPrev'); if(pb) pb.onclick=function(){if(s.current>0){s.current--;renderQuizQ();}};
+  var nb=document.getElementById('qNext'); if(nb) nb.onclick=function(){if(s.current<9){s.current++;renderQuizQ();}};
+  var fb=document.getElementById('qFinish'); if(fb) fb.onclick=renderQuizResults;
 }
 function renderQuizResults() {
-  const s = quizState; let correct = 0;
-  const bd = s.questions.map((q,i) => { const ok = s.answers[i]===q.correct; if(ok)correct++; const L=['A','B','C','D']; return {q:q.q,isCorrect:ok,yours:L[s.answers[i]],right:L[q.correct],explanation:q.explanation}; });
-  const pct = Math.round((correct/10)*100);
-  let msg,mc; if(pct>=90){msg='🏆 Excelente!';mc='#22c55e';}else if(pct>=70){msg='👍 Buen trabajo';mc='#00d4ff';}else if(pct>=50){msg='📚 A repasar';mc='#f59e0b';}else{msg='⚠️ Necesitas estudiar mas';mc='#ef4444';}
-  const wrong=bd.filter(b=>!b.isCorrect), right=bd.filter(b=>b.isCorrect);
-  document.getElementById('quizBody').innerHTML = `
-    <div class="quiz-results"><div class="results-label">Resultado en</div><div class="lab-title">${s.topic.name}</div><div class="results-score" style="color:${pct>=70?'#22c55e':pct>=50?'#f59e0b':'#ef4444'}">${pct}%</div><div class="results-label">${correct}/10 correctas</div><div class="results-msg" style="color:${mc}">${msg}</div></div>
-    ${wrong.length?`<div class="results-breakdown"><div style="font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;color:#ef4444;margin-bottom:10px">❌ Incorrectas — Estudia estos puntos</div>${wrong.map(b=>`<div class="rb-item"><div class="rb-icon wrong">✗</div><div style="flex:1"><div class="rb-text">${md(b.q)}</div><div class="rb-answer">Tu: <strong style="color:#ef4444">${b.yours}</strong> · Correcta: <strong style="color:#22c55e">${b.right}</strong></div><div style="margin-top:6px;font-size:.82rem;color:#888;line-height:1.5">${md(b.explanation)}</div></div></div>`).join('')}</div>`:''}
-    ${right.length?`<div class="results-breakdown" style="margin-top:20px"><div style="font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;color:#22c55e;margin-bottom:10px">✅ Correctas</div>${right.map(b=>`<div class="rb-item"><div class="rb-icon correct">✓</div><div class="rb-text">${md(b.q)}</div></div>`).join('')}</div>`:''}
-    <div class="results-actions"><button class="quiz-nav-btn primary" style="background:${s.color}" onclick="openQuiz(quizState.topic,quizState.area)">🔄 Repetir</button><button class="quiz-nav-btn sec" onclick="document.getElementById('quizOverlay').classList.remove('active')">✕ Cerrar</button></div>`;
+  var s = quizState; var correct = 0;
+  var bd = s.questions.map(function(q,i) { var ok = s.answers[i]===q.correct; if(ok)correct++; var L=['A','B','C','D']; return {q:q.q,isCorrect:ok,yours:L[s.answers[i]],right:L[q.correct],explanation:q.explanation}; });
+  var pct = Math.round((correct/10)*100);
+  // Save to localStorage
+  saveQuizResult(s.topic.name, s.area.id, correct, 10, s.answers);
+  renderProgress();
+  var msg,mc; if(pct>=90){msg='🏆 Excelente!';mc='#22c55e';}else if(pct>=70){msg='👍 Buen trabajo';mc='#00d4ff';}else if(pct>=50){msg='📚 A repasar';mc='#f59e0b';}else{msg='⚠️ Necesitas estudiar mas';mc='#ef4444';}
+  var wrong=bd.filter(function(b){return !b.isCorrect;}), right=bd.filter(function(b){return b.isCorrect;});
+  var wrongHtml = '';
+  if (wrong.length) {
+    wrongHtml = '<div class="results-breakdown"><div style="font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;color:#ef4444;margin-bottom:10px">❌ Incorrectas — Estudia estos puntos</div>';
+    wrong.forEach(function(b) { wrongHtml += '<div class="rb-item"><div class="rb-icon wrong">✗</div><div style="flex:1"><div class="rb-text">' + md(b.q) + '</div><div class="rb-answer">Tu: <strong style="color:#ef4444">' + b.yours + '</strong> · Correcta: <strong style="color:#22c55e">' + b.right + '</strong></div><div style="margin-top:6px;font-size:.82rem;color:var(--text4);line-height:1.5">' + md(b.explanation) + '</div></div></div>'; });
+    wrongHtml += '</div>';
+  }
+  var rightHtml = '';
+  if (right.length) {
+    rightHtml = '<div class="results-breakdown" style="margin-top:20px"><div style="font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;color:#22c55e;margin-bottom:10px">✅ Correctas</div>';
+    right.forEach(function(b) { rightHtml += '<div class="rb-item"><div class="rb-icon correct">✓</div><div class="rb-text">' + md(b.q) + '</div></div>'; });
+    rightHtml += '</div>';
+  }
+  document.getElementById('quizBody').innerHTML =
+    '<div class="quiz-results"><div class="results-label">Resultado en</div><div class="lab-title">' + s.topic.name + '</div><div class="results-score" style="color:' + (pct>=70?'#22c55e':pct>=50?'#f59e0b':'#ef4444') + '">' + pct + '%</div><div class="results-label">' + correct + '/10 correctas</div><div class="results-msg" style="color:' + mc + '">' + msg + '</div></div>' +
+    wrongHtml + rightHtml +
+    '<div class="results-actions"><button class="quiz-nav-btn primary" style="background:' + s.color + '" onclick="openQuiz(quizState.topic,quizState.area)">🔄 Repetir</button><button class="quiz-nav-btn sec" onclick="document.getElementById(\'quizOverlay\').classList.remove(\'active\')">✕ Cerrar</button></div>';
+}
+
+// ══════════════════════════════════════════════
+// 3. INTERACTIVE CLINICAL CASES
+// ══════════════════════════════════════════════
+var clinicalState = null;
+async function openClinicalCase(topic, area) {
+  openFullModal('clinicalModal');
+  var color = area.color;
+  var cont = document.getElementById('clinicalModalContent');
+  cont.innerHTML = '<div style="text-align:center;padding:40px"><div class="lab-spinner" style="border-top-color:' + color + ';width:40px;height:40px;border:3px solid var(--card-border);border-top-color:' + color + ';border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px"></div><div style="color:var(--text5)">Generando caso clinico sobre ' + topic.name + '...</div></div>';
+  var prompt = 'Genera un caso clinico interactivo paso a paso sobre "' + topic.name + '" en odontologia. Responde UNICAMENTE en JSON valido con esta estructura:\n{"title":"Titulo del caso","patient":"Descripcion del paciente (edad, sexo, motivo de consulta, antecedentes)","steps":[{"question":"Pregunta del paso","options":["Opcion A","Opcion B","Opcion C","Opcion D"],"correct":0,"explanation":"Explicacion detallada de por que es correcta"}]}\nGenera exactamente 5 pasos progresivos: 1) Evaluacion inicial, 2) Examenes diagnosticos, 3) Diagnostico, 4) Plan de tratamiento, 5) Seguimiento. En espanol con terminologia tecnica en *ingles*.';
+  try {
+    var raw = await askAI([{role:'user',content:prompt}]);
+    var jsonMatch = raw.match(/\{[\s\S]*\}/); if (!jsonMatch) throw new Error('Parse error');
+    var caseData = JSON.parse(jsonMatch[0]);
+    clinicalState = { data: caseData, current: 0, answers: [], color: color, topic: topic };
+    renderClinicalStep();
+  } catch (err) {
+    cont.innerHTML = '<div style="color:#f87171;padding:20px">Error generando caso clinico: ' + err.message + '</div>';
+  }
+}
+function renderClinicalStep() {
+  var s = clinicalState;
+  var c = s.data;
+  var cont = document.getElementById('clinicalModalContent');
+  if (s.current >= c.steps.length) { renderClinicalResults(); return; }
+  var step = c.steps[s.current];
+  var answered = s.answers[s.current] !== undefined;
+  var letters = ['A','B','C','D'];
+  var optHtml = '';
+  step.options.forEach(function(opt, i) {
+    var cls = 'quiz-opt';
+    if (answered) { cls += ' locked'; if (i===step.correct) cls += ' correct'; else if (i===s.answers[s.current] && i!==step.correct) cls += ' wrong'; }
+    optHtml += '<div class="' + cls + '" data-ci="' + i + '"><div class="opt-letter">' + letters[i] + '</div><div class="opt-text">' + md(opt) + '</div></div>';
+  });
+  cont.innerHTML =
+    '<div style="margin-bottom:20px"><div class="quiz-badge" style="background:' + s.color + '22;color:' + s.color + '">🏥 Caso Clinico</div><div class="lab-title">' + c.title + '</div></div>' +
+    '<div style="background:var(--bg3);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:20px;font-size:.86rem;color:var(--text3);line-height:1.6"><strong>Paciente:</strong> ' + c.patient + '</div>' +
+    '<div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:' + s.color + ';margin-bottom:8px">Paso ' + (s.current+1) + ' de ' + c.steps.length + '</div>' +
+    '<div class="quiz-progress-bar" style="margin-bottom:16px"><div style="height:100%;border-radius:3px;background:' + s.color + ';width:' + (((s.current+1)/c.steps.length)*100) + '%;transition:width .4s"></div></div>' +
+    '<div class="quiz-q-text">' + md(step.question) + '</div>' +
+    '<div class="quiz-options">' + optHtml + '</div>' +
+    '<div class="quiz-explanation ' + (answered?'visible':'') + '" style="--accent:' + s.color + '">' + (answered?md('**Explicacion:** '+step.explanation):'') + '</div>' +
+    (answered ? '<div style="text-align:center;margin-top:16px"><button class="quiz-nav-btn primary" style="background:' + s.color + '" id="clinicalNext">' + (s.current < c.steps.length - 1 ? 'Siguiente paso →' : '📊 Ver resultados') + '</button></div>' : '');
+  if (!answered) {
+    document.querySelectorAll('[data-ci]').forEach(function(o) {
+      o.onclick = function() {
+        s.answers[s.current] = +o.dataset.ci;
+        renderClinicalStep();
+      };
+    });
+  }
+  var nb = document.getElementById('clinicalNext');
+  if (nb) nb.onclick = function() { s.current++; renderClinicalStep(); };
+}
+function renderClinicalResults() {
+  var s = clinicalState;
+  var c = s.data;
+  var correct = 0;
+  c.steps.forEach(function(step, i) { if (s.answers[i] === step.correct) correct++; });
+  var pct = Math.round((correct / c.steps.length) * 100);
+  var cont = document.getElementById('clinicalModalContent');
+  var stepsHtml = '';
+  c.steps.forEach(function(step, i) {
+    var ok = s.answers[i] === step.correct;
+    var L = ['A','B','C','D'];
+    stepsHtml += '<div class="rb-item"><div class="rb-icon ' + (ok?'correct':'wrong') + '">' + (ok?'✓':'✗') + '</div><div style="flex:1"><div class="rb-text"><strong>Paso ' + (i+1) + ':</strong> ' + step.question + '</div><div class="rb-answer">Tu: ' + L[s.answers[i]] + ' · Correcta: ' + L[step.correct] + '</div></div></div>';
+  });
+  cont.innerHTML =
+    '<div class="quiz-results"><div class="quiz-badge" style="background:' + s.color + '22;color:' + s.color + '">🏥 Caso Clinico</div><div class="lab-title">' + c.title + '</div><div class="results-score" style="color:' + (pct>=70?'#22c55e':pct>=50?'#f59e0b':'#ef4444') + '">' + pct + '%</div><div class="results-label">' + correct + '/' + c.steps.length + ' pasos correctos</div></div>' +
+    '<div class="results-breakdown">' + stepsHtml + '</div>' +
+    '<div class="results-actions"><button class="quiz-nav-btn primary" style="background:' + s.color + '" onclick="openClinicalCase(clinicalState.topic,{color:clinicalState.color})">🔄 Nuevo caso</button><button class="quiz-nav-btn sec" onclick="closeFullModal(\'clinicalModal\')">✕ Cerrar</button></div>';
+}
+
+// ══════════════════════════════════════════════
+// 4. FLASHCARDS WITH SPACED REPETITION
+// ══════════════════════════════════════════════
+var flashState = null;
+async function openFlashcards(topic, area) {
+  openFullModal('flashcardModal');
+  var color = area.color;
+  var cont = document.getElementById('flashcardModalContent');
+  var topicKey = 'fc_' + topic.name.replace(/\s/g, '_');
+  var saved = getFlashcardState(topicKey);
+
+  if (saved && saved.cards && saved.cards.length > 0) {
+    flashState = { cards: saved.cards, boxes: saved.boxes || saved.cards.map(function() { return 1; }), current: 0, color: color, topic: topic, topicKey: topicKey, flipped: false };
+    sortFlashcards();
+    renderFlashcard();
+    return;
+  }
+
+  cont.innerHTML = '<div style="text-align:center;padding:40px"><div class="lab-spinner" style="border-top-color:' + color + ';width:40px;height:40px;border:3px solid var(--card-border);border-top-color:' + color + ';border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px"></div><div style="color:var(--text5)">Generando flashcards sobre ' + topic.name + '...</div></div>';
+
+  var prompt = 'Genera exactamente 10 flashcards sobre "' + topic.name + '" en odontologia. Responde UNICAMENTE en JSON valido:\n[{"front":"Pregunta o concepto","back":"Respuesta detallada"}]\nEn espanol con terminologia tecnica. Variedad: definiciones, mecanismos, protocolos, datos clinicos.';
+  try {
+    var raw = await askAI([{role:'user',content:prompt}]);
+    var jsonMatch = raw.match(/\[[\s\S]*\]/); if (!jsonMatch) throw new Error('Parse error');
+    var cards = JSON.parse(jsonMatch[0]).slice(0, 10);
+    var boxes = cards.map(function() { return 1; });
+    flashState = { cards: cards, boxes: boxes, current: 0, color: color, topic: topic, topicKey: topicKey, flipped: false };
+    setFlashcardState(topicKey, { cards: cards, boxes: boxes });
+    renderFlashcard();
+  } catch (err) {
+    cont.innerHTML = '<div style="color:#f87171;padding:20px">Error: ' + err.message + '</div>';
+  }
+}
+function sortFlashcards() {
+  // Leitner: lower boxes come first
+  var indices = flashState.cards.map(function(_, i) { return i; });
+  indices.sort(function(a, b) { return flashState.boxes[a] - flashState.boxes[b]; });
+  var newCards = indices.map(function(i) { return flashState.cards[i]; });
+  var newBoxes = indices.map(function(i) { return flashState.boxes[i]; });
+  flashState.cards = newCards;
+  flashState.boxes = newBoxes;
+}
+function renderFlashcard() {
+  var s = flashState;
+  var cont = document.getElementById('flashcardModalContent');
+  var mastered = s.boxes.filter(function(b) { return b >= 4; }).length;
+  var remaining = s.cards.length - mastered;
+  var card = s.cards[s.current];
+  cont.innerHTML =
+    '<div style="text-align:center;margin-bottom:16px"><div class="quiz-badge" style="background:' + s.color + '22;color:' + s.color + '">🃏 Flashcards</div><div class="lab-title">' + s.topic.name + '</div></div>' +
+    '<div class="flashcard-progress">Tarjeta ' + (s.current+1) + ' de ' + s.cards.length + ' · ✅ Dominadas: ' + mastered + ' · 📚 Pendientes: ' + remaining + ' · Box: ' + s.boxes[s.current] + '</div>' +
+    '<div class="flashcard-container"><div class="flashcard' + (s.flipped ? ' flipped' : '') + '" id="flashcardEl">' +
+      '<div class="flashcard-face flashcard-front" style="border-color:' + s.color + '44"><h3 style="color:' + s.color + '">Pregunta</h3><p>' + md(card.front) + '</p><div style="margin-top:16px;font-size:.72rem;color:var(--text6)">Click para voltear</div></div>' +
+      '<div class="flashcard-face flashcard-back" style="border-color:' + s.color + '44"><h3 style="color:' + s.color + '">Respuesta</h3><p>' + md(card.back) + '</p></div>' +
+    '</div></div>' +
+    (s.flipped ? '<div class="flashcard-rating"><button style="background:#22c55e" onclick="rateFlashcard(\'easy\')">😎 Facil</button><button style="background:#f59e0b" onclick="rateFlashcard(\'medium\')">🤔 Medio</button><button style="background:#ef4444" onclick="rateFlashcard(\'hard\')">😰 Dificil</button></div>' : '') +
+    '<div style="display:flex;justify-content:center;gap:12px;margin-top:20px"><button class="quiz-nav-btn sec" onclick="closeFullModal(\'flashcardModal\')">✕ Cerrar</button><button class="quiz-nav-btn sec" onclick="resetFlashcards()">🔄 Regenerar</button></div>';
+  var fc = document.getElementById('flashcardEl');
+  if (fc) fc.onclick = function() { s.flipped = !s.flipped; renderFlashcard(); };
+}
+function rateFlashcard(rating) {
+  var s = flashState;
+  if (rating === 'easy') s.boxes[s.current] = Math.min(s.boxes[s.current] + 2, 5);
+  else if (rating === 'medium') s.boxes[s.current] = Math.min(s.boxes[s.current] + 1, 5);
+  else s.boxes[s.current] = Math.max(s.boxes[s.current] - 1, 1);
+  setFlashcardState(s.topicKey, { cards: s.cards, boxes: s.boxes });
+  s.flipped = false;
+  s.current = (s.current + 1) % s.cards.length;
+  renderFlashcard();
+}
+function resetFlashcards() {
+  if (flashState) {
+    setFlashcardState(flashState.topicKey, null);
+    openFlashcards(flashState.topic, { color: flashState.color });
+  }
+}
+
+// ══════════════════════════════════════════════
+// 5. MIXED EXAM MODE
+// ══════════════════════════════════════════════
+var examState = null;
+var examTimerInterval = null;
+document.getElementById('btnExam').onclick = function() { startExam(); };
+
+async function startExam() {
+  openFullModal('examModal');
+  var cont = document.getElementById('examModalContent');
+  cont.innerHTML = '<div style="text-align:center;padding:40px"><div class="lab-spinner" style="border-top-color:#7c3aed;width:40px;height:40px;border:3px solid var(--card-border);border-top-color:#7c3aed;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px"></div><div style="color:var(--text5)">Generando examen mixto de 30 preguntas...</div></div>';
+
+  var allTopics = [];
+  DATA.forEach(function(area) {
+    area.topics.forEach(function(t) {
+      allTopics.push({ name: t.name, areaId: area.id, areaTitle: area.title, color: area.color });
+    });
+  });
+
+  // Pick 5 random topics to generate 6 questions each = 30
+  var shuffled = allTopics.sort(function() { return Math.random() - 0.5; }).slice(0, 5);
+  var topicNames = shuffled.map(function(t) { return t.name; }).join(', ');
+
+  var prompt = 'Genera exactamente 30 preguntas de opcion multiple para un examen mixto de odontologia. Los temas son: ' + topicNames + '. 6 preguntas por tema. Nivel avanzado.\nResponde UNICAMENTE en JSON valido:\n[{"q":"Pregunta","options":["A) ...","B) ...","C) ...","D) ..."],"correct":0,"explanation":"Explicacion","topic":"Nombre del tema exacto"}]\nEn espanol con terminologia tecnica en *ingles*.';
+
+  try {
+    var raw = await askAI([{role:'user',content:prompt}]);
+    var jsonMatch = raw.match(/\[[\s\S]*\]/); if (!jsonMatch) throw new Error('Parse error');
+    var questions = JSON.parse(jsonMatch[0]).slice(0, 30);
+    examState = {
+      questions: questions,
+      answers: new Array(questions.length).fill(null),
+      current: 0,
+      topicMap: {},
+      timeLeft: 45 * 60
+    };
+    shuffled.forEach(function(t) { examState.topicMap[t.name] = t; });
+    startExamTimer();
+    renderExamQ();
+  } catch (err) {
+    cont.innerHTML = '<div style="color:#f87171;padding:20px">Error: ' + err.message + '</div>';
+  }
+}
+function startExamTimer() {
+  if (examTimerInterval) clearInterval(examTimerInterval);
+  examTimerInterval = setInterval(function() {
+    examState.timeLeft--;
+    var timerEl = document.getElementById('examTimer');
+    if (timerEl) {
+      var min = Math.floor(examState.timeLeft / 60);
+      var sec = examState.timeLeft % 60;
+      timerEl.textContent = (min < 10 ? '0' : '') + min + ':' + (sec < 10 ? '0' : '') + sec;
+      timerEl.className = 'exam-timer' + (examState.timeLeft < 300 ? ' danger' : examState.timeLeft < 600 ? ' warning' : '');
+    }
+    if (examState.timeLeft <= 0) {
+      clearInterval(examTimerInterval);
+      renderExamResults();
+    }
+  }, 1000);
+}
+function renderExamQ() {
+  var s = examState;
+  var q = s.questions[s.current];
+  var n = s.current + 1;
+  var total = s.questions.length;
+  var answered = s.answers[s.current] !== null;
+  var min = Math.floor(s.timeLeft / 60);
+  var sec = s.timeLeft % 60;
+  var letters = ['A','B','C','D'];
+  var optHtml = '';
+  q.options.forEach(function(opt, i) {
+    var cls = 'quiz-opt';
+    if (answered) { cls += ' locked'; if (i===q.correct) cls += ' correct'; else if (i===s.answers[s.current] && i!==q.correct) cls += ' wrong'; }
+    optHtml += '<div class="' + cls + '" data-ei="' + i + '"><div class="opt-letter">' + letters[i] + '</div><div class="opt-text">' + md(opt.replace(/^[A-D]\)\s*/,'')) + '</div></div>';
+  });
+  var cont = document.getElementById('examModalContent');
+  cont.innerHTML =
+    '<div style="text-align:center;margin-bottom:16px"><div class="quiz-badge" style="background:#7c3aed22;color:#7c3aed">📝 Examen Mixto</div></div>' +
+    '<div class="exam-timer" id="examTimer">' + (min<10?'0':'') + min + ':' + (sec<10?'0':'') + sec + '</div>' +
+    '<div class="quiz-progress-bar"><div style="height:100%;border-radius:3px;background:#7c3aed;width:' + ((n/total)*100) + '%;transition:width .4s"></div></div>' +
+    '<div style="font-size:.72rem;color:var(--text6);text-align:right;margin:6px 0">' + n + ' / ' + total + '</div>' +
+    '<div style="font-size:.72rem;color:var(--text5);margin-bottom:8px">Tema: ' + (q.topic || 'Mixto') + '</div>' +
+    '<div class="quiz-q-text">' + md(q.q) + '</div>' +
+    '<div class="quiz-options">' + optHtml + '</div>' +
+    '<div class="quiz-explanation ' + (answered?'visible':'') + '" style="--accent:#7c3aed">' + (answered?md('**Explicacion:** '+q.explanation):'') + '</div>' +
+    '<div class="quiz-nav">' +
+      '<button class="quiz-nav-btn sec" ' + (s.current===0?'disabled':'') + ' id="ePrev">← Anterior</button>' +
+      '<div>' +
+        (!answered ? '<button class="quiz-nav-btn primary" style="background:#7c3aed" id="eCheck" disabled>Verificar</button>' : '') +
+        (answered ? (s.current < total - 1 ? '<button class="quiz-nav-btn primary" style="background:#7c3aed" id="eNext">Siguiente →</button>' : '<button class="quiz-nav-btn primary" style="background:#7c3aed" id="eFinish">📊 Resultados</button>') : '') +
+      '</div>' +
+    '</div>';
+  if (!answered) {
+    var sel = null;
+    document.querySelectorAll('[data-ei]').forEach(function(o) {
+      o.onclick = function() { document.querySelectorAll('[data-ei]').forEach(function(x){x.classList.remove('selected');}); o.classList.add('selected'); sel=+o.dataset.ei; var cb=document.getElementById('eCheck'); if(cb) cb.disabled=false; };
+    });
+    var cb = document.getElementById('eCheck'); if(cb) cb.onclick = function() { if(sel!==null) { s.answers[s.current]=sel; renderExamQ(); } };
+  }
+  var pb = document.getElementById('ePrev'); if(pb) pb.onclick = function() { if(s.current>0){s.current--;renderExamQ();} };
+  var nb = document.getElementById('eNext'); if(nb) nb.onclick = function() { s.current++; renderExamQ(); };
+  var fb = document.getElementById('eFinish'); if(fb) fb.onclick = function() { clearInterval(examTimerInterval); renderExamResults(); };
+}
+function renderExamResults() {
+  if (examTimerInterval) clearInterval(examTimerInterval);
+  var s = examState;
+  var correct = 0;
+  var byTopic = {};
+  s.questions.forEach(function(q, i) {
+    var ok = s.answers[i] === q.correct;
+    if (ok) correct++;
+    var t = q.topic || 'Otro';
+    if (!byTopic[t]) byTopic[t] = { correct: 0, total: 0 };
+    byTopic[t].total++;
+    if (ok) byTopic[t].correct++;
+  });
+  var pct = Math.round((correct / s.questions.length) * 100);
+  // Save exam to history
+  var examHistory = storeGet(STORE_KEYS.examHistory, []);
+  examHistory.push({ score: correct, total: s.questions.length, pct: pct, date: new Date().toISOString(), byTopic: byTopic });
+  storeSet(STORE_KEYS.examHistory, examHistory);
+  var breakdownHtml = '';
+  Object.keys(byTopic).forEach(function(topic) {
+    var d = byTopic[topic];
+    var tpct = Math.round((d.correct / d.total) * 100);
+    var clr = tpct >= 80 ? '#22c55e' : tpct >= 50 ? '#f59e0b' : '#ef4444';
+    breakdownHtml += '<div class="rb-item"><div class="rb-icon" style="background:' + clr + '22;color:' + clr + '">' + tpct + '%</div><div class="rb-text">' + topic + ' (' + d.correct + '/' + d.total + ')</div></div>';
+  });
+  var cont = document.getElementById('examModalContent');
+  cont.innerHTML =
+    '<div class="quiz-results"><div class="quiz-badge" style="background:#7c3aed22;color:#7c3aed">📝 Examen Mixto — Resultados</div><div class="results-score" style="color:' + (pct>=70?'#22c55e':pct>=50?'#f59e0b':'#ef4444') + '">' + pct + '%</div><div class="results-label">' + correct + '/' + s.questions.length + ' correctas</div></div>' +
+    '<div class="results-breakdown"><div style="font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;color:var(--text4);margin-bottom:10px">Desglose por area</div>' + breakdownHtml + '</div>' +
+    '<div class="results-actions"><button class="quiz-nav-btn primary" style="background:#7c3aed" onclick="startExam()">🔄 Nuevo examen</button><button class="quiz-nav-btn sec" onclick="clearInterval(examTimerInterval);closeFullModal(\'examModal\')">✕ Cerrar</button></div>';
+}
+
+// ══════════════════════════════════════════════
+// 2. WEAKNESS MAP / PROGRESS DASHBOARD
+// ══════════════════════════════════════════════
+document.getElementById('btnProgress').onclick = function() { renderProgressDashboard(); };
+
+function renderProgressDashboard() {
+  openFullModal('progressModal');
+  var cont = document.getElementById('progressModalContent');
+  var history = storeGet(STORE_KEYS.quizHistory, []);
+  var examHistory = storeGet(STORE_KEYS.examHistory, []);
+
+  // Calculate per-topic best scores
+  var topicScores = {};
+  history.forEach(function(h) {
+    var pct = Math.round((h.score / h.total) * 100);
+    if (!topicScores[h.topicName] || pct > topicScores[h.topicName].pct) {
+      topicScores[h.topicName] = { pct: pct, date: h.date, areaId: h.areaId };
+    }
+  });
+
+  // Overall score
+  var allPcts = Object.values(topicScores).map(function(v) { return v.pct; });
+  var overallPct = allPcts.length > 0 ? Math.round(allPcts.reduce(function(a,b){return a+b;},0) / allPcts.length) : 0;
+
+  // Build topic list
+  var topicListHtml = '';
+  var weakTopics = [];
+  DATA.forEach(function(area) {
+    topicListHtml += '<div style="margin-top:16px;font-size:.82rem;font-weight:800;color:' + area.color + '">' + area.icon + ' ' + area.title + '</div>';
+    area.topics.forEach(function(t) {
+      var sc = topicScores[t.name];
+      var emoji = '⚪';
+      var pctText = 'No intentado';
+      var pctVal = -1;
+      if (sc) {
+        pctVal = sc.pct;
+        if (sc.pct > 80) emoji = '🟢';
+        else if (sc.pct >= 50) emoji = '🟡';
+        else emoji = '🔴';
+        pctText = sc.pct + '% (' + new Date(sc.date).toLocaleDateString('es') + ')';
+      }
+      weakTopics.push({ name: t.name, pct: pctVal, area: area.title });
+      topicListHtml += '<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:.84rem"><span>' + emoji + '</span><span style="flex:1;color:var(--text2)">' + t.name + '</span><span style="color:var(--text5);font-size:.78rem">' + pctText + '</span></div>';
+    });
+  });
+
+  // Suggested study order (weakest first)
+  weakTopics.sort(function(a, b) { return a.pct - b.pct; });
+  var suggestedHtml = '';
+  weakTopics.slice(0, 10).forEach(function(t, i) {
+    suggestedHtml += '<div style="display:flex;align-items:center;gap:10px;padding:6px 0;font-size:.82rem"><span style="color:var(--text5);font-weight:800">' + (i+1) + '.</span><span style="flex:1;color:var(--text2)">' + t.name + '</span><span style="color:var(--text6);font-size:.76rem">' + (t.pct >= 0 ? t.pct + '%' : 'Pendiente') + '</span></div>';
+  });
+
+  // Quiz history timeline
+  var timelineHtml = '';
+  var recent = history.slice(-10).reverse();
+  recent.forEach(function(h) {
+    var d = new Date(h.date);
+    var p = Math.round((h.score/h.total)*100);
+    var clr = p >= 80 ? '#22c55e' : p >= 50 ? '#f59e0b' : '#ef4444';
+    timelineHtml += '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:.82rem"><span style="color:' + clr + ';font-weight:800;min-width:40px">' + p + '%</span><span style="flex:1;color:var(--text2)">' + h.topicName + '</span><span style="color:var(--text6);font-size:.72rem">' + d.toLocaleDateString('es') + ' ' + d.toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'}) + '</span></div>';
+  });
+
+  cont.innerHTML =
+    '<div style="text-align:center;margin-bottom:24px"><div class="quiz-badge" style="background:#7c3aed22;color:#7c3aed">📊 Mi Progreso</div><div class="results-score" style="color:' + (overallPct>=70?'#22c55e':overallPct>=50?'#f59e0b':'#ef4444') + '">' + overallPct + '%</div><div class="results-label">Puntuacion general · ' + allPcts.length + ' temas evaluados de ' + weakTopics.length + '</div></div>' +
+    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">' +
+      '<div><div style="font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;color:var(--text4);margin-bottom:10px">Mapa de temas</div>' + topicListHtml + '</div>' +
+      '<div><div style="font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;color:var(--text4);margin-bottom:10px">📌 Orden de estudio sugerido (debilidades primero)</div>' + suggestedHtml +
+        (timelineHtml ? '<div style="margin-top:24px;font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;color:var(--text4);margin-bottom:10px">🕐 Historial reciente</div>' + timelineHtml : '') +
+        (examHistory.length > 0 ? '<div style="margin-top:24px;font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;color:var(--text4);margin-bottom:10px">📝 Examenes</div>' + examHistory.slice(-5).reverse().map(function(e) { return '<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:.82rem"><span style="color:' + (e.pct>=70?'#22c55e':e.pct>=50?'#f59e0b':'#ef4444') + ';font-weight:800">' + e.pct + '%</span><span style="color:var(--text5)">' + new Date(e.date).toLocaleDateString('es') + '</span></div>'; }).join('') : '') +
+      '</div>' +
+    '</div>';
+}
+
+// ══════════════════════════════════════════════
+// 10. AI STUDY CALENDAR
+// ══════════════════════════════════════════════
+document.getElementById('btnCalendar').onclick = function() { openCalendarModal(); };
+
+function openCalendarModal() {
+  openFullModal('calendarModal');
+  var cont = document.getElementById('calendarModalContent');
+  cont.innerHTML =
+    '<div style="text-align:center;margin-bottom:20px"><div class="quiz-badge" style="background:#f59e0b22;color:#f59e0b">📅 Plan de Estudio</div><div class="lab-title">Genera tu plan personalizado</div></div>' +
+    '<div style="text-align:center;margin:30px 0">' +
+      '<label style="font-size:.88rem;color:var(--text3)">¿Cuando es tu examen?</label><br>' +
+      '<input type="date" id="examDateInput" style="margin-top:10px;padding:10px 18px;border-radius:10px;border:1px solid var(--line);background:var(--input-bg);color:var(--text);font-size:1rem;outline:none">' +
+      '<br><button class="quiz-nav-btn primary" style="background:#f59e0b;margin-top:16px" id="genCalendarBtn">✦ Generar plan con IA</button>' +
+    '</div>';
+  document.getElementById('genCalendarBtn').onclick = generateStudyCalendar;
+}
+
+async function generateStudyCalendar() {
+  var dateInput = document.getElementById('examDateInput');
+  if (!dateInput.value) { alert('Selecciona una fecha de examen'); return; }
+  var examDate = new Date(dateInput.value);
+  var today = new Date();
+  var daysUntil = Math.max(1, Math.ceil((examDate - today) / (1000*60*60*24)));
+  var weeks = Math.max(1, Math.ceil(daysUntil / 7));
+
+  var cont = document.getElementById('calendarModalContent');
+  cont.innerHTML = '<div style="text-align:center;padding:40px"><div class="lab-spinner" style="border-top-color:#f59e0b;width:40px;height:40px;border:3px solid var(--card-border);border-top-color:#f59e0b;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px"></div><div style="color:var(--text5)">Generando plan de estudio para ' + weeks + ' semanas...</div></div>';
+
+  // Build weakness info
+  var history = storeGet(STORE_KEYS.quizHistory, []);
+  var topicScores = {};
+  history.forEach(function(h) {
+    var pct = Math.round((h.score / h.total) * 100);
+    if (!topicScores[h.topicName] || pct > topicScores[h.topicName]) topicScores[h.topicName] = pct;
+  });
+  var weaknessInfo = '';
+  DATA.forEach(function(area) {
+    area.topics.forEach(function(t) {
+      var sc = topicScores[t.name];
+      weaknessInfo += t.name + ': ' + (sc !== undefined ? sc + '%' : 'no evaluado') + '\n';
+    });
+  });
+
+  var prompt = 'Genera un plan de estudio semanal de odontologia. Faltan ' + daysUntil + ' dias (' + weeks + ' semanas) para el examen. Datos de debilidades del estudiante:\n' + weaknessInfo + '\nResponde UNICAMENTE en JSON valido:\n[{"week":1,"days":[{"day":"Lunes","topics":["Tema 1","Tema 2"],"focus":"Descripcion breve del enfoque"},{"day":"Martes","topics":["Tema"],"focus":"..."}]}]\nMaximo ' + Math.min(weeks, 6) + ' semanas. Prioriza temas debiles. En espanol. Incluye dias de repaso.';
+
+  try {
+    var raw = await askAI([{role:'user',content:prompt}]);
+    var jsonMatch = raw.match(/\[[\s\S]*\]/); if (!jsonMatch) throw new Error('Parse error');
+    var plan = JSON.parse(jsonMatch[0]);
+    renderCalendar(plan, examDate);
+  } catch (err) {
+    cont.innerHTML = '<div style="color:#f87171;padding:20px">Error: ' + err.message + '</div>';
+  }
+}
+
+function renderCalendar(plan, examDate) {
+  var cont = document.getElementById('calendarModalContent');
+  var html = '<div style="text-align:center;margin-bottom:20px"><div class="quiz-badge" style="background:#f59e0b22;color:#f59e0b">📅 Plan de Estudio</div><div class="lab-title">Tu calendario personalizado</div><div style="color:var(--text5);font-size:.82rem;margin-top:6px">Examen: ' + examDate.toLocaleDateString('es', {weekday:'long',year:'numeric',month:'long',day:'numeric'}) + '</div></div>';
+
+  plan.forEach(function(week) {
+    html += '<div style="margin-top:20px"><div style="font-size:.82rem;font-weight:800;color:var(--text4);margin-bottom:10px">Semana ' + week.week + '</div><div class="calendar-grid">';
+    (week.days || []).forEach(function(day) {
+      var topicsHtml = (day.topics || []).map(function(t) {
+        return '<div class="day-topic" style="background:var(--line)">' + t + '</div>';
+      }).join('');
+      html += '<div class="calendar-day"><div class="day-label">' + day.day + '</div>' + topicsHtml + '<div style="font-size:.64rem;color:var(--text6);margin-top:4px">' + (day.focus || '') + '</div></div>';
+    });
+    html += '</div></div>';
+  });
+
+  html += '<div style="text-align:center;margin-top:20px"><button class="quiz-nav-btn sec" onclick="openCalendarModal()">🔄 Regenerar</button></div>';
+  cont.innerHTML = html;
 }
 
 // ══════════════════════════════════════════════
 // AREA MODAL
 // ══════════════════════════════════════════════
 function openAreaModal(item) {
-  document.getElementById('modalContent').innerHTML = `
-    <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px"><span style="font-size:2rem">${item.icon}</span><div><h2 style="color:${item.color};font-size:1.3rem">${item.title}</h2><div style="color:#666;font-size:.8rem">${item.subtitle}</div></div></div>
-    <p style="color:#888;font-size:.88rem;line-height:1.6;margin-bottom:20px">${item.description}</p>
-    ${item.topics.map(t=>`<div style="display:flex;gap:10px;padding:9px 0;border-bottom:1px solid #1e1e2e;font-size:.85rem"><span style="color:${item.color}">▸</span><div><strong>${t.name}</strong><div style="color:#555;font-size:.78rem;margin-top:2px">${t.desc}</div></div></div>`).join('')}`;
+  document.getElementById('modalContent').innerHTML =
+    '<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px"><span style="font-size:2rem">' + item.icon + '</span><div><h2 style="color:' + item.color + ';font-size:1.3rem">' + item.title + '</h2><div style="color:var(--text5);font-size:.8rem">' + item.subtitle + '</div></div></div>' +
+    '<p style="color:var(--text4);font-size:.88rem;line-height:1.6;margin-bottom:20px">' + item.description + '</p>' +
+    item.topics.map(function(t) { return '<div style="display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:.85rem"><span style="color:' + item.color + '">▸</span><div><strong>' + t.name + '</strong><div style="color:var(--text6);font-size:.78rem;margin-top:2px">' + t.desc + '</div></div></div>'; }).join('');
   document.getElementById('modalOverlay').classList.add('active');
 }
 
@@ -736,13 +1445,13 @@ function openAreaModal(item) {
 // TIMELINE
 // ══════════════════════════════════════════════
 function renderTimeline() {
-  const tl = document.getElementById('timeline');
-  TIMELINE.forEach((item,i) => {
-    const el = document.createElement('div'); el.className = 'timeline-item';
-    el.innerHTML = `<div class="tl-label" style="color:${item.color}">${item.label}</div><div class="tl-title">${item.title}</div><div class="tl-desc">${item.desc}</div>`;
+  var tl = document.getElementById('timeline');
+  TIMELINE.forEach(function(item, i) {
+    var el = document.createElement('div'); el.className = 'timeline-item';
+    el.innerHTML = '<div class="tl-label" style="color:' + item.color + '">' + item.label + '</div><div class="tl-title">' + item.title + '</div><div class="tl-desc">' + item.desc + '</div>';
     tl.appendChild(el);
-    const s = document.createElement('style');
-    s.textContent = `.timeline-item:nth-child(${i+1})::before{content:'';width:10px;height:10px;background:${item.color};border-color:${item.color};border-radius:50%;position:absolute;left:-26px;top:6px;border:2px solid}`;
+    var s = document.createElement('style');
+    s.textContent = '.timeline-item:nth-child(' + (i+1) + ')::before{content:\'\';width:10px;height:10px;background:' + item.color + ';border-color:' + item.color + ';border-radius:50%;position:absolute;left:-26px;top:6px;border:2px solid}';
     document.head.appendChild(s);
   });
 }
@@ -750,16 +1459,30 @@ function renderTimeline() {
 // ══════════════════════════════════════════════
 // EVENTS
 // ══════════════════════════════════════════════
-document.getElementById('modalClose').onclick = () => document.getElementById('modalOverlay').classList.remove('active');
-document.getElementById('modalOverlay').onclick = e => { if(e.target===e.currentTarget) e.currentTarget.classList.remove('active'); };
-document.getElementById('labClose').onclick = () => document.getElementById('labOverlay').classList.remove('active');
-document.getElementById('labOverlay').onclick = e => { if(e.target===e.currentTarget) e.currentTarget.classList.remove('active'); };
-document.getElementById('quizClose').onclick = () => document.getElementById('quizOverlay').classList.remove('active');
-document.getElementById('quizOverlay').onclick = e => { if(e.target===e.currentTarget) e.currentTarget.classList.remove('active'); };
-document.getElementById('searchInput').oninput = e => renderGrid(e.target.value.toLowerCase().trim());
-document.onkeydown = e => {
-  if(e.key==='Escape'){ document.querySelectorAll('.overlay,.modal-overlay,.lightbox').forEach(o=>o.classList.remove('active')); }
-  if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();document.getElementById('searchInput').focus();}
+document.getElementById('modalClose').onclick = function() { document.getElementById('modalOverlay').classList.remove('active'); };
+document.getElementById('modalOverlay').onclick = function(e) { if(e.target===e.currentTarget) e.currentTarget.classList.remove('active'); };
+document.getElementById('labClose').onclick = function() { document.getElementById('labOverlay').classList.remove('active'); };
+document.getElementById('labOverlay').onclick = function(e) { if(e.target===e.currentTarget) e.currentTarget.classList.remove('active'); };
+document.getElementById('quizClose').onclick = function() { document.getElementById('quizOverlay').classList.remove('active'); };
+document.getElementById('quizOverlay').onclick = function(e) { if(e.target===e.currentTarget) e.currentTarget.classList.remove('active'); };
+document.getElementById('searchInput').oninput = function(e) { renderGrid(e.target.value.toLowerCase().trim()); };
+
+// Close full modals on background click
+document.querySelectorAll('.full-modal').forEach(function(modal) {
+  modal.onclick = function(e) {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+      if (examTimerInterval && modal.id === 'examModal') clearInterval(examTimerInterval);
+    }
+  };
+});
+
+document.onkeydown = function(e) {
+  if(e.key==='Escape'){
+    document.querySelectorAll('.overlay,.modal-overlay,.lightbox,.full-modal').forEach(function(o){o.classList.remove('active');});
+    if (examTimerInterval) clearInterval(examTimerInterval);
+  }
+  if(e.key==='/'&&['INPUT','TEXTAREA'].indexOf(document.activeElement.tagName)===-1){e.preventDefault();document.getElementById('searchInput').focus();}
 };
 
 renderProgress(); renderGrid(); renderTimeline();
