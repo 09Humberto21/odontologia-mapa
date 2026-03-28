@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mapa de Estudio — Odontología</title>
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/marked/marked.min.js" as="script">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
@@ -2176,9 +2177,22 @@ async function openLab(topic, area) {
   var prompt = 'Genera una METODOLOGIA DE ESTUDIO COMPLETA sobre: "' + topic.name + '" en odontologia.\nUsa Markdown rico: ## secciones, **bold**, *cursivas para terminos en ingles*, listas, tablas.\n\nEstructura:\n## 🔑 Key Concepts\n5-7 conceptos clave. Terminos en *ingles* con explicacion en espanol.\n\n## 📊 Evidencia Cientifica\nReferencia: "' + topic.article.title + '" (' + topic.article.authors + ', ' + topic.article.year + '). 4-5 hallazgos clave.\n\n## 🦷 Protocolo Clinico\n5-7 pasos numerados aplicables en hospital universitario.\n\n## 🎯 El Reto\nPregunta de analisis critico clinico desafiante.\n\nEspanol academico. Terminologia tecnica en *ingles*.';
 
   try {
-    var results = await Promise.all([askAI([{role:'user',content:prompt}]), pmcPromise]);
-    var response = results[0];
-    var pmcArticles = results[1];
+    var labCacheKey = 'lab_' + topic.name.replace(/[^a-zA-Z]/g,'');
+    var cachedResponse = getCached(labCacheKey);
+    var pmcArticles = [];
+    try { pmcArticles = await pmcPromise; } catch(e) {}
+    var response;
+    if (cachedResponse) {
+      response = cachedResponse;
+    } else {
+      response = '';
+      var labBodyEl = document.getElementById('labBody');
+      await askAI([{role:'user',content:prompt}], function(chunk) {
+        response += chunk;
+        labBodyEl.innerHTML = '<div class="md-content">' + md(response) + '</div><div style="text-align:center;padding:8px;color:var(--text6);font-size:var(--fs-xs)">⏳ Generando...</div>';
+      });
+      setCache(labCacheKey, response);
+    }
 
     var topicImages = getTopicImages(topic.name);
     var atlasHtml = '<div class="atlas-section">' +
@@ -2829,7 +2843,7 @@ document.onkeydown = function(e) {
   if(e.key==='/'&&['INPUT','TEXTAREA'].indexOf(document.activeElement.tagName)===-1){e.preventDefault();document.getElementById('searchInput').focus();}
 };
 
-renderProgress(); renderGrid(); renderTimeline();
+renderProgress(); renderGrid(); setTimeout(renderTimeline, 100);
 var tlToggle = document.getElementById('timelineToggle');
 if(tlToggle) tlToggle.onclick = function() { var t=document.getElementById('timeline'); t.style.display = t.style.display==='none'?'block':'none'; };
 
