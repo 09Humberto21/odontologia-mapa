@@ -2173,82 +2173,52 @@ async function openLab(topic, area) {
       '<div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:20px;justify-content:center">' +
         '<button class="action-btn" style="background:var(--code-bg);color:var(--text4);border:1px solid var(--input-border);padding:11px 20px;font-size:.88rem" onclick="exportPDF()">📄 Exportar PDF</button>' +
         '<button onclick="promptApiKey()" style="background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border:none;padding:10px 20px;border-radius:var(--r-full);font-size:var(--fs-sm);font-weight:700;cursor:pointer;font-family:Inter,sans-serif">✨ IA en tiempo real</button>' +
-        '<button class="action-btn" style="background:var(--code-bg);color:var(--text4);border:1px solid var(--input-border);padding:11px 20px;font-size:.88rem" onclick="document.getElementById(\'labOverlay\').classList.remove(\'active\')">✕ Cerrar</button>' +
+        '<button class="action-btn" style="background:var(--code-bg);color:var(--text4);border:1px solid var(--input-border);padding:11px 20px;font-size:.88rem" onclick="document.getElementById(&quot;labOverlay&quot;).classList.remove(&quot;active&quot;)">✕ Cerrar</button>' +
       '</div>';
     return;
   }
-  var pmcPromise = fetchPMCImages(topic.name);
-  var prompt = 'Genera una METODOLOGIA DE ESTUDIO COMPLETA sobre: "' + topic.name + '" en odontologia.\nUsa Markdown rico: ## secciones, **bold**, *cursivas para terminos en ingles*, listas, tablas.\n\nEstructura:\n## 🔑 Key Concepts\n5-7 conceptos clave. Terminos en *ingles* con explicacion en espanol.\n\n## 📊 Evidencia Cientifica\nReferencia: "' + topic.article.title + '" (' + topic.article.authors + ', ' + topic.article.year + '). 4-5 hallazgos clave.\n\n## 🦷 Protocolo Clinico\n5-7 pasos numerados aplicables en hospital universitario.\n\n## 🎯 El Reto\nPregunta de analisis critico clinico desafiante.\n\nEspanol academico. Terminologia tecnica en *ingles*.';
+  var prompt = 'Genera una METODOLOGIA DE ESTUDIO COMPLETA sobre: "' + topic.name + '" en odontologia. Usa Markdown: ## secciones, **bold**, *cursivas para terminos en ingles*, listas. Estructura: ## Key Concepts (5-7), ## Evidencia Cientifica (ref: ' + topic.article.title + ', ' + topic.article.year + '), ## Protocolo Clinico (5-7 pasos), ## El Reto (pregunta critica). Espanol academico, terminologia en *ingles*.';
 
   try {
     var labCacheKey = 'lab_' + topic.name.replace(/[^a-zA-Z]/g,'');
     var cachedResponse = getCached(labCacheKey);
-    var pmcArticles = [];
-    try { pmcArticles = await pmcPromise; } catch(e) {}
     var response;
     if (cachedResponse) {
       response = cachedResponse;
     } else {
       response = '';
       var labBodyEl = document.getElementById('labBody');
-      try {
-        await askAI([{role:'user',content:prompt}], function(chunk) {
-          response += chunk;
-          labBodyEl.innerHTML = '<div class="md-content">' + md(response) + '</div><div style="text-align:center;padding:8px;color:var(--text6);font-size:var(--fs-xs)">⏳ Generando...</div>';
-        });
-        if (response) setCache(labCacheKey, response);
-      } catch(streamErr) {
-        console.error('Lab streaming error:', streamErr);
-        if (!response) throw streamErr;
-      }
+      await askAI([{role:'user',content:prompt}], function(chunk) {
+        response += chunk;
+        labBodyEl.innerHTML = '<div class="md-content">' + md(response) + '</div>';
+      });
+      if (response) setCache(labCacheKey, response);
     }
 
-    var topicImages = getTopicImages(topic.name);
-    var atlasHtml = '<div class="atlas-section">' +
-      '<div class="atlas-title" style="color:' + color + '">🖼️ Atlas Clinico — Imagenes de Referencia</div>' +
-      '<div class="atlas-grid">';
-    topicImages.forEach(function(img) {
-      atlasHtml += '<div class="atlas-card" onclick="openLightbox(\'' + img.url.replace(/'/g, "\\'") + '\',\'' + img.title.replace(/'/g, "\\'") + '\')">' +
-        '<div class="atlas-tooltip">' + img.title + '</div>' +
-        '<img src="' + img.url + '" alt="' + img.title + '" loading="lazy" onerror="this.outerHTML=getSVGForTopic(\'' + topic.name.replace(/'/g, "\\'") + '\',\'' + color + '\')" />' +
-        '<div class="atlas-caption"><div class="atlas-caption-title">' + img.title + '</div><div class="atlas-caption-desc">' + img.desc + '</div><div class="atlas-caption-source">📷 ' + img.source + '</div></div></div>';
-    });
-    atlasHtml += '<div class="atlas-card" onclick="window.open(\'https://www.google.com/search?q=' + encodeURIComponent(topic.name + ' dental clinical photography') + '&tbm=isch&tbs=il:cl\',\'_blank\')">' +
-      '<div class="atlas-tooltip">Buscar mas imagenes</div>' +
-      '<div class="svg-placeholder" style="background:linear-gradient(135deg,' + color + '11,var(--bg));font-size:2.5rem">🔍</div>' +
-      '<div class="atlas-caption"><div class="atlas-caption-title">Buscar mas imagenes</div><div class="atlas-caption-desc">Google Images — fotografias clinicas reales</div><div class="atlas-caption-source" style="color:#22c55e">🔗 google.com/images</div></div></div>' +
-    '</div></div>';
-
     var allCitations = (ATLAS_CITATIONS[topic.name] || []).slice();
-    pmcArticles.forEach(function(a) {
-      if (!allCitations.find(function(c) { return c.title === a.title; })) {
-        allCitations.push({ title: a.title, authors: a.authors, journal: a.journal, year: a.year, pmid: a.pmcid, url: a.url });
-      }
-    });
     if (!allCitations.find(function(c) { return c.url === topic.article.url; })) {
       var pmidMatch = topic.article.url.match(/\/(\d+)\/?$/);
       allCitations.unshift({ title: topic.article.title, authors: topic.article.authors, journal: topic.article.journalShort, year: topic.article.year, url: topic.article.url, pmid: pmidMatch ? pmidMatch[1] : '' });
     }
-
     var citationsHtml = '';
     if (allCitations.length > 0) {
-      citationsHtml = '<div class="citations-section"><div class="atlas-title" style="color:' + color + '">📚 Citas Verificadas — PubMed / PMC</div>';
+      citationsHtml = '<div class="citations-section"><div class="atlas-title" style="color:' + color + '">📚 Citas — PubMed</div>';
       allCitations.forEach(function(c, i) {
-        citationsHtml += '<div class="citation-item"><div class="citation-num" style="background:' + color + '22;color:' + color + '">' + (i+1) + '</div><div class="citation-body"><div class="citation-title"><a href="' + c.url + '" target="_blank">' + c.title + '</a></div><div class="citation-authors">' + c.authors + '</div><div class="citation-journal"><span>' + c.journal + ' · ' + c.year + '</span>' + (c.pmid ? '<span class="pmid">PMID: ' + c.pmid + '</span>' : '') + '<a href="' + c.url + '" target="_blank">🔗 Ver en PubMed</a></div></div></div>';
+        citationsHtml += '<div class="citation-item"><div class="citation-num" style="background:' + color + '22;color:' + color + '">' + (i+1) + '</div><div class="citation-body"><div class="citation-title"><a href="' + c.url + '" target="_blank">' + c.title + '</a></div><div class="citation-authors">' + c.authors + '</div><div class="citation-journal"><span>' + c.journal + ' ' + c.year + '</span> <a href="' + c.url + '" target="_blank">PubMed</a></div></div></div>';
       });
       citationsHtml += '</div>';
     }
 
     document.getElementById('labBody').innerHTML =
-      '<div class="md-content">' + md(response) + '</div>' +
-      atlasHtml + citationsHtml +
+      '<div class="md-content">' + md(response) + '</div>' + citationsHtml +
       '<div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:20px">' +
-        '<a href="' + topic.article.url + '" target="_blank" class="action-btn" style="background:' + color + ';padding:11px 22px;font-size:.88rem;text-decoration:none">🔗 Articulo principal en PubMed</a>' +
-        '<a href="https://pubmed.ncbi.nlm.nih.gov/?term=' + encodeURIComponent(topic.name + ' dental') + '" target="_blank" class="action-btn" style="background:var(--code-bg);color:var(--text4);border:1px solid var(--input-border);padding:11px 20px;font-size:.88rem;text-decoration:none">🔍 Buscar mas en PubMed</a>' +
-        '<button class="action-btn" style="background:var(--code-bg);color:var(--text4);border:1px solid var(--input-border);padding:11px 20px;font-size:.88rem" onclick="exportPDF()">📄 Exportar PDF</button>' +
-        '<button class="action-btn" style="background:var(--code-bg);color:var(--text4);border:1px solid var(--input-border);padding:11px 20px;font-size:.88rem" onclick="document.getElementById(\'labOverlay\').classList.remove(\'active\')">✕ Cerrar</button>' +
+        '<a href="' + topic.article.url + '" target="_blank" class="action-btn" style="background:' + color + ';padding:11px 22px;font-size:.88rem;text-decoration:none">🔗 PubMed</a>' +
+        '<button class="action-btn" style="background:var(--code-bg);color:var(--text4);border:1px solid var(--input-border);padding:11px 20px;font-size:.88rem" onclick="exportPDF()">📄 PDF</button>' +
+        '<button class="action-btn" style="background:var(--code-bg);color:var(--text4);border:1px solid var(--input-border);padding:11px 20px;font-size:.88rem" id="labCloseBtn2">✕ Cerrar</button>' +
       '</div>';
+    document.getElementById('labCloseBtn2').onclick = function() { document.getElementById('labOverlay').classList.remove('active'); };
   } catch (err) {
+    console.error('Lab error:', err);
     document.getElementById('labBody').innerHTML = '<div style="background:#1a0a0a;border:1px solid #3a1a1a;border-radius:12px;padding:16px;color:#f87171">Error: ' + err.message + '</div>';
   }
 }
