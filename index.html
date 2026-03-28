@@ -542,7 +542,31 @@ const API = {
   key: localStorage.getItem('anthropic_key') || '',
   model: 'claude-haiku-4-5'
 };
-if(!API.key){var k=prompt('Ingresa tu Anthropic API key:');if(k){API.key=k;localStorage.setItem('anthropic_key',k);}}
+// ══════════════════════════════════════════════
+// FREEMIUM SYSTEM
+// ══════════════════════════════════════════════
+function isPremium() { return API.key && API.key.length > 10; }
+
+function showPremiumGate(container, featureName) {
+  container.innerHTML = '<div style="text-align:center;padding:40px 20px">' +
+    '<div style="font-size:3rem;margin-bottom:16px">🔒</div>' +
+    '<div style="font-size:var(--fs-lg);font-weight:800;color:var(--text);margin-bottom:8px">Funcion Premium</div>' +
+    '<div style="font-size:var(--fs-base);color:var(--text4);margin-bottom:20px;line-height:1.6">' + featureName + ' requiere una suscripcion Premium.<br>Accede a IA ilimitada, quizzes personalizados y mas.</div>' +
+    '<button onclick="promptApiKey()" style="background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border:none;padding:14px 28px;border-radius:var(--r-full);font-size:var(--fs-md);font-weight:700;cursor:pointer;font-family:Inter,sans-serif;transition:all .2s">✨ Activar Premium</button>' +
+    '<div style="font-size:var(--fs-xs);color:var(--text6);margin-top:12px">Ingresa tu API key de Anthropic para desbloquear</div>' +
+  '</div>';
+}
+
+function promptApiKey() {
+  var k = prompt("🔑 Ingresa tu Anthropic API key para activar Premium:\n(Obtenla en console.anthropic.com)");
+  if (k && k.startsWith('sk-ant')) {
+    API.key = k;
+    localStorage.setItem('anthropic_key', k);
+    alert('✅ Premium activado! Recarga la pagina para ver los cambios.');
+    location.reload();
+  }
+}
+
 
 
 async function askAI(messages, onChunk) {
@@ -985,6 +1009,7 @@ function escapeHtml(text) {
 // CONSOLA IA
 // ══════════════════════════════════════════════
 async function sendConsole(q, topic, area, btn, respEl) {
+  if (!isPremium()) { respEl.className = 'ia-response visible'; respEl.innerHTML = '<div style="text-align:center;padding:20px"><div style="font-size:2rem;margin-bottom:8px">🔒</div><div style="color:var(--text4)">Consulta IA es una funcion Premium</div><br><button onclick="promptApiKey()" style="background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border:none;padding:10px 20px;border-radius:var(--r-full);font-size:var(--fs-sm);font-weight:700;cursor:pointer;font-family:Inter,sans-serif">✨ Activar</button></div>'; return; }
   btn.disabled = true; respEl.className = 'ia-response visible';
   respEl.innerHTML = '<span class="ia-thinking"><span></span><span></span><span></span> Pensando...</span>';
   var sys = 'Eres un asistente de investigacion clinica de elite. Responde en espanol academico con Markdown. Terminologia tecnica en *ingles cursivas*. Al final incluye consejo clinico practico.';
@@ -1002,6 +1027,12 @@ async function openLab(topic, area) {
   document.getElementById('labBody').innerHTML = '<div class="skeleton"><div class="skeleton-line header"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line header"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>';
   document.getElementById('labOverlay').classList.add('active');
 
+  // FREEMIUM: gate the AI-generated content
+  if (!isPremium()) {
+    var staticContent = STATIC_LAB[topic.name] || '<div style="padding:20px;text-align:center"><p style="color:var(--text4)">📚 Activa Premium para generar metodologias completas con IA</p><br><button onclick="promptApiKey()" style="background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border:none;padding:12px 24px;border-radius:var(--r-full);font-size:var(--fs-base);font-weight:700;cursor:pointer;font-family:Inter,sans-serif">✨ Activar Premium</button></div>';
+    document.getElementById('labBody').innerHTML = '<div class="md-content">' + staticContent + '</div>';
+    return;
+  }
   var pmcPromise = fetchPMCImages(topic.name);
   var prompt = 'Genera una METODOLOGIA DE ESTUDIO COMPLETA sobre: "' + topic.name + '" en odontologia.\nUsa Markdown rico: ## secciones, **bold**, *cursivas para terminos en ingles*, listas, tablas.\n\nEstructura:\n## 🔑 Key Concepts\n5-7 conceptos clave. Terminos en *ingles* con explicacion en espanol.\n\n## 📊 Evidencia Cientifica\nReferencia: "' + topic.article.title + '" (' + topic.article.authors + ', ' + topic.article.year + '). 4-5 hallazgos clave.\n\n## 🦷 Protocolo Clinico\n5-7 pasos numerados aplicables en hospital universitario.\n\n## 🎯 El Reto\nPregunta de analisis critico clinico desafiante.\n\nEspanol academico. Terminologia tecnica en *ingles*.';
 
@@ -1083,6 +1114,17 @@ async function openQuiz(topic, area) {
   document.getElementById('quizBody').innerHTML = '<div class="skeleton"><div class="skeleton-line header"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line header"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>';
   document.getElementById('quizOverlay').classList.add('active');
   var prompt = 'Genera exactamente 10 preguntas de opcion multiple sobre "' + topic.name + '" en odontologia. Nivel avanzado/residente. Terminologia tecnica en *ingles*.\nResponde UNICAMENTE en JSON valido:\n[{"q":"Pregunta","options":["A) ...","B) ...","C) ...","D) ..."],"correct":0,"explanation":"Explicacion detallada con *terminos en ingles*."}]\nDificultad progresiva. Cubrir: conceptos, evidencia, protocolo y casos clinicos.';
+  // FREEMIUM: use static questions if not premium
+  if (!isPremium() && STATIC_QUESTIONS[area.id] && STATIC_QUESTIONS[area.id].length >= 10) {
+    var pool = STATIC_QUESTIONS[area.id].slice();
+    // Shuffle and pick 10
+    for (var si = pool.length - 1; si > 0; si--) { var sj = Math.floor(Math.random() * (si + 1)); var tmp = pool[si]; pool[si] = pool[sj]; pool[sj] = tmp; }
+    var questions = pool.slice(0, 10);
+    quizState = { questions: questions, answers: new Array(10).fill(null), current: 0, color: color, topic: topic, area: area };
+    renderQuizQ();
+    return;
+  }
+  if (!isPremium()) { showPremiumGate(document.getElementById('quizBody'), 'Quiz con IA ilimitado'); return; }
   try {
     var raw = await askAI([{role:'user',content:prompt}]);
     var jsonMatch = raw.match(/\[[\s\S]*\]/); if (!jsonMatch) throw new Error('Parse error');
@@ -1149,6 +1191,7 @@ function renderQuizResults() {
 // ══════════════════════════════════════════════
 var clinicalState = null;
 async function openClinicalCase(topic, area) {
+  if (!isPremium()) { openFullModal('clinicalModal'); showPremiumGate(document.getElementById('clinicalModalContent'), 'Casos Clinicos Interactivos'); return; }
   openFullModal('clinicalModal');
   var color = area.color;
   var cont = document.getElementById('clinicalModalContent');
@@ -1222,6 +1265,14 @@ function renderClinicalResults() {
 // ══════════════════════════════════════════════
 var flashState = null;
 async function openFlashcards(topic, area) {
+  if (!isPremium() && STATIC_FLASHCARDS[area.id] && STATIC_FLASHCARDS[area.id].length > 0) {
+    openFullModal('flashcardModal');
+    var cards = STATIC_FLASHCARDS[area.id].map(function(c,i){ return {front:c.front,back:c.back,box:0,nextReview:0,id:i}; });
+    window._flashState = {cards:cards,current:0,topic:topic,area:area,color:area.color};
+    renderFlashcard();
+    return;
+  }
+  if (!isPremium()) { openFullModal('flashcardModal'); showPremiumGate(document.getElementById('flashcardModalContent'), 'Flashcards con IA'); return; }
   openFullModal('flashcardModal');
   var color = area.color;
   var cont = document.getElementById('flashcardModalContent');
@@ -1302,6 +1353,7 @@ var examTimerInterval = null;
 document.getElementById('btnExam').onclick = function() { startExam(); };
 
 async function startExam() {
+  if (!isPremium()) { showPremiumGate(document.getElementById('examModalContent'), 'Examen Mixto de 30 preguntas'); return; }
   openFullModal('examModal');
   var cont = document.getElementById('examModalContent');
   cont.innerHTML = '<div style="text-align:center;padding:40px"><div class="lab-spinner" style="border-top-color:#7c3aed;width:40px;height:40px;border:3px solid var(--card-border);border-top-color:#7c3aed;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px"></div><div style="color:var(--text5)">Generando examen mixto de 30 preguntas...</div></div>';
@@ -1509,6 +1561,7 @@ function renderProgressDashboard() {
 document.getElementById('btnCalendar').onclick = function() { openCalendarModal(); };
 
 function openCalendarModal() {
+  if (!isPremium()) { openFullModal('calendarModal'); showPremiumGate(document.getElementById('calendarModalContent'), 'Plan de Estudio con IA'); return; }
   openFullModal('calendarModal');
   var cont = document.getElementById('calendarModalContent');
   cont.innerHTML =
