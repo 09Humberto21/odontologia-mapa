@@ -2244,7 +2244,67 @@ async function openLab(topic, area) {
   }
 }
 
-function exportPDF() { window.print(); }
+function exportPDF() {
+  // Get lab content
+  var header = document.getElementById('labHeader');
+  var body = document.getElementById('labBody');
+  if (!header || !body) return;
+
+  // Create a clean print window with only lab content
+  var printWin = window.open('', '_blank');
+  var headerHtml = header.innerHTML;
+  var bodyHtml = body.innerHTML;
+
+  // Remove action buttons from the print content
+  var cleanBody = bodyHtml.replace(/<div style="display:flex;gap[^>]*>.*?<\/div>/gs, '');
+
+  printWin.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Laboratorio Clinico</title>');
+  printWin.document.write('<style>');
+  printWin.document.write('*{margin:0;padding:0;box-sizing:border-box}');
+  printWin.document.write('body{font-family:Georgia,serif;color:#111;background:#fff;padding:40px 50px;max-width:800px;margin:0 auto;font-size:11pt;line-height:1.7}');
+  printWin.document.write('.lab-header{border-bottom:2px solid #111;padding-bottom:16px;margin-bottom:24px}');
+  printWin.document.write('.lab-badge{display:inline-block;background:#eee;padding:3px 12px;border-radius:20px;font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}');
+  printWin.document.write('.lab-title{font-size:18pt;font-weight:800;margin-bottom:4px;letter-spacing:-.5px}');
+  printWin.document.write('.lab-meta{font-size:9pt;color:#666}');
+  printWin.document.write('h1,h2,h3{font-family:Helvetica,Arial,sans-serif;color:#111;margin:20px 0 10px;page-break-after:avoid}');
+  printWin.document.write('h1{font-size:14pt;border-bottom:1px solid #ddd;padding-bottom:6px}');
+  printWin.document.write('h2{font-size:13pt}');
+  printWin.document.write('h3{font-size:12pt}');
+  printWin.document.write('p{margin:6px 0}');
+  printWin.document.write('ul,ol{margin:6px 0 6px 24px}');
+  printWin.document.write('li{margin:4px 0}');
+  printWin.document.write('em{color:#333;font-style:italic}');
+  printWin.document.write('strong{color:#000}');
+  printWin.document.write('code{background:#f0f0f0;padding:1px 4px;border-radius:3px;font-size:10pt;color:#333}');
+  printWin.document.write('blockquote{border-left:3px solid #333;padding:8px 14px;margin:10px 0;background:#f8f8f8;color:#444}');
+  printWin.document.write('table{width:100%;border-collapse:collapse;margin:10px 0;font-size:10pt}');
+  printWin.document.write('th{background:#eee;padding:8px;text-align:left;font-weight:700;border:1px solid #ccc}');
+  printWin.document.write('td{padding:6px 8px;border:1px solid #ddd}');
+  printWin.document.write('hr{border:none;border-top:1px solid #ddd;margin:16px 0}');
+  printWin.document.write('.atlas-section{margin-top:24px;page-break-before:always}');
+  printWin.document.write('.atlas-title{font-size:9pt;text-transform:uppercase;letter-spacing:2px;font-weight:700;margin-bottom:12px;color:#666}');
+  printWin.document.write('.atlas-grid{display:none}');
+  printWin.document.write('.citations-section{margin-top:24px;page-break-before:always}');
+  printWin.document.write('.citation-item{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid #eee;font-size:10pt}');
+  printWin.document.write('.citation-num{width:24px;height:24px;border-radius:6px;background:#eee;display:flex;align-items:center;justify-content:center;font-size:9pt;font-weight:700;flex-shrink:0}');
+  printWin.document.write('.citation-title{font-weight:700;color:#111}');
+  printWin.document.write('.citation-title a{color:#111;text-decoration:none}');
+  printWin.document.write('.citation-authors{font-size:9pt;color:#666}');
+  printWin.document.write('.citation-journal{font-size:9pt;color:#888}');
+  printWin.document.write('.citation-journal a{color:#333}');
+  printWin.document.write('.pmid{font-weight:700;color:#333}');
+  printWin.document.write('.atlas-tooltip,.svg-placeholder,.action-btn{display:none}');
+  printWin.document.write('.md-content{margin-bottom:20px}');
+  printWin.document.write('.footer{margin-top:30px;padding-top:16px;border-top:1px solid #ddd;font-size:8pt;color:#999;text-align:center}');
+  printWin.document.write('@media print{body{padding:20px 30px}}');
+  printWin.document.write('</style></head><body>');
+  printWin.document.write('<div class="lab-header">' + headerHtml + '</div>');
+  printWin.document.write(cleanBody);
+  printWin.document.write('<div class="footer">Generado por Mapa de Estudio de Odontologia · ' + new Date().toLocaleDateString('es') + '</div>');
+  printWin.document.write('</body></html>');
+  printWin.document.close();
+  setTimeout(function() { printWin.print(); }, 500);
+}
 
 // ══════════════════════════════════════════════
 // LIGHTBOX
