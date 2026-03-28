@@ -65,3 +65,22 @@ Conectamos **Blender 5.1** via MCP Server (51 herramientas) y construimos una es
 Construido por **Satoshi** con [OpenClaw](https://openclaw.ai) + Sielvo 🐾
 
 Hecho en El Salvador 🇸🇻
+
+## 💰 Modelo Freemium
+
+### 🆓 Gratis (sin registro)
+- 🔬 Laboratorio Clínico — 31 resúmenes completos + atlas + PubMed
+- 🧠 Quiz — 97 preguntas estáticas (Endodoncia + Operatoria)
+- 🃏 Flashcards — 20 tarjetas estáticas con repetición espaciada
+- 📊 Dashboard de progreso
+- 📝 Notas personales
+- 🌙 Dark/Light mode
+
+### ✨ Premium (con API key de Anthropic)
+- 💬 Consulta IA ilimitada
+- 🧠 Quiz infinitos generados por IA
+- 🏥 Casos clínicos interactivos con IA
+- 🃏 Flashcards generadas por IA
+- 📝 Examen mixto de 30 preguntas
+- 📅 Plan de estudio personalizado
+- 🔬 Laboratorio con IA en tiempo real
