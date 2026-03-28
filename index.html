@@ -1864,53 +1864,136 @@ function svgOcclusion(c) {
 // CLINICAL IMAGE DATABASE — Real web images with fallbacks
 // ══════════════════════════════════════════════
 function getTopicImages(name) {
+  var px = function(id) { return 'https://images.pexels.com/photos/' + id + '/pexels-photo-' + id + '.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop'; };
   var db = {
     'Cinematica NiTi (Nickel-Titanium)': [
-      { url:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=250&fit=crop', title:'Endodontic Instruments', desc:'Instrumental rotatorio NiTi para preparacion de conductos radiculares', source:'Unsplash' },
-      { url:'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=400&h=250&fit=crop', title:'Root Canal Treatment', desc:'Tratamiento endodontico: acceso, instrumentacion y obturacion', source:'Unsplash' },
-      { url:'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=250&fit=crop', title:'Dental X-ray', desc:'Radiografia periapical mostrando anatomia radicular', source:'Unsplash' },
+      { url:px(3845810), title:'Instrumental Endodontico', desc:'Limas rotatorias NiTi y motor endodontico para preparacion de conductos', source:'Pexels' },
+      { url:px(6502019), title:'Radiografia Periapical', desc:'Control radiografico durante instrumentacion de conductos radiculares', source:'Pexels' },
     ],
     'Irrigacion Ultrasonica Pasiva (PUI)': [
-      { url:'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=400&h=250&fit=crop', title:'Endodontic Irrigation', desc:'Protocolo de irrigacion: NaOCl, EDTA y activacion ultrasonica', source:'Unsplash' },
-      { url:'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=250&fit=crop', title:'Periapical View', desc:'Control radiografico de irrigacion del sistema de conductos', source:'Unsplash' },
+      { url:px(3881449), title:'Irrigacion Endodontica', desc:'Jeringa de irrigacion con NaOCl para limpieza del sistema de conductos', source:'Pexels' },
+      { url:px(3845810), title:'Puntas Ultrasonicas', desc:'Instrumental ultrasonico para activacion pasiva del irrigante', source:'Pexels' },
     ],
     'Bioceramicos (Bioceramics)': [
-      { url:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=250&fit=crop', title:'Bioceramic Materials', desc:'MTA, Biodentine y cementos de silicato de calcio para reparacion', source:'Unsplash' },
-      { url:'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=400&h=250&fit=crop', title:'Endodontic Repair', desc:'Aplicacion de bioceramico en perforacion y apexificacion', source:'Unsplash' },
+      { url:px(4687360), title:'Materiales Bioceramicos', desc:'MTA, Biodentine y cementos de silicato de calcio en laboratorio dental', source:'Pexels' },
+      { url:px(4687340), title:'Preparacion de Cemento', desc:'Mezcla y aplicacion de cemento bioceramico para reparacion radicular', source:'Pexels' },
     ],
     'CBCT en Endodoncia': [
-      { url:'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=400&h=250&fit=crop', title:'CBCT Scanner', desc:'Tomografia Cone Beam para diagnostico endodontico avanzado', source:'Unsplash' },
-      { url:'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=250&fit=crop', title:'3D Reconstruction', desc:'Reconstruccion volumetrica mostrando anatomia radicular compleja', source:'Unsplash' },
+      { url:px(4971519), title:'Tomografia CBCT', desc:'Equipo de Cone Beam CT para diagnostico tridimensional dental', source:'Pexels' },
+      { url:px(6502019), title:'Imagen Radiografica 3D', desc:'Reconstruccion volumetrica para visualizar anatomia radicular compleja', source:'Pexels' },
+    ],
+    'Anatomia Radicular Interna': [
+      { url:px(6812544), title:'Modelo Anatomico Dental', desc:'Seccion transversal de diente mostrando camara pulpar y conductos', source:'Pexels' },
+      { url:px(6502019), title:'Radiografia de Conductos', desc:'Vista periapical mostrando configuracion de canales radiculares', source:'Pexels' },
+    ],
+    'Diagnostico Pulpar y Periapical': [
+      { url:px(3845806), title:'Examen Clinico Dental', desc:'Pruebas de vitalidad pulpar: frio, percusion, palpacion', source:'Pexels' },
+      { url:px(6502019), title:'Radiografia Diagnostica', desc:'Evaluacion periapical para diagnostico de patologia pulpar', source:'Pexels' },
     ],
     'Immediate Dentin Sealing (IDS)': [
-      { url:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=250&fit=crop', title:'IDS Protocol', desc:'Sellado dentinario inmediato: grabado, adhesivo, fotopolimerizacion', source:'Unsplash' },
-      { url:'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&h=250&fit=crop', title:'Indirect Restoration', desc:'Restauracion indirecta cementada sobre IDS', source:'Unsplash' },
+      { url:px(3985166), title:'Protocolo Adhesivo', desc:'Aplicacion de sistema adhesivo sobre dentina tallada para IDS', source:'Pexels' },
+      { url:px(4687354), title:'Restauracion Indirecta', desc:'Onlay ceramico cementado sobre sellado dentinario inmediato', source:'Pexels' },
+    ],
+    'Odontologia Biomimetica': [
+      { url:px(4687360), title:'Ceramica Dental', desc:'Restauraciones ceramicas que imitan propiedades del diente natural', source:'Pexels' },
+      { url:px(6812544), title:'Estructura Dental', desc:'Bicapa esmalte-dentina: base del concepto biomimetico', source:'Pexels' },
     ],
     'Adhesion Contemporanea': [
-      { url:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=250&fit=crop', title:'Adhesive System', desc:'Sistema adhesivo universal en modo selective-etch', source:'Unsplash' },
-      { url:'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&h=250&fit=crop', title:'Composite Bonding', desc:'Interfaz adhesiva: esmalte, capa hibrida, dentina', source:'Unsplash' },
+      { url:px(3985163), title:'Sistema Adhesivo', desc:'Grabado acido selectivo en esmalte y adhesivo universal', source:'Pexels' },
+      { url:px(3985170), title:'Fotopolimerizacion', desc:'Lampara LED para polimerizacion del sistema adhesivo', source:'Pexels' },
+    ],
+    'Estratificacion Composite': [
+      { url:px(4687354), title:'Composite por Capas', desc:'Tecnica incremental: dentina opaca + esmalte traslucido', source:'Pexels' },
+      { url:px(3985166), title:'Restauracion Estetica', desc:'Resultado final de estratificacion en sector anterior', source:'Pexels' },
+    ],
+    'Minima Intervencion (MI)': [
+      { url:px(3845806), title:'Deteccion de Caries', desc:'Evaluacion clinica con criterios ICDAS para intervencion minima', source:'Pexels' },
+      { url:px(3952083), title:'Prevencion Dental', desc:'Aplicacion de fluoruro y sellantes como alternativa a restaurar', source:'Pexels' },
+    ],
+    'Preparacion Cavitaria Moderna': [
+      { url:px(3845810), title:'Instrumental Rotatorio', desc:'Fresas y turbina para preparacion cavitaria conservadora', source:'Pexels' },
+      { url:px(3985163), title:'Cavidad Adhesiva', desc:'Preparacion moderna sin extension por prevencion', source:'Pexels' },
     ],
     'Clasificacion Periodontal 2017': [
-      { url:'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=400&h=250&fit=crop', title:'Periodontal Exam', desc:'Examen periodontal con sonda: medicion de profundidad al sondaje', source:'Unsplash' },
-      { url:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=250&fit=crop', title:'Periodontal Instruments', desc:'Instrumental para raspado y alisado radicular', source:'Unsplash' },
+      { url:px(3952083), title:'Sondaje Periodontal', desc:'Evaluacion con sonda de 6 puntos por diente para clasificacion', source:'Pexels' },
+      { url:px(6502019), title:'Perdida Osea', desc:'Radiografia mostrando niveles de perdida osea periodontal', source:'Pexels' },
+    ],
+    'Raspado y Alisado Radicular (SRP)': [
+      { url:px(3845810), title:'Curetas Gracey', desc:'Instrumental para raspado y alisado radicular subgingival', source:'Pexels' },
+      { url:px(3952083), title:'Tratamiento Periodontal', desc:'Procedimiento de raspado en bolsa periodontal profunda', source:'Pexels' },
+    ],
+    'Relacion Perio-Endo (PEL)': [
+      { url:px(6502019), title:'Lesion Combinada', desc:'Radiografia mostrando lesion endo-periodontal con perdida osea', source:'Pexels' },
+      { url:px(3845806), title:'Diagnostico Diferencial', desc:'Evaluacion clinica de vitalidad y sondaje para diagnostico PEL', source:'Pexels' },
+    ],
+    'Biofilm y Respuesta del Huesped': [
+      { url:px(6812547), title:'Biofilm Dental', desc:'Placa bacteriana y biofilm subgingival en modelo educativo', source:'Pexels' },
+      { url:px(3952083), title:'Control de Placa', desc:'Instruccion de higiene oral para control del biofilm', source:'Pexels' },
+    ],
+    'Cirugia Periodontal': [
+      { url:px(5355828), title:'Cirugia de Colgajo', desc:'Procedimiento quirurgico periodontal: acceso y regeneracion', source:'Pexels' },
+      { url:px(5355831), title:'Instrumental Quirurgico', desc:'Kit de cirugia periodontal: bisturi, periostotomos, suturas', source:'Pexels' },
+    ],
+    'Exodoncia Simple y Compleja': [
+      { url:px(5355828), title:'Exodoncia Quirurgica', desc:'Extraccion de tercer molar: colgajo y osteotomia', source:'Pexels' },
+      { url:px(6502019), title:'Clasificacion Pell-Gregory', desc:'Panoramica mostrando posicion del tercer molar impactado', source:'Pexels' },
+    ],
+    'Alveolitis y Complicaciones': [
+      { url:px(5355835), title:'Cuidado Postoperatorio', desc:'Manejo de complicaciones post-extraccion: alveolitis seca', source:'Pexels' },
+      { url:px(3845806), title:'Evaluacion Clinica', desc:'Diagnostico de alveolitis: alveolo vacio, dolor pulsatil', source:'Pexels' },
     ],
     'Implantologia Basica': [
-      { url:'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=400&h=250&fit=crop', title:'Dental Implant Model', desc:'Implante de titanio: fixture, abutment y corona protesica', source:'Unsplash' },
-      { url:'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&h=250&fit=crop', title:'Implant Surgery', desc:'Planificacion quirurgica con guia tomografica CBCT', source:'Unsplash' },
+      { url:px(3779706), title:'Implante Dental', desc:'Modelo de implante de titanio con componentes protesicos', source:'Pexels' },
+      { url:px(4971519), title:'Planificacion con CBCT', desc:'Tomografia para medicion de hueso disponible preimplante', source:'Pexels' },
+    ],
+    'Farmacologia Quirurgica': [
+      { url:px(3845810), title:'Farmacologia Dental', desc:'Anestesicos locales, analgesicos y antibioticos en odontologia', source:'Pexels' },
+      { url:px(287237), title:'Medicamentos', desc:'Prescripcion basada en evidencia para procedimientos dentales', source:'Pexels' },
     ],
     'Patologia Oral': [
-      { url:'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=400&h=250&fit=crop', title:'Oral Examination', desc:'Examen sistematico de mucosa oral: labios, carrillos, lengua', source:'Unsplash' },
-      { url:'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=400&h=250&fit=crop', title:'Diagnostic Tools', desc:'Herramientas de diagnostico para lesiones orales', source:'Unsplash' },
+      { url:px(3845806), title:'Examen de Mucosa', desc:'Inspeccion sistematica de mucosa oral para deteccion de lesiones', source:'Pexels' },
+      { url:px(6812547), title:'Lesion Oral', desc:'Evaluacion clinica de lesiones blancas y rojas de la mucosa', source:'Pexels' },
+    ],
+    'Protesis Fija Unitaria': [
+      { url:px(4687360), title:'Corona Dental', desc:'Coronas de ceramica: metal-ceramica, disilicato de litio, zirconia', source:'Pexels' },
+      { url:px(4687354), title:'Tallado y Cementacion', desc:'Preparacion dental y cementacion de corona fija unitaria', source:'Pexels' },
     ],
     'Carillas Ceramicas (Veneers)': [
-      { url:'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&h=250&fit=crop', title:'Porcelain Veneers', desc:'Carillas ceramicas: preparacion minima y resultado estetico', source:'Unsplash' },
-      { url:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=250&fit=crop', title:'Veneer Preparation', desc:'Mock-up y tallado conservador en esmalte', source:'Unsplash' },
+      { url:px(4687340), title:'Carillas de Porcelana', desc:'Carillas feldespáticas ultrafinas para estetica del sector anterior', source:'Pexels' },
+      { url:px(3985166), title:'Protocolo de Cementacion', desc:'Mock-up, preparacion y adhesion de carillas ceramicas', source:'Pexels' },
+    ],
+    'Oclusion y ATM': [
+      { url:px(3762940), title:'Articulador', desc:'Montaje en articulador semiadaptable para analisis oclusal', source:'Pexels' },
+      { url:px(3762453), title:'Ferula Oclusal', desc:'Ferula de Michigan para manejo de bruxismo y DTM', source:'Pexels' },
+    ],
+    'CAD/CAM en Prostodoncia': [
+      { url:px(4687360), title:'Laboratorio Digital', desc:'Flujo CAD/CAM: diseno y fresado de restauraciones ceramicas', source:'Pexels' },
+      { url:px(6529063), title:'Escaner Intraoral', desc:'Impresion digital con escaner intraoral para protesis', source:'Pexels' },
+    ],
+    'Protesis Parcial Removible (PPR)': [
+      { url:px(3762940), title:'Marco Metalico PPR', desc:'Esqueleto cromo-cobalto con apoyos, conectores y retenedores', source:'Pexels' },
+      { url:px(3762453), title:'Diseno de PPR', desc:'Planificacion del diseno: survey, apoyos y via de insercion', source:'Pexels' },
+    ],
+    'Cefalometria y Analisis Facial': [
+      { url:px(6502019), title:'Telerradiografia Lateral', desc:'Radiografia lateral de craneo para trazado cefalometrico', source:'Pexels' },
+      { url:px(4269692), title:'Analisis Facial', desc:'Evaluacion de proporciones faciales y perfil blando', source:'Pexels' },
+    ],
+    'Clasificacion de Angle': [
+      { url:px(4269694), title:'Maloclusion Dental', desc:'Evaluacion de relacion molar: Clases I, II y III de Angle', source:'Pexels' },
+      { url:px(6812544), title:'Modelos de Estudio', desc:'Modelos articulados para clasificacion oclusal', source:'Pexels' },
+    ],
+    'Biomecanica de Brackets': [
+      { url:px(4269694), title:'Ortodoncia Fija', desc:'Brackets MBT/Roth con secuencia de arcos NiTi y acero', source:'Pexels' },
+      { url:px(4269693), title:'Arcos Ortodonticos', desc:'Progresion de arcos: NiTi superelastico a acero inoxidable', source:'Pexels' },
+    ],
+    'Alineadores (Clear Aligners)': [
+      { url:px(6529060), title:'Alineadores Transparentes', desc:'Ferulas termoplasticas removibles para correccion dental', source:'Pexels' },
+      { url:px(4269692), title:'Planificacion Digital', desc:'ClinCheck y attachments para movimiento dental con alineadores', source:'Pexels' },
     ],
   };
-  // Default images for topics not in the database
   var defaults = [
-    { url:'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=250&fit=crop', title:'Clinical Dentistry', desc:'Procedimiento clinico odontologico', source:'Unsplash' },
-    { url:'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=250&fit=crop', title:'Dental Radiograph', desc:'Imagen radiografica dental de referencia', source:'Unsplash' },
+    { url:px(3845806), title:'Odontologia Clinica', desc:'Procedimiento clinico odontologico', source:'Pexels' },
+    { url:px(6502019), title:'Radiografia Dental', desc:'Imagen radiografica dental de referencia', source:'Pexels' },
   ];
   return db[name] || defaults;
 }
