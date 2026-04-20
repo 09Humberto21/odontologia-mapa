@@ -1802,24 +1802,19 @@ const API = {
 // ══════════════════════════════════════════════
 // FREEMIUM SYSTEM
 // ══════════════════════════════════════════════
-function isPremium() { return API.key && API.key.length > 10; }
+function isPremium() { return true; }
 
 function showPremiumGate(container, featureName) {
-  container.innerHTML = '<div style="text-align:center;padding:40px 20px">' +
-    '<div style="font-size:3rem;margin-bottom:16px">🔒</div>' +
-    '<div style="font-size:var(--fs-lg);font-weight:800;color:var(--text);margin-bottom:8px">Funcion Premium</div>' +
-    '<div style="font-size:var(--fs-base);color:var(--text4);margin-bottom:20px;line-height:1.6">' + featureName + ' requiere una suscripcion Premium.<br>Accede a IA ilimitada, quizzes personalizados y mas.</div>' +
-    '<button onclick="promptApiKey()" style="background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border:none;padding:14px 28px;border-radius:var(--r-full);font-size:var(--fs-md);font-weight:700;cursor:pointer;font-family:Inter,sans-serif;transition:all .2s">✨ Activar Premium</button>' +
-    '<div style="font-size:var(--fs-xs);color:var(--text6);margin-top:12px">Ingresa tu API key de Anthropic para desbloquear</div>' +
-  '</div>';
+  // Premium gates removed — all features are free
+  return;
 }
 
 function promptApiKey() {
-  var k = prompt("🔑 Ingresa tu Anthropic API key para activar Premium:\n(Obtenla en console.anthropic.com)");
+  var k = prompt("🔑 Ingresa tu Anthropic API key para funciones con IA en tiempo real:\n(Obtenla en console.anthropic.com)");
   if (k && k.startsWith('sk-ant')) {
     API.key = k;
     localStorage.setItem('anthropic_key', k);
-    alert('✅ Premium activado! Recarga la pagina para ver los cambios.');
+    alert('✅ API key guardada! Recarga la pagina.');
     location.reload();
   }
 }
@@ -2218,7 +2213,7 @@ function escapeHtml(text) {
 // CONSOLA IA
 // ══════════════════════════════════════════════
 async function sendConsole(q, topic, area, btn, respEl) {
-  if (!isPremium()) { respEl.className = 'ia-response visible'; respEl.innerHTML = '<div style="text-align:center;padding:20px"><div style="font-size:2rem;margin-bottom:8px">🔒</div><div style="color:var(--text4)">Consulta IA es una funcion Premium</div><br><button onclick="promptApiKey()" style="background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border:none;padding:10px 20px;border-radius:var(--r-full);font-size:var(--fs-sm);font-weight:700;cursor:pointer;font-family:Inter,sans-serif">✨ Activar</button></div>'; return; }
+  // Premium gate removed — IA console is free
   btn.disabled = true; respEl.className = 'ia-response visible';
   respEl.innerHTML = '<span class="ia-thinking"><span></span><span></span><span></span> Pensando...</span>';
   var sys = 'Eres un asistente de investigacion clinica de elite. Responde en espanol academico con Markdown. Terminologia tecnica en *ingles cursivas*. Al final incluye consejo clinico practico.';
